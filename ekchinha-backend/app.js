@@ -7,13 +7,23 @@ const app = express();
 
 // Imports
 const authRoutes = require("./routes/auth");
+const customerRoutes = require("./routes/customer");
+const vendorRoutes = require("./routes/vendor");
 
 // Middleware
+app.use((req, res, next) => {
+  console.log(`Incoming ${req.method} request to ${req.originalUrl}`);
+  next();
+});
+
 app.use(cors());
 app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/customers", customerRoutes);
+app.use("/api/vendors", vendorRoutes);
+
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Ekchinha Backend API running" });
 });
