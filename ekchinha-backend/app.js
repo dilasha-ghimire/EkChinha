@@ -1,17 +1,21 @@
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const connectDB = require("./config/db");
+require("dotenv").config();
 
 const app = express();
+
+// Imports
+const authRoutes = require("./routes/auth");
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // Routes
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Ekchinha Backend API running' });
+app.use("/api/auth", authRoutes);
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Ekchinha Backend API running" });
 });
 
 // Connect to DB and start server
@@ -32,4 +36,4 @@ const startServer = async () => {
 
 startServer();
 
-module.exports = app;  
+module.exports = app;
