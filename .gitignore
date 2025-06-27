@@ -11,3 +11,6 @@ build/
 # system
 .DS_Store
 Thumbs.db
+
+# uploaded images
+assets/

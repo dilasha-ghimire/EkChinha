@@ -9,6 +9,7 @@ const app = express();
 const authRoutes = require("./routes/auth");
 const customerRoutes = require("./routes/customer");
 const vendorRoutes = require("./routes/vendor");
+const productRoutes = require("./routes/product");
 
 // Middleware
 app.use((req, res, next) => {
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/vendors", vendorRoutes);
+app.use("/api/products", productRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Ekchinha Backend API running" });
