@@ -110,10 +110,31 @@ const toggleArchiveProduct = async (req, res) => {
   }
 };
 
+// 6. View Single Product by ID
+const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("Looking for product:", id);
+    const product = await Product.findById(id);
+
+    if (!product) {
+      console.log("Product not found");
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    console.log("Found product:", product.name);
+    res.status(200).json(product);
+  } catch (error) {
+    console.error("Get Product By ID Error:", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductsByVendorId,
   updateProduct,
   toggleArchiveProduct,
+  getProductById,
 };

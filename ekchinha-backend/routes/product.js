@@ -8,11 +8,13 @@ const {
   getProductsByVendorId,
   updateProduct,
   toggleArchiveProduct,
+  getProductById,
 } = require("../controllers/productcontroller");
 
 router.post("/", upload.single("image"), createProduct);
-router.get("/", getAllProducts);
 router.get("/vendor/:vendorId", getProductsByVendorId);
+router.get("/:id", getProductById);
+router.get("/", getAllProducts);
 router.put("/:id", upload.single("image"), updateProduct);
 router.put("/:id/archive", toggleArchiveProduct);
 
