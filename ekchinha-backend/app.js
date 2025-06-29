@@ -10,6 +10,11 @@ const authRoutes = require("./routes/auth");
 const customerRoutes = require("./routes/customer");
 const vendorRoutes = require("./routes/vendor");
 const productRoutes = require("./routes/product");
+const cartGiftBoxRoutes = require("./routes/cartgiftbox");
+const giftBoxRoutes = require("./routes/giftbox");
+const vendorOrderRoutes = require("./routes/vendororder");
+const giftBoxOrderHistoryRoutes = require("./routes/giftboxorderhistory");
+const savedItemRoutes = require("./routes/saveditems");
 
 // Middleware
 app.use((req, res, next) => {
@@ -25,6 +30,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/vendors", vendorRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/cart-gift-box", cartGiftBoxRoutes);
+app.use("/api/gift-box", giftBoxRoutes);
+app.use("/api/vendor-orders", vendorOrderRoutes);
+app.use("/api/gift-box-orders", giftBoxOrderHistoryRoutes);
+app.use("/api/saved-items", savedItemRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Ekchinha Backend API running" });

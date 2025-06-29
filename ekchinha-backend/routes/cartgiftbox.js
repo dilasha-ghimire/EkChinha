@@ -1,0 +1,22 @@
+const express = require("express");
+const router = express.Router();
+const {
+  createCartGiftBox,
+  addProductToCart,
+  removeProductFromCart,
+  getUserCartGiftBoxes,
+} = require("../controllers/cartgiftboxcontroller");
+
+// POST /cart-gift-box → Create a new cart gift box
+router.post("/", createCartGiftBox);
+
+// GET /cart-gift-box → Get all cart gift boxes for user
+router.get("/", getUserCartGiftBoxes);
+
+// PATCH /cart-gift-box/:id/add → Add product to cart
+router.patch("/:id/add", addProductToCart);
+
+// PATCH /cart-gift-box/:id/remove → Remove product from cart
+router.patch("/:id/remove", removeProductFromCart);
+
+module.exports = router;
