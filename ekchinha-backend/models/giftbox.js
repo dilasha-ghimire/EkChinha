@@ -23,4 +23,5 @@ const GiftBoxSchema = new mongoose.Schema(
   { collection: "gift_boxes" }
 );
 
-module.exports = mongoose.model("GiftBox", GiftBoxSchema);
+module.exports =
+  mongoose.models.GiftBox || mongoose.model("GiftBox", GiftBoxSchema);
