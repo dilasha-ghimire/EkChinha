@@ -89,9 +89,24 @@ const getUserCartGiftBoxes = async (req, res) => {
   }
 };
 
+// 5. Get Admin-Created Cart Gift Boxes
+const getAdminCreatedCartGiftBoxes = async (req, res) => {
+  try {
+    const adminCarts = await CartGiftBox.find({
+      created_by: "admin_created",
+    }).populate("items");
+
+    res.status(200).json(adminCarts);
+  } catch (error) {
+    console.error("Get Admin-Created Cart Gift Boxes Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   createCartGiftBox,
   addProductToCart,
   removeProductFromCart,
   getUserCartGiftBoxes,
+  getAdminCreatedCartGiftBoxes,
 };

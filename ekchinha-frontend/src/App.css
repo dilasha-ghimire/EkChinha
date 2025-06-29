@@ -86,16 +86,25 @@ body {
   width: calc(50% - 20px);
 }
 
-.image-placeholder,
-.thumb {
-  background: #eee;
-  height: 100px;
+.image-placeholder {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
   margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 .thumbs {
   display: flex;
   gap: 10px;
+  margin-bottom: 10px;
 }
 
 .view-btn {

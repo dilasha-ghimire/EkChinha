@@ -39,6 +39,7 @@ app.use("/api/saved-items", savedItemRoutes);
 
 // === Serve Frontend ===
 const frontendPath = path.join(__dirname, "..", "ekchinha-frontend", "dist");
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use(express.static(frontendPath));
 
 app.get("/", (req, res) => {

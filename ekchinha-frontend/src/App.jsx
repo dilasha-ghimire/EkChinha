@@ -1,7 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
+import axios from "axios";
+
+const BASE_URL = "http://localhost:5000"; // Your backend
 
 function App() {
+  const [products, setProducts] = useState([]);
+  const [giftboxes, setGiftboxes] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/api/products`)
+      .then((res) => {
+        console.log("Products fetched:", res.data); // Debug
+        setProducts(res.data);
+      })
+      .catch((err) => console.error("Product fetch error:", err));
+
+    axios
+      .get(`${BASE_URL}/api/cart-gift-box/admin`)
+      .then((res) => {
+        console.log("Giftboxes fetched:", res.data); // Debug
+        setGiftboxes(res.data);
+      })
+      .catch((err) => console.error("Giftbox fetch error:", err));
+  }, []);
+
   return (
     <div className="homepage">
       {/* Header */}
@@ -20,19 +44,23 @@ function App() {
         <img src="/banner.jpg" alt="Hero Banner" />
       </section>
 
+      {/* Debug Count */}
+      <section>
+        <h2>DEBUG: Product Count = {products.length}</h2>
+      </section>
+
       {/* Best Selling Products */}
       <section className="section">
         <h2>Best Selling Products</h2>
         <div className="product-grid">
-          {[
-            "Bamboo Bottle",
-            "Lokta Paper Notebook",
-            "Bamboo Brush",
-            "Pashmina Shawl",
-          ].map((item, i) => (
-            <div key={i} className="card">
-              <div className="image-placeholder"></div>
-              <p>{item}</p>
+          {products.map((item) => (
+            <div key={item._id} className="card">
+              <img
+                src={`${BASE_URL}/assets/${item.image}`}
+                alt={item.name}
+                className="image-placeholder"
+              />
+              <p>{item.name}</p>
               <button className="view-btn">View More</button>
             </div>
           ))}
@@ -43,27 +71,23 @@ function App() {
       <section className="section">
         <h2>Personalized Gift Boxes</h2>
         <div className="giftbox-grid">
-          <div className="giftbox">
-            <h3>Meeting Your Old Friend After Long</h3>
-            <p>Total Items: 3</p>
-            <div className="thumbs">
-              <div className="thumb" />
-              <div className="thumb" />
-              <div className="thumb" />
+          {giftboxes.map((box) => (
+            <div key={box._id} className="giftbox">
+              <h3>{box.name}</h3>
+              <p>Total Items: {box.items.length}</p>
+              <div className="thumbs">
+                {box.items.slice(0, 4).map((item) => (
+                  <img
+                    key={item._id}
+                    src={`${BASE_URL}/assets/${item.image}`}
+                    alt={item.name}
+                    className="thumb"
+                  />
+                ))}
+              </div>
+              <button className="view-btn">View More</button>
             </div>
-            <button className="view-btn">View More</button>
-          </div>
-          <div className="giftbox">
-            <h3>Rejuvenate Retreat</h3>
-            <p>Total Items: 4</p>
-            <div className="thumbs">
-              <div className="thumb" />
-              <div className="thumb" />
-              <div className="thumb" />
-              <div className="thumb" />
-            </div>
-            <button className="view-btn">View More</button>
-          </div>
+          ))}
         </div>
       </section>
 

@@ -5,6 +5,7 @@ const {
   addProductToCart,
   removeProductFromCart,
   getUserCartGiftBoxes,
+  getAdminCreatedCartGiftBoxes,
 } = require("../controllers/cartgiftboxcontroller");
 const { protect } = require("../middleware/auth");
 
@@ -19,5 +20,8 @@ router.patch("/:id/add", addProductToCart);
 
 // PATCH /cart-gift-box/:id/remove → Remove product from cart
 router.patch("/:id/remove", removeProductFromCart);
+
+// GET /cart-gift-box/admin → Get all admin-created cart gift boxes
+router.get("/admin", getAdminCreatedCartGiftBoxes);
 
 module.exports = router;
