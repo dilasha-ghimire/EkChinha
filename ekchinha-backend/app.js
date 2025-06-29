@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -25,7 +26,7 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/vendors", vendorRoutes);
@@ -36,8 +37,12 @@ app.use("/api/vendor-orders", vendorOrderRoutes);
 app.use("/api/gift-box-orders", giftBoxOrderHistoryRoutes);
 app.use("/api/saved-items", savedItemRoutes);
 
+// === Serve Frontend ===
+const frontendPath = path.join(__dirname, "..", "ekchinha-frontend", "dist");
+app.use(express.static(frontendPath));
+
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Ekchinha Backend API running" });
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 // Connect to DB and start server
@@ -46,7 +51,6 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   try {
     await connectDB();
-
     app.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT}`);
     });
