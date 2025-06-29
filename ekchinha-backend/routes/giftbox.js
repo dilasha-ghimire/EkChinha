@@ -1,14 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {
-  createGiftBox,
-  getUserGiftBoxes,
-} = require("../controllers/giftboxcontroller");
+const giftBoxController = require("../controllers/giftboxcontroller");
 
-// POST /gift-box → Create after payment
-router.post("/", createGiftBox);
+// Create GiftBox from CartGiftBox
+router.post("/from-cart/:cartId", giftBoxController.createFromCart);
 
-// GET /gift-box → User's gift box order history
-router.get("/", getUserGiftBoxes);
+// Get GiftBox by CartGiftBox ID
+router.get("/by-cart/:cartId", giftBoxController.getByCartId);
 
 module.exports = router;

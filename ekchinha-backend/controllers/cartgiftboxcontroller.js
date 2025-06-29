@@ -1,9 +1,15 @@
-const CartGiftBox = require("../models/cartGiftBox");
+const CartGiftBox = require("../models/cartgiftbox");
 
 // 1. Create a Cart Gift Box (Draft)
 const createCartGiftBox = async (req, res) => {
   try {
     const { name, items, card_option, message } = req.body;
+
+    if (!items || items.length < 3 || items.length > 5) {
+      return res.status(400).json({
+        message: "Gift box must contain between 3 and 5 items.",
+      });
+    }
 
     const newCart = await CartGiftBox.create({
       customer_id: req.user.id,
@@ -11,7 +17,8 @@ const createCartGiftBox = async (req, res) => {
       items,
       card_option,
       message,
-      checked_out: false, // default false
+      created_by: "user_created",
+      checked_out: false,
     });
 
     res.status(201).json({ message: "Cart gift box created", cart: newCart });
@@ -27,11 +34,19 @@ const addProductToCart = async (req, res) => {
     const { id } = req.params;
     const { product_id } = req.body;
 
-    const updatedCart = await CartGiftBox.findByIdAndUpdate(
-      id,
-      { $addToSet: { items: product_id } },
-      { new: true }
-    );
+    const updatedCart = await CartGiftBox.findById(id);
+    if (!updatedCart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    if (updatedCart.items.length >= 5) {
+      return res
+        .status(400)
+        .json({ message: "Cannot add more than 5 items to a gift box." });
+    }
+
+    updatedCart.items.addToSet(product_id);
+    await updatedCart.save();
 
     res.status(200).json({ message: "Product added", cart: updatedCart });
   } catch (error) {

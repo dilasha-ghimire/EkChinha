@@ -14,12 +14,6 @@ const GiftBoxSchema = new mongoose.Schema(
     },
     message: { type: String },
     total_price: { type: Number, required: true },
-    created_by: {
-      type: String,
-      enum: ["user_created", "admin_created"],
-      required: true,
-      default: "user_created",
-    },
     cart_source_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "CartGiftBox",

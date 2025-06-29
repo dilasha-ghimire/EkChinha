@@ -6,9 +6,10 @@ const {
   removeProductFromCart,
   getUserCartGiftBoxes,
 } = require("../controllers/cartgiftboxcontroller");
+const { protect } = require("../middleware/auth");
 
 // POST /cart-gift-box → Create a new cart gift box
-router.post("/", createCartGiftBox);
+router.post("/", protect, createCartGiftBox);
 
 // GET /cart-gift-box → Get all cart gift boxes for user
 router.get("/", getUserCartGiftBoxes);

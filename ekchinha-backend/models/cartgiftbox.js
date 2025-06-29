@@ -21,11 +21,18 @@ const CartGiftBoxSchema = new mongoose.Schema(
     card_option: {
       type: String,
       enum: ["Standard", "Premium", "None"],
+      required: true,
       default: "None",
     },
     message: {
       type: String,
       default: "",
+    },
+    created_by: {
+      type: String,
+      enum: ["user_created", "admin_created"],
+      required: true,
+      default: "user_created",
     },
     checked_out: {
       type: Boolean,
