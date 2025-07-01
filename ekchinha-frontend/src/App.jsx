@@ -47,7 +47,7 @@ function App() {
   return (
     <div className="homepage">
       <header className="header">
-        <img src="/logo.png" alt="EkChinha Logo" className="logo" />
+        <img src="/logo.webp" alt="EkChinha Logo" className="logo" />
         <span className="brand-name">EkChinha</span>
         <div className="search-box">
           <input type="text" placeholder="Search" />
@@ -132,20 +132,30 @@ function App() {
         </div>
       </section>
 
-      {/* Why Choose Us Carousel */}
       <WhyChooseUs />
 
       <footer className="footer">
         <div className="footer-content">
-          <img src="/logo.png" alt="Logo" className="footer-logo" />
-          <span className="footer-brand">EkChinha</span>
-          <div className="footer-text">
-            <p>Email: ekchinha2025@gmail.com</p>
-            <p>Address: Gyaneshwor, Kathmandu</p>
-            <p>Phone: +977 01-5360000 | +977 9851000000</p>
+          <div className="footer-header">
+            <img src="/logo.webp" alt="Logo" className="footer-logo" />
+            <span className="footer-brand">EkChinha</span>
+          </div>
+          <div className="footer-info">
+            <div className="footer-info-item">
+              <img src="/unread-message.png" alt="Email" />
+              <span>ekchinha2025@gmail.com</span>
+            </div>
+            <div className="footer-info-item">
+              <img src="/pin.png" alt="Location" />
+              <span>Gyaneshwor, Kathmandu</span>
+            </div>
+            <div className="footer-info-item">
+              <img src="/telephone.png" alt="Phone" />
+              <span>+977 01-5360000 | +977 9851000000</span>
+            </div>
           </div>
         </div>
-        <p className="footer-copy">© 2025, EkChinha</p>
+        <p className="footer-copy">Copyright © 2025, EkChinha</p>
       </footer>
     </div>
   );
