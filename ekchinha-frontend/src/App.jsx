@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import axios from "axios";
+import WhyChooseUs from "./WhyChooseUs";
 
-const BASE_URL = "http://localhost:5000"; // Update for production
+const BASE_URL = "http://localhost:5000";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -25,7 +26,6 @@ function App() {
   const scrollLeft = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
-
     if (el.scrollLeft === 0) {
       el.scrollTo({ left: el.scrollWidth, behavior: "smooth" });
     } else {
@@ -36,7 +36,6 @@ function App() {
   const scrollRight = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
-
     const atEnd = Math.ceil(el.scrollLeft + el.clientWidth) >= el.scrollWidth;
     if (atEnd) {
       el.scrollTo({ left: 0, behavior: "smooth" });
@@ -47,7 +46,6 @@ function App() {
 
   return (
     <div className="homepage">
-      {/* Header */}
       <header className="header">
         <img src="/logo.png" alt="EkChinha Logo" className="logo" />
         <span className="brand-name">EkChinha</span>
@@ -58,12 +56,10 @@ function App() {
         <button className="login-btn">Login</button>
       </header>
 
-      {/* Hero Banner */}
       <section className="hero">
         <img src="/banner.jpg" alt="Hero Banner" />
       </section>
 
-      {/* Best Selling Products */}
       <section className="section">
         <div className="section-content product-section-content">
           <h2>Best Selling Products</h2>
@@ -74,7 +70,6 @@ function App() {
             >
               <img src="/left-arrow.png" alt="Left" />
             </button>
-
             <div className="carousel-container" id="product-carousel">
               {products.map((item) => (
                 <div key={item._id} className="card">
@@ -88,7 +83,6 @@ function App() {
                 </div>
               ))}
             </div>
-
             <button
               className="scroll-btn right"
               onClick={() => scrollRight("product-carousel")}
@@ -99,7 +93,6 @@ function App() {
         </div>
       </section>
 
-      {/* Personalized Gift Boxes */}
       <section className="section">
         <div className="section-content giftbox-section-content">
           <h2>Personalized Gift Boxes</h2>
@@ -110,7 +103,6 @@ function App() {
             >
               <img src="/left-arrow.png" alt="Left" />
             </button>
-
             <div className="carousel-container" id="giftbox-carousel">
               {giftboxes.map((box) => (
                 <div key={box._id} className="giftbox">
@@ -130,7 +122,6 @@ function App() {
                 </div>
               ))}
             </div>
-
             <button
               className="scroll-btn right"
               onClick={() => scrollRight("giftbox-carousel")}
@@ -141,21 +132,9 @@ function App() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="section">
-        <div className="section-content">
-          <h2>Why Choose Us?</h2>
-          <div className="why-box">
-            <h3>GENUINE NEPALI CRAFTSMANSHIP, GUARANTEED</h3>
-            <p>
-              We exclusively offer products that are authentically Nepali —
-              handcrafted, culturally rooted, and ethically sourced.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Why Choose Us Carousel */}
+      <WhyChooseUs />
 
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
           <img src="/logo.png" alt="Logo" className="footer-logo" />
