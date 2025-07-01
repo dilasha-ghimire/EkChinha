@@ -22,7 +22,10 @@ const WhyChooseUs = () => {
     const distance = (index - activeSlide + totalSlides) % totalSlides;
 
     if (index === activeSlide) return "slide center";
-    if (distance === 1 || distance === totalSlides - 1) return "slide side";
+    if (distance === 1) return "slide side-right";
+    if (distance === totalSlides - 1) return "slide side-left";
+    if (distance === 2) return "slide far-right";
+    if (distance === totalSlides - 2) return "slide far-left";
     return "slide hidden";
   };
 
