@@ -135,12 +135,12 @@ function App() {
       <WhyChooseUs />
 
       <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-header">
+        <div className="footer-main">
+          <div className="footer-row1">
             <img src="/logo.webp" alt="Logo" className="footer-logo" />
             <span className="footer-brand">EkChinha</span>
           </div>
-          <div className="footer-info">
+          <div className="footer-row2">
             <div className="footer-info-item">
               <img src="/unread-message.png" alt="Email" />
               <span>ekchinha2025@gmail.com</span>
@@ -155,7 +155,9 @@ function App() {
             </div>
           </div>
         </div>
-        <p className="footer-copy">Copyright © 2025, EkChinha</p>
+        <div className="footer-copy-wrapper">
+          <p className="footer-copy">Copyright © 2025, EkChinha</p>
+        </div>
       </footer>
     </div>
   );
