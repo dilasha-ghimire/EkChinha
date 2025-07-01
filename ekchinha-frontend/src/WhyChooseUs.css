@@ -3,6 +3,7 @@
   width: 100%;
   overflow: hidden;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0 40px;
@@ -64,12 +65,24 @@
   display: none;
 }
 
+/* NEW: Repositioned dots and arrows wrapper */
+.dots-and-arrows {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+  position: relative;
+}
+
+/* Adjusted nav-arrow to be inside flex, no absolute positioning */
 .nav-arrow {
   background: none;
   border: none;
   cursor: pointer;
   z-index: 10;
   padding: 0;
+  position: static;
 }
 
 .nav-arrow img {
@@ -77,20 +90,11 @@
   height: 32px;
 }
 
-.nav-arrow.left {
-  position: absolute;
-  left: 10px;
-}
-
-.nav-arrow.right {
-  position: absolute;
-  right: 10px;
-}
-
+/* Dots remain the same */
 .why-dots {
+  margin-top: 0;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
   gap: 10px;
 }
 

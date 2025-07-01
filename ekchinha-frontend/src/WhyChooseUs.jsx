@@ -34,10 +34,6 @@ const WhyChooseUs = () => {
       <div className="section-content">
         <h2>Why Choose Us?</h2>
         <div className="carousel-container-centered">
-          <button className="nav-arrow left" onClick={prevSlide}>
-            <img src="/left-arrow.png" alt="Left" />
-          </button>
-
           <div className="slides-wrapper">
             {whyImages.map((src, i) => (
               <img
@@ -49,19 +45,25 @@ const WhyChooseUs = () => {
             ))}
           </div>
 
-          <button className="nav-arrow right" onClick={nextSlide}>
-            <img src="/right-arrow.png" alt="Right" />
-          </button>
-        </div>
+          <div className="dots-and-arrows">
+            <button className="nav-arrow left" onClick={prevSlide}>
+              <img src="/left-arrow.png" alt="Left" />
+            </button>
 
-        <div className="why-dots">
-          {whyImages.map((_, i) => (
-            <span
-              key={i}
-              className={`dot ${i === activeSlide ? "active" : ""}`}
-              onClick={() => handleDotClick(i)}
-            ></span>
-          ))}
+            <div className="why-dots">
+              {whyImages.map((_, i) => (
+                <span
+                  key={i}
+                  className={`dot ${i === activeSlide ? "active" : ""}`}
+                  onClick={() => handleDotClick(i)}
+                ></span>
+              ))}
+            </div>
+
+            <button className="nav-arrow right" onClick={nextSlide}>
+              <img src="/right-arrow.png" alt="Right" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
