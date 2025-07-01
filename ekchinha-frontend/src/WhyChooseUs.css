@@ -10,8 +10,8 @@
 
 .slides-wrapper {
   position: relative;
-  width: 85%;
-  height: 370px;
+  width: 75%;
+  height: 450px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,13 +37,13 @@
 }
 
 .slide.side-left {
-  opacity: 0.5;
+  opacity: 0.6;
   transform: scale(0.75) translateX(-60%);
   z-index: 2;
 }
 
 .slide.side-right {
-  opacity: 0.5;
+  opacity: 0.6;
   transform: scale(0.75) translateX(60%);
   z-index: 2;
 }
