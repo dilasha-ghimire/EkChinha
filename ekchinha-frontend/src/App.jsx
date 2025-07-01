@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000"; // Your backend
+const BASE_URL = "http://localhost:5000"; // Update for production
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -11,20 +11,39 @@ function App() {
   useEffect(() => {
     axios
       .get(`${BASE_URL}/api/products`)
-      .then((res) => {
-        console.log("Products fetched:", res.data); // Debug
-        setProducts(res.data);
-      })
+      .then((res) => setProducts(res.data))
       .catch((err) => console.error("Product fetch error:", err));
 
     axios
       .get(`${BASE_URL}/api/cart-gift-box/admin`)
-      .then((res) => {
-        console.log("Giftboxes fetched:", res.data); // Debug
-        setGiftboxes(res.data);
-      })
+      .then((res) => setGiftboxes(res.data))
       .catch((err) => console.error("Giftbox fetch error:", err));
   }, []);
+
+  const scrollAmount = 300;
+
+  const scrollLeft = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    if (el.scrollLeft === 0) {
+      el.scrollTo({ left: el.scrollWidth, behavior: "smooth" });
+    } else {
+      el.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const atEnd = Math.ceil(el.scrollLeft + el.clientWidth) >= el.scrollWidth;
+    if (atEnd) {
+      el.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      el.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="homepage">
@@ -44,62 +63,95 @@ function App() {
         <img src="/banner.jpg" alt="Hero Banner" />
       </section>
 
-      {/* Debug Count */}
-      <section>
-        <h2>DEBUG: Product Count = {products.length}</h2>
-      </section>
-
       {/* Best Selling Products */}
       <section className="section">
-        <h2>Best Selling Products</h2>
-        <div className="product-grid">
-          {products.map((item) => (
-            <div key={item._id} className="card">
-              <img
-                src={`${BASE_URL}/assets/${item.image}`}
-                alt={item.name}
-                className="image-placeholder"
-              />
-              <p>{item.name}</p>
-              <button className="view-btn">View More</button>
+        <div className="section-content product-section-content">
+          <h2>Best Selling Products</h2>
+          <div className="carousel-wrapper">
+            <button
+              className="scroll-btn left"
+              onClick={() => scrollLeft("product-carousel")}
+            >
+              <img src="/left-arrow.png" alt="Left" />
+            </button>
+
+            <div className="carousel-container" id="product-carousel">
+              {products.map((item) => (
+                <div key={item._id} className="card">
+                  <img
+                    src={`${BASE_URL}/assets/${item.image}`}
+                    alt={item.name}
+                    className="image-placeholder"
+                  />
+                  <p>{item.name}</p>
+                  <button className="view-btn">View More</button>
+                </div>
+              ))}
             </div>
-          ))}
+
+            <button
+              className="scroll-btn right"
+              onClick={() => scrollRight("product-carousel")}
+            >
+              <img src="/right-arrow.png" alt="Right" />
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Personalized Gift Boxes */}
       <section className="section">
-        <h2>Personalized Gift Boxes</h2>
-        <div className="giftbox-grid">
-          {giftboxes.map((box) => (
-            <div key={box._id} className="giftbox">
-              <h3>{box.name}</h3>
-              <p>Total Items: {box.items.length}</p>
-              <div className="thumbs">
-                {box.items.slice(0, 4).map((item) => (
-                  <img
-                    key={item._id}
-                    src={`${BASE_URL}/assets/${item.image}`}
-                    alt={item.name}
-                    className="thumb"
-                  />
-                ))}
-              </div>
-              <button className="view-btn">View More</button>
+        <div className="section-content giftbox-section-content">
+          <h2>Personalized Gift Boxes</h2>
+          <div className="carousel-wrapper">
+            <button
+              className="scroll-btn left"
+              onClick={() => scrollLeft("giftbox-carousel")}
+            >
+              <img src="/left-arrow.png" alt="Left" />
+            </button>
+
+            <div className="carousel-container" id="giftbox-carousel">
+              {giftboxes.map((box) => (
+                <div key={box._id} className="giftbox">
+                  <h3>{box.name}</h3>
+                  <p>Total Items: {box.items.length}</p>
+                  <div className="thumbs">
+                    {box.items.map((item) => (
+                      <img
+                        key={item._id}
+                        src={`${BASE_URL}/assets/${item.image}`}
+                        alt={item.name}
+                        className="thumb"
+                      />
+                    ))}
+                  </div>
+                  <button className="view-btn">View More</button>
+                </div>
+              ))}
             </div>
-          ))}
+
+            <button
+              className="scroll-btn right"
+              onClick={() => scrollRight("giftbox-carousel")}
+            >
+              <img src="/right-arrow.png" alt="Right" />
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Why Choose Us */}
       <section className="section">
-        <h2>Why Choose Us?</h2>
-        <div className="why-box">
-          <h3>GENUINE NEPALI CRAFTSMANSHIP, GUARANTEED</h3>
-          <p>
-            We exclusively offer products that are authentically Nepali —
-            handcrafted, culturally rooted, and ethically sourced.
-          </p>
+        <div className="section-content">
+          <h2>Why Choose Us?</h2>
+          <div className="why-box">
+            <h3>GENUINE NEPALI CRAFTSMANSHIP, GUARANTEED</h3>
+            <p>
+              We exclusively offer products that are authentically Nepali —
+              handcrafted, culturally rooted, and ethically sourced.
+            </p>
+          </div>
         </div>
       </section>
 
