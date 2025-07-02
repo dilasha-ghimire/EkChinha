@@ -112,3 +112,74 @@
   width: 12px;
   height: 12px;
 }
+
+/* Responsive adjustments for WhyChooseUs carousel */
+@media (max-width: 1024px) {
+  .slides-wrapper {
+    width: 90%;
+    height: 380px;
+  }
+
+  .slide {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .slides-wrapper {
+    height: 300px;
+  }
+
+  .slide.center {
+    transform: scale(0.9);
+  }
+
+  .slide.side-left,
+  .slide.side-right {
+    transform: scale(0.65) translateX(-50%);
+  }
+
+  .slide.far-left,
+  .slide.far-right {
+    transform: scale(0.5) translateX(-100%);
+  }
+
+  .nav-arrow img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dot.active {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slides-wrapper {
+    height: 240px;
+  }
+
+  .slide {
+    width: 90%;
+  }
+
+  .slide.center {
+    transform: scale(0.8);
+  }
+
+  .slide.side-left,
+  .slide.side-right {
+    transform: scale(0.55) translateX(-40%);
+  }
+
+  .slide.far-left,
+  .slide.far-right {
+    transform: scale(0.4) translateX(-80%);
+  }
+}
