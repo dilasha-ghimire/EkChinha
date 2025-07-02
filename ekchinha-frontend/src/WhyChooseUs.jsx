@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./WhyChooseUs.css";
 
 const WhyChooseUs = () => {
-  const [activeSlide, setActiveSlide] = useState(2); // center index
+  const [activeSlide, setActiveSlide] = useState(0); // center index
   const whyImages = [1, 2, 3, 4, 5].map((i) => `/why-${i}.png`);
   const totalSlides = whyImages.length;
 
@@ -17,6 +17,14 @@ const WhyChooseUs = () => {
   const handleDotClick = (index) => {
     setActiveSlide(index);
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % totalSlides);
+    }, 5000); // 5-second auto-rotation
+
+    return () => clearInterval(interval);
+  }, [totalSlides]);
 
   const getClassName = (index) => {
     const distance = (index - activeSlide + totalSlides) % totalSlides;
