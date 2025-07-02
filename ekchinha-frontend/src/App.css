@@ -60,7 +60,7 @@ body {
   pointer-events: none;
 }
 
-.login-btn {
+.login {
   background-color: rgba(129, 105, 141, 0.5);
   border: none;
   color: white;
@@ -549,7 +549,7 @@ body {
     font-size: 16px;
   }
 
-  .login-btn {
+  .login {
     margin: 10px 0;
     font-size: 18px;
   }
@@ -612,5 +612,14 @@ body {
 
   .footer-brand {
     font-size: 32px;
+  }
+}
+
+@media (min-width: 769px) {
+  .login {
+    font-size: 18px;
+    padding: 5px 12px;
+    max-width: 150px;
+    white-space: nowrap;
   }
 }

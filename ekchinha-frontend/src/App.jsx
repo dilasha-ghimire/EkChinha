@@ -4,6 +4,7 @@ import "./App.css";
 import axios from "axios";
 import WhyChooseUs from "./WhyChooseUs";
 import Login from "./Login";
+import UserRegister from "./UserRegister";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -86,7 +87,7 @@ function App() {
                   className="search-icon"
                 />
               </div>
-              <button className="login-btn" onClick={() => navigate("/login")}>
+              <button className="login" onClick={() => navigate("/login")}>
                 Login
               </button>
             </header>
@@ -214,6 +215,7 @@ function App() {
       />
 
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<UserRegister />} />
     </Routes>
   );
 }

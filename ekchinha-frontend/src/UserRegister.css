@@ -1,0 +1,93 @@
+/* Form and vendor side-by-side */
+.register-flex {
+  margin-left: 430px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 120px;
+}
+
+/* Register form box */
+.register-box {
+  border: 2px solid #81698d;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 700px;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+/* Input group */
+.register-input-group {
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  padding: 4px 8px; /* reduced vertical padding */
+  margin-bottom: 6px; /* reduced gap between fields */
+  background: white;
+}
+
+/* Input fields */
+.register-input-group input {
+  padding: 6px 4px; /* reduce overall input height */
+  font-size: 14px; /* optional: make text slightly smaller */
+  line-height: 1.2;
+}
+
+.input-icon,
+.input-icon-lock {
+  width: 20px;
+  margin-right: 10px;
+}
+
+/* Register button */
+.login-btn {
+  background-color: #81698d;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* Vendor card */
+.vendor-card {
+  border: 1px solid #53748c;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: row; /* Horizontal layout */
+  align-items: center;
+  max-width: 500px;
+  background-color: white;
+  color: #53748c;
+  font-family: "Kreon", sans-serif;
+  font-weight: bold;
+  gap: 16px;
+  text-align: left;
+}
+
+.vendor-icon {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.vendor-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.vendor-text-small {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.vendor-text-bold {
+  font-size: 20px;
+  padding-top: 6px;
+}
