@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: flex-start;
   gap: 120px;
+  flex-wrap: wrap;
 }
 
 /* Register form box */
@@ -22,15 +23,15 @@
   display: flex;
   align-items: center;
   border-radius: 6px;
-  padding: 4px 8px; /* reduced vertical padding */
-  margin-bottom: 6px; /* reduced gap between fields */
+  padding: 4px 8px;
+  margin-bottom: 6px;
   background: white;
 }
 
 /* Input fields */
 .register-input-group input {
-  padding: 6px 4px; /* reduce overall input height */
-  font-size: 14px; /* optional: make text slightly smaller */
+  padding: 6px 4px;
+  font-size: 14px;
   line-height: 1.2;
 }
 
@@ -60,7 +61,7 @@
   border-radius: 8px;
   padding: 20px;
   display: flex;
-  flex-direction: row; /* Horizontal layout */
+  flex-direction: row;
   align-items: center;
   max-width: 500px;
   background-color: white;
@@ -90,4 +91,87 @@
 .vendor-text-bold {
   font-size: 20px;
   padding-top: 6px;
+}
+
+/* Responsive Design */
+
+/* For screens smaller than 1024px */
+@media (max-width: 1600px) {
+  .register-flex {
+    margin-left: 0;
+    gap: 60px;
+    justify-content: center;
+  }
+
+  .register-box,
+  .vendor-card {
+    max-width: 90%;
+  }
+}
+
+/* For tablets and small desktops */
+@media (max-width: 768px) {
+  .register-flex {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .register-box,
+  .vendor-card {
+    width: 100%;
+    max-width: 90%;
+  }
+
+  .vendor-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .vendor-icon {
+    width: 60px;
+  }
+
+  .vendor-text-bold {
+    font-size: 18px;
+  }
+
+  .vendor-text-small {
+    font-size: 14px;
+  }
+}
+
+/* For mobile phones */
+@media (max-width: 480px) {
+  .register-box {
+    padding: 8px;
+  }
+
+  .register-input-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .register-input-group input {
+    width: 100%;
+  }
+
+  .input-icon,
+  .input-icon-lock {
+    margin-right: 0;
+    margin-bottom: 4px;
+  }
+
+  .login-btn {
+    font-size: 16px;
+    padding: 8px;
+  }
+
+  .vendor-text-bold {
+    font-size: 16px;
+  }
+
+  .vendor-text-small {
+    font-size: 13px;
+  }
 }

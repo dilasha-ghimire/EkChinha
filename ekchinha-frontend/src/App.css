@@ -72,7 +72,7 @@ body {
   margin-right: 10px;
 }
 
-.login-btn:hover {
+.login:hover {
   background-color: #634571;
   color: #dfd0e7;
 }
@@ -552,6 +552,7 @@ body {
   .login {
     margin: 10px 0;
     font-size: 18px;
+    width: 300px;
   }
 
   .carousel-wrapper {
