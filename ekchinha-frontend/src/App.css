@@ -40,20 +40,24 @@ body {
 }
 
 .search-box {
+  position: relative;
   display: flex;
   align-items: center;
+  margin-right: 20px;
 }
 
 .search-box input {
   border: 1px solid #81698d;
   border-radius: 5px;
-  padding: 5px 10px;
-  margin-right: 8px;
+  padding: 5px 35px 5px 10px; /* space for icon */
   font-size: 17px;
 }
 
-.search-box img {
+.search-icon {
+  position: absolute;
+  right: 10px;
   width: 20px;
+  pointer-events: none;
 }
 
 .login-btn {
@@ -66,6 +70,11 @@ body {
   font-size: 22px;
   font-family: "Kreon", sans-serif;
   margin-right: 10px;
+}
+
+.login-btn:hover {
+  background-color: #634571;
+  color: #dfd0e7;
 }
 
 /* Hero Section */
@@ -186,6 +195,12 @@ body {
   font-family: "Kreon", sans-serif;
   align-self: flex-end;
   margin-top: auto;
+}
+
+/* Hover styles for View More buttons */
+.view-btn:hover {
+  background-color: #634571;
+  color: #dfd0e7;
 }
 
 /* Carousel Styles */
