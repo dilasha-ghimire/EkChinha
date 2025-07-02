@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import WhyChooseUs from "./WhyChooseUs";
@@ -8,6 +8,7 @@ const BASE_URL = "http://localhost:5000";
 function App() {
   const [products, setProducts] = useState([]);
   const [giftboxes, setGiftboxes] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0); // Slideshow index
 
   useEffect(() => {
     axios
@@ -19,6 +20,14 @@ function App() {
       .get(`${BASE_URL}/api/cart-gift-box/admin`)
       .then((res) => setGiftboxes(res.data))
       .catch((err) => console.error("Giftbox fetch error:", err));
+  }, []);
+
+  // Hero slideshow auto-rotate
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % 4); // 4 slides: index 0 to 3
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   const scrollAmount = 300;
@@ -56,10 +65,21 @@ function App() {
         <button className="login-btn">Login</button>
       </header>
 
-      <section className="hero">
-        <img src="/banner.jpg" alt="Hero Banner" />
+      {/* Hero Slideshow */}
+      <section className="hero-container">
+        <div className="hero-box">
+          {[1, 2, 3, 4].map((num, index) => (
+            <img
+              key={num}
+              src={`/img-${num}.png`}
+              alt={`Slide ${num}`}
+              className={`hero-slide ${index === currentSlide ? "active" : ""}`}
+            />
+          ))}
+        </div>
       </section>
 
+      {/* Product Carousel */}
       <section className="section">
         <div className="section-content product-section-content">
           <h2>Best Selling Products</h2>
@@ -93,6 +113,7 @@ function App() {
         </div>
       </section>
 
+      {/* Giftbox Section */}
       <section className="section">
         <div className="section-content giftbox-section-content">
           <h2>Personalized Gift Boxes</h2>
@@ -134,6 +155,7 @@ function App() {
 
       <WhyChooseUs />
 
+      {/* Footer */}
       <footer className="footer">
         <div className="footer-main">
           <div className="footer-row1">
