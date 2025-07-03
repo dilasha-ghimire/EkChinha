@@ -16,25 +16,34 @@ function ProductModal({ product, onClose }) {
         <button className="close-btn" onClick={onClose}>
           <img src="/purple-close.png" alt="Close" />
         </button>
+
         <div className="modal-content">
-          <img
-            src={`${BASE_URL}/assets/${product.image}`}
-            alt={product.name}
-            className="modal-img"
-          />
+          <div className="left-column">
+            <div className="image-wrapper">
+              <img
+                src={`${BASE_URL}/assets/${product.image}`}
+                alt={product.name}
+                className="modal-img"
+              />
+            </div>
+
+            <div className="product-header-row">
+              <p className="stock">{stockLabel}</p>
+              <img src="/heart.png" alt="Wishlist" className="wishlist-icon" />
+            </div>
+
+            <h2 className="product-title">
+              <span className="product-label">Name of Product:</span>
+              <br />
+              {product.name}
+            </h2>
+          </div>
 
           <div className="modal-info">
             <div className="modal-tabs">
               <span className="tab active">Product Description</span>
               <span className="tab">Artisan Description</span>
             </div>
-
-            <p className="stock">{stockLabel}</p>
-
-            <h2>
-              <span className="product-label">Name of Product:</span> <br />
-              {product.name}
-            </h2>
 
             <div className="details-section">
               <h3>Details</h3>
@@ -51,7 +60,7 @@ function ProductModal({ product, onClose }) {
                 onChange={(e) => setGiftBoxName(e.target.value)}
               />
               <p className="dropdown-placeholder">
-                Choose from existing Gift Boxes ▼
+                Choose from existing Gift Boxes <span className="arrow">▼</span>
               </p>
             </div>
 
