@@ -90,17 +90,20 @@
 
 .product-title {
   color: #81698d;
-  font-size: 22px;
-  margin-top: 0;
-  line-height: 1.4;
+  font-size: 28px;
+  font-weight: 300;
+  margin-top: 10px;
+  margin-bottom: 50px;
+  line-height: 1.2;
 }
 
 .product-label {
-  font-weight: bold;
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 28px;
+  color: #81698d;
 }
 
-/* --- Right Content --- */
+/* --- Right Column --- */
 .modal-info {
   flex: 1;
 }
@@ -112,60 +115,139 @@
 }
 
 .tab {
-  font-size: 20px;
+  font-size: 28px;
   color: #81698d;
   cursor: pointer;
-  text-decoration: underline;
+  margin-top: 10px;
 }
 
 .tab.active {
-  font-weight: bold;
+  text-decoration: underline;
+}
+
+.details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .details-section h3 {
-  font-size: 20px;
-  color: #333;
-  margin-top: 15px;
+  font-size: 26px;
+  color: #1a1a1a;
+  font-weight: 600;
   margin-bottom: 5px;
+  margin-left: 15px;
 }
 
 .details-section p {
-  font-size: 16px;
-  color: #444;
-  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+  line-height: 1.5;
+  margin-left: 30px;
 }
 
 .details-section input {
-  padding: 8px 10px;
+  margin-left: 10px;
+  padding: 6px 10px;
   font-size: 16px;
   border: 1px solid #81698d;
   border-radius: 6px;
-  width: 100%;
-  margin-bottom: 5px;
+  width: 50%;
+  vertical-align: middle;
 }
 
 .dropdown-placeholder {
-  color: #81698d;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.arrow {
-  font-size: 16px;
-  margin-left: 5px;
+  font-size: 15px;
+  color: #666;
+  margin-left: 2px;
+  margin-top: 10px;
 }
 
 .modal-add-btn {
-  margin-top: 20px;
+  font-family: "Kreon", sans-serif;
+  margin-top: 30px;
   background: #6a9366;
   color: white;
-  padding: 10px 25px;
-  font-size: 18px;
+  padding: 5px 15px;
+  font-size: 25px;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  align-self: flex-end;
+  transition: background 0.3s;
 }
 
 .modal-add-btn:hover {
   background: #557b52;
+}
+
+@media (max-width: 930px) {
+  .modal {
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .modal-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .left-column {
+    width: 100%;
+    align-items: center;
+  }
+
+  .product-header-row {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .product-title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .modal-info {
+    width: 100%;
+  }
+
+  .modal-tabs {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    font-size: 22px;
+    margin-top: 5px;
+  }
+
+  .details-section h3 {
+    font-size: 22px;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .details-section p {
+    font-size: 18px;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .details-section input {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .dropdown-placeholder {
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 0;
+  }
+
+  .modal-add-btn {
+    align-self: center;
+    font-size: 22px;
+    padding: 8px 20px;
+  }
 }
