@@ -6,6 +6,7 @@ import WhyChooseUs from "./WhyChooseUs";
 import Login from "./Login";
 import UserRegister from "./UserRegister";
 import VendorRegister from "./VendorRegister";
+import ProductModal from "./ProductModal"; // ✅ Import modal
 
 const BASE_URL = "http://localhost:5000";
 
@@ -14,6 +15,8 @@ function App() {
   const [giftboxes, setGiftboxes] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState(null); // ✅ Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false); // ✅ Modal state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +59,21 @@ function App() {
     } else {
       el.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
+  };
+
+  const handleViewMore = async (id) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/products/${id}`);
+      setSelectedProduct(res.data);
+      setIsModalOpen(true);
+    } catch (err) {
+      console.error("Error fetching product details:", err);
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedProduct(null);
+    setIsModalOpen(false);
   };
 
   const filteredProducts = products.filter((product) =>
@@ -127,7 +145,10 @@ function App() {
                           className="image-placeholder"
                         />
                         <p>{item.name}</p>
-                        <button className="view-btn product-view-btn">
+                        <button
+                          className="view-btn product-view-btn"
+                          onClick={() => handleViewMore(item._id)}
+                        >
                           View More
                         </button>
                       </div>
@@ -211,6 +232,11 @@ function App() {
                 <p className="footer-copy">Copyright © 2025, EkChinha</p>
               </div>
             </footer>
+
+            {/* ✅ Modal */}
+            {isModalOpen && (
+              <ProductModal product={selectedProduct} onClose={closeModal} />
+            )}
           </div>
         }
       />

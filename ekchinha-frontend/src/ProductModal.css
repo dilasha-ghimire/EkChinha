@@ -1,0 +1,135 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fdfdfb;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 1000px;
+  width: 90%;
+  position: relative;
+  border: 2px solid #81698d;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  font-family: "Kreon", sans-serif;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+.modal-content {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.modal-img {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #f3f1ec;
+  align-self: flex-start;
+}
+
+.modal-info {
+  flex: 1;
+}
+
+.modal-tabs {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  font-size: 20px;
+  color: #81698d;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tab.active {
+  font-weight: bold;
+}
+
+.stock {
+  color: #6a9366;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: #81698d;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.product-label {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.details-section h3 {
+  font-size: 20px;
+  color: #333;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.details-section p {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.details-section input {
+  padding: 8px 10px;
+  font-size: 16px;
+  border: 1px solid #81698d;
+  border-radius: 6px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.dropdown-placeholder {
+  color: #81698d;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.modal-add-btn {
+  margin-top: 20px;
+  background: #6a9366;
+  color: white;
+  padding: 10px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-add-btn:hover {
+  background: #557b52;
+}
