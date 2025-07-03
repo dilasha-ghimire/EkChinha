@@ -6,6 +6,18 @@ const Vendor = require("../models/vendor");
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
+// Helper: Validate email format
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// Helper: Validate phone number (10 digits)
+const isValidPhoneNumber = (number) => {
+  const phoneRegex = /^\d{10}$/;
+  return phoneRegex.test(number);
+};
+
 // Helper: Generate JWT Token
 const generateToken = (credential) => {
   return jwt.sign(
@@ -30,20 +42,30 @@ const customerRegister = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Check if email exists in Credential collection
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (!isValidPhoneNumber(phoneNumber)) {
+      return res
+        .status(400)
+        .json({ message: "Phone number must be 10 digits" });
+    }
+
+    // Check if email exists
     const existingCredential = await Credential.findOne({ email });
     if (existingCredential) {
       return res.status(409).json({ message: "Email already registered" });
     }
 
-    // Create Customer document
+    // Create Customer
     const customer = new Customer({ name, phoneNumber, address });
     const savedCustomer = await customer.save();
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create Credential document linking to customer
+    // Create Credential
     const credential = new Credential({
       email,
       password: hashedPassword,
@@ -60,7 +82,7 @@ const customerRegister = async (req, res) => {
     console.error("Customer Registration Error:", error);
     return res
       .status(500)
-      .json({ message: "Server error during registration" });
+      .json({ message: "Server error during customer registration" });
   }
 };
 
@@ -70,7 +92,6 @@ const vendorRegister = async (req, res) => {
     const { email, password, name, phoneNumber, address, companyName } =
       req.body;
 
-    // Validate required fields
     if (
       !email ||
       !password ||
@@ -82,20 +103,26 @@ const vendorRegister = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Check if email exists
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (!isValidPhoneNumber(phoneNumber)) {
+      return res
+        .status(400)
+        .json({ message: "Phone number must be 10 digits" });
+    }
+
     const existingCredential = await Credential.findOne({ email });
     if (existingCredential) {
       return res.status(409).json({ message: "Email already registered" });
     }
 
-    // Create Vendor document
     const vendor = new Vendor({ name, phoneNumber, address, companyName });
     const savedVendor = await vendor.save();
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create Credential document linking to vendor
     const credential = new Credential({
       email,
       password: hashedPassword,
@@ -110,38 +137,41 @@ const vendorRegister = async (req, res) => {
     console.error("Vendor Registration Error:", error);
     return res
       .status(500)
-      .json({ message: "Server error during registration" });
+      .json({ message: "Server error during vendor registration" });
   }
 };
 
-// Login - Generate JWT Token on success
+// Login
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validate inputs
     if (!email || !password) {
       return res
         .status(400)
         .json({ message: "Email and password are required" });
     }
 
-    // Find credential by email
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
     const credential = await Credential.findOne({ email });
     if (!credential) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ message: "Invalid credentials, try again" });
     }
 
-    // Compare password
     const isMatch = await bcrypt.compare(password, credential.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ message: "Invalid credentials, try again" });
     }
 
-    // Generate JWT token
     const token = generateToken(credential);
 
-    // Respond with token and minimal user info
     return res.status(200).json({
       token,
       user: {
