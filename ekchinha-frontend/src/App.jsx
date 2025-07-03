@@ -5,6 +5,7 @@ import axios from "axios";
 import WhyChooseUs from "./WhyChooseUs";
 import Login from "./Login";
 import UserRegister from "./UserRegister";
+import VendorRegister from "./VendorRegister";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -216,6 +217,7 @@ function App() {
 
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<UserRegister />} />
+      <Route path="/vendorregister" element={<VendorRegister />} />
     </Routes>
   );
 }

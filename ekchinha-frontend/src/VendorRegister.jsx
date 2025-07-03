@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./UserRegister.css";
 
-function UserRegister() {
+function VendorRegister() {
   const navigate = useNavigate();
 
   return (
@@ -58,6 +58,14 @@ function UserRegister() {
           </div>
 
           <div className="register-input-group">
+            <img src="/team.png" alt="Company Icon" className="input-icon" />
+            <div className="floating-label-input">
+              <input type="text" id="company" required placeholder=" " />
+              <label htmlFor="company">Company Name</label>
+            </div>
+          </div>
+
+          <div className="register-input-group">
             <img
               src="/lock.png"
               alt="Password Icon"
@@ -89,17 +97,12 @@ function UserRegister() {
           <button className="login-btn">REGISTER</button>
         </div>
 
-        {/* Vendor Card */}
-        <div
-          className="vendor-card"
-          onClick={() => navigate("/vendorregister")}
-        >
-          <img src="/vendor.png" alt="Vendor Icon" className="vendor-icon" />
+        {/* User Card */}
+        <div className="vendor-card" onClick={() => navigate("/register")}>
+          <img src="/person.png" alt="User Icon" className="vendor-icon" />
           <div className="vendor-text-wrapper">
-            <span className="vendor-text-small">
-              Want to sell your product?
-            </span>
-            <span className="vendor-text-bold">REGISTER as Vendor</span>
+            <span className="vendor-text-small">Want to buy from us?</span>
+            <span className="vendor-text-bold">REGISTER as User</span>
           </div>
         </div>
       </div>
@@ -113,4 +116,4 @@ function UserRegister() {
   );
 }
 
-export default UserRegister;
+export default VendorRegister;
