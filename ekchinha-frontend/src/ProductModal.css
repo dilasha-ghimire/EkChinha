@@ -17,9 +17,10 @@
   background: #fdfdfb;
   padding: 30px;
   border-radius: 12px;
-  max-width: 900px;
-  max-height: 90vh;
+  max-width: 1000px;
+  max-height: 70vh;
   width: 100%;
+  height: 90vh;
   position: relative;
   border: 2px solid #81698d;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -116,7 +117,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  max-height: 500px;
+  max-height: 550px;
   overflow: hidden;
 }
 
@@ -225,7 +226,7 @@
 .product-dropdown-container {
   position: relative;
   width: 100%;
-  max-width: 300px;
+  max-width: 450px;
   margin-top: 10px;
   cursor: pointer;
   user-select: none;
@@ -245,18 +246,21 @@
   left: 0;
   z-index: 9999; /* highest layer so it overlaps */
   background: white;
-  border: 1px solid #ccc;
-  width: 100%;
+  border: 1px solid #0b0b0b;
+  width: 50%;
   max-height: 160px;
   overflow-y: auto;
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-left: 85px;
+  margin-top: 10px;
 }
 
 /* Each item in the dropdown list */
 .product-dropdown-item {
-  padding: 10px 14px;
-  border-bottom: 1px solid #eee;
+  padding: 5px;
+  font-size: 15px;
+  border-bottom: 1px solid #0b0b0b;
   transition: background 0.2s;
   cursor: pointer;
 }
@@ -270,6 +274,35 @@
 .product-dropdown-item.selected {
   background-color: #e6f0e6;
   font-weight: bold;
+}
+
+.product-selected-box-label {
+  font-weight: bold;
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.product-cancel-selection {
+  background: none;
+  border: none;
+  color: #444;
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.product-cancel-selection:hover {
+  color: #c00;
+}
+
+.product-arrow-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  vertical-align: middle;
 }
 
 /* --- Responsive Adjustments --- */
@@ -309,7 +342,7 @@
   }
 
   .details-section input {
-    width: 100%;
+    width: 95%;
     box-sizing: border-box;
   }
 

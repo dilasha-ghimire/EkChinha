@@ -12,6 +12,7 @@ function ProductModal({ product, onClose }) {
   const [existingBoxes, setExistingBoxes] = useState([]);
   const [selectedBoxId, setSelectedBoxId] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [popupMessage, setPopupMessage] = useState({ type: "", text: "" });
 
   const navigate = useNavigate();
 
@@ -45,6 +46,18 @@ function ProductModal({ product, onClose }) {
     setShowDropdown(false);
   };
 
+  const showPopup = (type, text) => {
+    setPopupMessage({ type, text });
+
+    setTimeout(() => {
+      setPopupMessage({ type: "", text: "" });
+
+      if (type === "success") {
+        onClose(); // close modal after popup disappears
+      }
+    }, 1500);
+  };
+
   const handleAddToCart = async () => {
     const token = localStorage.getItem("token");
 
@@ -58,7 +71,6 @@ function ProductModal({ product, onClose }) {
 
     try {
       if (selectedBoxId) {
-        // Add to existing box
         await axios.patch(
           `${BASE_URL}/cart-gift-box/${selectedBoxId}/add`,
           { product_id: product._id },
@@ -69,7 +81,6 @@ function ProductModal({ product, onClose }) {
           }
         );
       } else {
-        // Create new box
         await axios.post(
           `${BASE_URL}/cart-gift-box`,
           {
@@ -84,16 +95,30 @@ function ProductModal({ product, onClose }) {
         );
       }
 
+      showPopup("success", "Product added to gift box successfully!");
       setError("");
-      onClose();
     } catch (err) {
-      console.error("Error adding to cart:", err.response?.data || err);
-      setError("Failed to add to cart. Try again.");
+      const backendMessage =
+        err?.response?.data?.message || "Failed to add to gift box. Try again.";
+
+      console.error("Error adding to cart:", backendMessage);
+      showPopup("error", backendMessage);
+      setError(backendMessage);
     }
   };
 
   return (
     <div className="modal-backdrop">
+      {popupMessage.text && (
+        <div
+          className={`popup-message ${
+            popupMessage.type === "success" ? "popup-success" : "popup-error"
+          }`}
+        >
+          {popupMessage.text}
+        </div>
+      )}
+
       <div className="modal">
         <button className="close-btn" onClick={onClose}>
           <img src="/purple-close.png" alt="Close" />
@@ -170,23 +195,51 @@ function ProductModal({ product, onClose }) {
                         className="product-dropdown-label"
                         onClick={toggleDropdown}
                       >
-                        Choose from existing Gift Boxes{" "}
-                        <span className="arrow">▼</span>
+                        Choose from existing Gift Boxes
+                        {selectedBoxId && (
+                          <span className="product-selected-box-label">
+                            (
+                            {existingBoxes.find(
+                              (box) => box._id === selectedBoxId
+                            )?.name || ""}
+                            )
+                            <button
+                              className="product-cancel-selection"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedBoxId("");
+                              }}
+                            >
+                              ×
+                            </button>
+                          </span>
+                        )}
+                        <img
+                          src="/down-arrow.png"
+                          alt="Arrow"
+                          className="product-arrow-icon"
+                        />
                       </p>
 
                       {showDropdown && (
                         <div className="product-dropdown-list">
-                          {existingBoxes.map((box) => (
-                            <div
-                              key={box._id}
-                              className={`product-dropdown-item ${
-                                selectedBoxId === box._id ? "selected" : ""
-                              }`}
-                              onClick={() => handleSelectBox(box._id)}
-                            >
-                              {box.name}
+                          {existingBoxes.length === 0 ? (
+                            <div className="product-dropdown-item no-boxes">
+                              No available gift boxes
                             </div>
-                          ))}
+                          ) : (
+                            existingBoxes.map((box) => (
+                              <div
+                                key={box._id}
+                                className={`product-dropdown-item ${
+                                  selectedBoxId === box._id ? "selected" : ""
+                                }`}
+                                onClick={() => handleSelectBox(box._id)}
+                              >
+                                {box.name}
+                              </div>
+                            ))
+                          )}
                         </div>
                       )}
                     </div>
