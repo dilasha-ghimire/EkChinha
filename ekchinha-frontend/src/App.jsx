@@ -9,6 +9,7 @@ import VendorRegister from "./VendorRegister";
 import ProductModal from "./ProductModal";
 import VendorDashboard from "./VendorDashboard";
 import Navbar from "./Navbar";
+import UserProfile from "./UserProfile";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -92,7 +93,7 @@ function App() {
         path="/"
         element={
           <div className="homepage">
-            <Navbar />
+            <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
             <section className="hero-container">
               <div className="hero-box">
@@ -216,7 +217,6 @@ function App() {
               </div>
             </footer>
 
-            {/* Modal */}
             {isModalOpen && (
               <ProductModal product={selectedProduct} onClose={closeModal} />
             )}
@@ -227,7 +227,8 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<UserRegister />} />
       <Route path="/vendorregister" element={<VendorRegister />} />
-      <Route path="/vendordashboard" element={<VendorDashboard />} />
+      <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+      <Route path="/userprofile" element={<UserProfile />} />
     </Routes>
   );
 }

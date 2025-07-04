@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import "./Navbar.css";
 
-function Navbar() {
+function Navbar({ searchTerm, setSearchTerm }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -38,7 +38,12 @@ function Navbar() {
 
       <div className="middle-group">
         <div className="search-box">
-          <input type="text" placeholder="Search" />
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           <img src="/search.png" alt="Search" className="search-icon" />
         </div>
       </div>
@@ -61,7 +66,7 @@ function Navbar() {
                   <div
                     className="dropdown-item"
                     onClick={() => {
-                      navigate("/profile");
+                      navigate("/userprofile");
                       setDropdownOpen(false);
                     }}
                   >
