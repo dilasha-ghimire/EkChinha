@@ -1,8 +1,14 @@
 import "./GiftBoxPage.css";
 import Navbar from "./Navbar";
+import { useState } from "react";
 
 const GiftBoxPage = ({ giftBox }) => {
   const isAdmin = giftBox.created_by === "admin_created";
+
+  // Editable card option state (initial value from giftBox)
+  const [selectedCardOption, setSelectedCardOption] = useState(
+    giftBox.card_option
+  );
 
   const formatFullDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -33,9 +39,15 @@ const GiftBoxPage = ({ giftBox }) => {
       <Navbar searchTerm={""} setSearchTerm={() => {}} />
 
       <div className="cart-gift-box-container">
-        <button className="back-button" onClick={() => window.history.back()}>
-          ◀ Back
-        </button>
+        <div className="gift-box-cart-container">
+          <button
+            className="gift-box-back-button"
+            onClick={() => window.history.back()}
+          >
+            <span className="gift-box-back-arrow">◄ </span>
+            <span className="gift-box-back-text">Back</span>
+          </button>
+        </div>
 
         <div className="giftbox-content">
           <div className="giftbox-images">
@@ -43,9 +55,9 @@ const GiftBoxPage = ({ giftBox }) => {
               <img
                 key={item._id}
                 src={
-                  item.image.startsWith("http")
+                  item.image_url?.startsWith("http")
                     ? item.image_url
-                    : `http://localhost:5000/assets/${item.image}`
+                    : `http://localhost:5000/assets/${item.image || ""}`
                 }
                 alt={item.name}
                 className="giftbox-item-image"
@@ -77,24 +89,27 @@ const GiftBoxPage = ({ giftBox }) => {
               <label>
                 <input
                   type="radio"
-                  checked={giftBox.card_option === "standard"}
-                  readOnly
+                  value="standard"
+                  checked={selectedCardOption === "standard"}
+                  onChange={() => setSelectedCardOption("standard")}
                 />{" "}
                 Standard
               </label>
               <label>
                 <input
                   type="radio"
-                  checked={giftBox.card_option === "premium"}
-                  readOnly
+                  value="premium"
+                  checked={selectedCardOption === "premium"}
+                  onChange={() => setSelectedCardOption("premium")}
                 />{" "}
                 Premium
               </label>
               <label>
                 <input
                   type="radio"
-                  checked={giftBox.card_option === "no_card"}
-                  readOnly
+                  value="no_card"
+                  checked={selectedCardOption === "no_card"}
+                  onChange={() => setSelectedCardOption("no_card")}
                 />{" "}
                 No Card
               </label>

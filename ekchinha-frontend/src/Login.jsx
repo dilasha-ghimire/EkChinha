@@ -57,7 +57,7 @@ function Login() {
     <div className="login-page">
       <header className="header">
         <div className="logo-title" onClick={() => navigate("/")}>
-          <img src="/logo.webp" alt="Logo" className="logo" />
+          <img src="/logo.webp" alt="Logo" className="header-logo" />
           <span className="brand-name">EkChinha</span>
         </div>
       </header>
