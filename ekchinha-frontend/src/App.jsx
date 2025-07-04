@@ -79,9 +79,11 @@ function App() {
     setIsModalOpen(false);
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products
+    .filter((product) => product.archived !== "true")
+    .filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   const filteredGiftboxes = giftboxes.filter((box) =>
     box.name.toLowerCase().includes(searchTerm.toLowerCase())

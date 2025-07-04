@@ -13,6 +13,7 @@ function ProductModal({ product, onClose }) {
   const [selectedBoxId, setSelectedBoxId] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [popupMessage, setPopupMessage] = useState({ type: "", text: "" });
+  const [isSaved, setIsSaved] = useState(false);
 
   const navigate = useNavigate();
 
@@ -38,6 +39,30 @@ function ProductModal({ product, onClose }) {
     fetchBoxes();
   }, []);
 
+  useEffect(() => {
+    const checkIfSaved = async () => {
+      const token = localStorage.getItem("token");
+      if (!token || !product?._id) return;
+
+      try {
+        const res = await axios.get(`${BASE_URL}/saved-items`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const alreadySaved = res.data.some(
+          (item) =>
+            item.item_type === "product" && item.item_id._id === product._id
+        );
+
+        setIsSaved(alreadySaved);
+      } catch (err) {
+        console.error("Error checking saved items:", err);
+      }
+    };
+
+    checkIfSaved();
+  }, [product]);
+
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   const handleSelectBox = (id) => {
@@ -51,10 +76,6 @@ function ProductModal({ product, onClose }) {
 
     setTimeout(() => {
       setPopupMessage({ type: "", text: "" });
-
-      if (type === "success") {
-        onClose(); // close modal after popup disappears
-      }
     }, 1500);
   };
 
@@ -107,6 +128,34 @@ function ProductModal({ product, onClose }) {
     }
   };
 
+  const handleToggleSave = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return navigate("/login");
+
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/saved-items`,
+        {
+          item_type: "product",
+          item_id: product._id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const isUnsave = res.data.message === "Item unsaved";
+      setIsSaved(!isUnsave);
+      showPopup("success", res.data.message);
+    } catch (error) {
+      const msg = error?.response?.data?.message || "Something went wrong.";
+      showPopup("error", msg);
+      console.error("Toggle save error:", msg);
+    }
+  };
+
   return (
     <div className="modal-backdrop">
       {popupMessage.text && (
@@ -137,7 +186,13 @@ function ProductModal({ product, onClose }) {
 
             <div className="product-header-row">
               <p className="stock">{stockLabel}</p>
-              <img src="/heart.png" alt="Wishlist" className="wishlist-icon" />
+              <img
+                src={isSaved ? "/fill-heart.png" : "/heart.png"}
+                alt="Wishlist"
+                className="wishlist-icon"
+                onClick={handleToggleSave}
+                style={{ cursor: "pointer" }}
+              />
             </div>
 
             <h2 className="product-title">

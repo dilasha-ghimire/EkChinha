@@ -40,7 +40,7 @@ const createProduct = async (req, res) => {
 // 2. View All Products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find({ archived: { $ne: "true" } });
     return res.status(200).json(products);
   } catch (error) {
     console.error("Get All Products Error:", error);
