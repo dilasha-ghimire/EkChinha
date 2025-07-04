@@ -5,7 +5,7 @@ const GiftBoxSchema = new mongoose.Schema(
     name: { type: String, required: true },
     total_items: { type: Number, required: true },
     time_to_assemble: { type: String, required: true },
-    estimated_date_of_delivery: { type: Date, required: true },
+    estimated_date_of_delivery: { type: String, required: true },
     card_option: {
       type: String,
       enum: ["standard", "premium", "no_card"],
@@ -17,7 +17,8 @@ const GiftBoxSchema = new mongoose.Schema(
     cart_source_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "CartGiftBox",
-      default: null,
+      required: true,
+      unique: true,
     },
   },
   { collection: "gift_boxes" }

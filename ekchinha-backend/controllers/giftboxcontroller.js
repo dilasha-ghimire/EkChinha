@@ -7,11 +7,11 @@ const createFromCart = async (req, res) => {
   try {
     const cartId = req.params.cartId;
 
-    // Check if it already exists
-    const existing = await GiftBox.findOne({ cart_source_id: cartId });
-    if (existing) {
+    // Step 1: Check again immediately for existing gift box
+    let giftBox = await GiftBox.findOne({ cart_source_id: cartId });
+    if (giftBox) {
       console.log("Returning existing gift box.");
-      return res.status(200).json(existing);
+      return res.status(200).json(giftBox);
     }
 
     const cart = await CartGiftBox.findById(cartId).populate("items");
@@ -19,30 +19,23 @@ const createFromCart = async (req, res) => {
       return res.status(404).json({ message: "CartGiftBox not found" });
     }
 
-    // Validate item count
+    // Step 2: Validate item count
     if (!cart.items || cart.items.length < 3 || cart.items.length > 5) {
       return res.status(400).json({
         message: "Gift box must contain between 3 and 5 items before checkout.",
       });
     }
 
-    // Compute total price
-    const productPrices = await Product.find(
-      { _id: { $in: cart.items } },
-      "price"
-    );
-    const itemsTotal = productPrices.reduce((sum, p) => sum + p.price, 0);
+    // Step 3: Compute price and dates
+    const itemsTotal = cart.items.reduce((sum, item) => sum + item.price, 0);
     const finalTotalPrice = itemsTotal + 300;
 
-    // Auto-generate dates
     const currentDate = new Date();
     const timeToAssemble = new Date(currentDate);
-    timeToAssemble.setDate(currentDate.getDate() + 2);
-
+    timeToAssemble.setDate(currentDate.getDate() + 4);
     const estimatedDateOfDelivery = new Date(timeToAssemble);
     estimatedDateOfDelivery.setDate(timeToAssemble.getDate() + 2);
 
-    // Normalize card option
     const cardOption = (() => {
       const val = cart.card_option.toLowerCase().trim();
       if (val === "none" || val === "no card") return "no_card";
@@ -50,8 +43,8 @@ const createFromCart = async (req, res) => {
       throw new Error(`Invalid card_option: ${cart.card_option}`);
     })();
 
-    // Create final GiftBox
-    const giftBox = await GiftBox.create({
+    // Step 4: Create the gift box
+    giftBox = await GiftBox.create({
       name: cart.name,
       total_items: cart.items.length,
       time_to_assemble: timeToAssemble,
@@ -62,12 +55,23 @@ const createFromCart = async (req, res) => {
       cart_source_id: cart._id,
     });
 
-    // Mark original cart as checked out
-    cart.checked_out = true;
-    await cart.save();
+    // Step 5: Mark cart as checked out
+    if (cart.created_by === "user_created") {
+      cart.checked_out = true;
+      await cart.save();
+    }
 
     res.status(201).json(giftBox);
   } catch (error) {
+    // Handle duplicate cart_source_id error (race condition safety)
+    if (error.code === 11000 && error.keyPattern?.cart_source_id) {
+      console.warn("Duplicate creation race — fetching existing one.");
+      const existing = await GiftBox.findOne({
+        cart_source_id: req.params.cartId,
+      });
+      return res.status(200).json(existing);
+    }
+
     console.error("Error creating GiftBox from cart:", error);
     res.status(500).json({ message: "Server error" });
   }
@@ -84,6 +88,28 @@ const getByCartId = async (req, res) => {
       return res.status(404).json({ message: "GiftBox not found" });
     }
 
+    // 🔁 Dynamically update dates if they are outdated
+    const now = new Date();
+    const giftBoxDate = new Date(giftBox.time_to_assemble);
+
+    const shouldUpdate =
+      giftBoxDate < now ||
+      !giftBox.time_to_assemble ||
+      !giftBox.estimated_date_of_delivery;
+
+    if (shouldUpdate) {
+      const newAssembleDate = new Date(now);
+      newAssembleDate.setDate(now.getDate() + 4);
+
+      const newDeliveryDate = new Date(newAssembleDate);
+      newDeliveryDate.setDate(newAssembleDate.getDate() + 2);
+
+      giftBox.time_to_assemble = newAssembleDate;
+      giftBox.estimated_date_of_delivery = newDeliveryDate;
+
+      await giftBox.save();
+    }
+
     // Get original cart to access items[]
     const cart = await CartGiftBox.findById(giftBox.cart_source_id).populate(
       "items"
@@ -92,6 +118,22 @@ const getByCartId = async (req, res) => {
     const giftBoxWithItems = {
       ...giftBox.toObject(),
       items: cart?.items || [],
+      formatted_time_to_assemble: formatDate(
+        new Date(giftBox.time_to_assemble)
+      ),
+      formatted_estimated_date_of_delivery: (() => {
+        const startDate = new Date(giftBox.estimated_date_of_delivery);
+        const endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 1);
+
+        const day = String(startDate.getDate()).padStart(2, "0");
+        const month = startDate.toLocaleString("en-GB", { month: "long" });
+        const year = startDate.getFullYear();
+
+        const endDay = String(endDate.getDate()).padStart(2, "0");
+
+        return `${day} - ${endDay} ${month} ${year}`;
+      })(),
     };
 
     res.status(200).json(giftBoxWithItems);
