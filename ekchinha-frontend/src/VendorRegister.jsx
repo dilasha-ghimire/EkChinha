@@ -59,25 +59,25 @@ function VendorRegister() {
       !confirmPassword
     ) {
       setIsError(true);
-      setMessage("All fields are required");
+      setMessage("All fields are required.");
       return;
     }
 
     if (!emailRegex.test(email)) {
       setIsError(true);
-      setMessage("Invalid email format");
+      setMessage("Invalid email format.");
       return;
     }
 
     if (!phoneRegex.test(phoneNumber)) {
       setIsError(true);
-      setMessage("Phone number must be exactly 10 digits");
+      setMessage("Phone number must be exactly 10 digits.");
       return;
     }
 
     if (password !== confirmPassword) {
       setIsError(true);
-      setMessage("Passwords do not match");
+      setMessage("Passwords do not match.");
       return;
     }
 
@@ -97,7 +97,7 @@ function VendorRegister() {
       );
 
       setIsError(false);
-      setMessage("Vendor registered successfully");
+      setMessage("Vendor registered successfully.");
 
       setTimeout(() => navigate("/login"), 1500);
     } catch (error) {

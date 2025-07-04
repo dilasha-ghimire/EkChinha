@@ -33,6 +33,7 @@ body {
 
 .brand-name {
   font-size: 40px;
+  font-family: "Kreon", sans-serif;
   color: #81698d;
   margin-top: 30px;
   flex-grow: 1;
@@ -104,6 +105,7 @@ body {
 
 .section h2 {
   color: #81698d;
+  font-family: "Kreon", sans-serif;
   font-size: 48px;
   margin-bottom: 20px;
   padding-left: 40px;
