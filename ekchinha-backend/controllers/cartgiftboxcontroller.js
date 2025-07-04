@@ -5,12 +5,6 @@ const createCartGiftBox = async (req, res) => {
   try {
     const { name, items, card_option, message } = req.body;
 
-    if (!items || items.length < 3 || items.length > 5) {
-      return res.status(400).json({
-        message: "Gift box must contain between 3 and 5 items.",
-      });
-    }
-
     const newCart = await CartGiftBox.create({
       customer_id: req.user.id,
       name,

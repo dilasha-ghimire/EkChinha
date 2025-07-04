@@ -1,15 +1,96 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ProductModal.css";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "http://localhost:5000/api";
 
 function ProductModal({ product, onClose }) {
   const [giftBoxName, setGiftBoxName] = useState("");
   const [activeTab, setActiveTab] = useState("product");
+  const [error, setError] = useState("");
+  const [existingBoxes, setExistingBoxes] = useState([]);
+  const [selectedBoxId, setSelectedBoxId] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const navigate = useNavigate();
 
   if (!product) return null;
 
   const stockLabel = product.stock <= 10 ? "Limited Stock" : "In Stock";
+
+  useEffect(() => {
+    const fetchBoxes = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const res = await axios.get(`${BASE_URL}/cart-gift-box`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setExistingBoxes(res.data);
+      } catch (err) {
+        console.error("Failed to fetch gift boxes:", err);
+      }
+    };
+
+    fetchBoxes();
+  }, []);
+
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
+
+  const handleSelectBox = (id) => {
+    setSelectedBoxId(id);
+    setGiftBoxName("");
+    setShowDropdown(false);
+  };
+
+  const handleAddToCart = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return navigate("/login");
+    }
+
+    if (!giftBoxName.trim() && !selectedBoxId) {
+      return setError("Enter a name or choose an existing gift box.");
+    }
+
+    try {
+      if (selectedBoxId) {
+        // Add to existing box
+        await axios.patch(
+          `${BASE_URL}/cart-gift-box/${selectedBoxId}/add`,
+          { product_id: product._id },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } else {
+        // Create new box
+        await axios.post(
+          `${BASE_URL}/cart-gift-box`,
+          {
+            name: giftBoxName,
+            items: [product._id],
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      setError("");
+      onClose();
+    } catch (err) {
+      console.error("Error adding to cart:", err.response?.data || err);
+      setError("Failed to add to cart. Try again.");
+    }
+  };
 
   return (
     <div className="modal-backdrop">
@@ -23,7 +104,7 @@ function ProductModal({ product, onClose }) {
           <div className="left-column">
             <div className="image-wrapper">
               <img
-                src={`${BASE_URL}/assets/${product.image}`}
+                src={`http://localhost:5000/assets/${product.image}`}
                 alt={product.name}
                 className="modal-img"
               />
@@ -77,13 +158,40 @@ function ProductModal({ product, onClose }) {
                       <input
                         type="text"
                         value={giftBoxName}
-                        onChange={(e) => setGiftBoxName(e.target.value)}
+                        onChange={(e) => {
+                          setGiftBoxName(e.target.value);
+                          setSelectedBoxId("");
+                        }}
                       />
                     </h3>
-                    <p className="dropdown-placeholder">
-                      Choose from existing Gift Boxes{" "}
-                      <span className="arrow">▼</span>
-                    </p>
+
+                    <div className="product-dropdown-container">
+                      <p
+                        className="product-dropdown-label"
+                        onClick={toggleDropdown}
+                      >
+                        Choose from existing Gift Boxes{" "}
+                        <span className="arrow">▼</span>
+                      </p>
+
+                      {showDropdown && (
+                        <div className="product-dropdown-list">
+                          {existingBoxes.map((box) => (
+                            <div
+                              key={box._id}
+                              className={`product-dropdown-item ${
+                                selectedBoxId === box._id ? "selected" : ""
+                              }`}
+                              onClick={() => handleSelectBox(box._id)}
+                            >
+                              {box.name}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {error && <p className="error-text">{error}</p>}
                   </div>
                 </>
               ) : (
@@ -104,10 +212,11 @@ function ProductModal({ product, onClose }) {
               )}
             </div>
 
-            {/* Bottom Buttons */}
             <div className="modal-footer-btns">
               {activeTab === "product" ? (
-                <button className="modal-add-btn">Add to Cart</button>
+                <button className="modal-add-btn" onClick={handleAddToCart}>
+                  Add to Cart
+                </button>
               ) : (
                 <button
                   className="modal-back-btn"

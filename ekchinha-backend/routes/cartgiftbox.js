@@ -13,7 +13,7 @@ const { protect } = require("../middleware/auth");
 router.post("/", protect, createCartGiftBox);
 
 // GET /cart-gift-box → Get all cart gift boxes for user
-router.get("/", getUserCartGiftBoxes);
+router.get("/", protect, getUserCartGiftBoxes);
 
 // PATCH /cart-gift-box/:id/add → Add product to cart
 router.patch("/:id/add", addProductToCart);
