@@ -6,7 +6,9 @@ import WhyChooseUs from "./WhyChooseUs";
 import Login from "./Login";
 import UserRegister from "./UserRegister";
 import VendorRegister from "./VendorRegister";
-import ProductModal from "./ProductModal"; // ✅ Import modal
+import ProductModal from "./ProductModal";
+import VendorDashboard from "./VendorDashboard";
+import Navbar from "./Navbar";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -15,8 +17,8 @@ function App() {
   const [giftboxes, setGiftboxes] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState(null); // ✅ Modal state
-  const [isModalOpen, setIsModalOpen] = useState(false); // ✅ Modal state
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -90,26 +92,7 @@ function App() {
         path="/"
         element={
           <div className="homepage">
-            <header className="header">
-              <img src="/logo.webp" alt="EkChinha Logo" className="logo" />
-              <span className="brand-name">EkChinha</span>
-              <div className="search-box">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <img
-                  src="/search.png"
-                  alt="Search Icon"
-                  className="search-icon"
-                />
-              </div>
-              <button className="login" onClick={() => navigate("/login")}>
-                Login
-              </button>
-            </header>
+            <Navbar />
 
             <section className="hero-container">
               <div className="hero-box">
@@ -233,7 +216,7 @@ function App() {
               </div>
             </footer>
 
-            {/* ✅ Modal */}
+            {/* Modal */}
             {isModalOpen && (
               <ProductModal product={selectedProduct} onClose={closeModal} />
             )}
@@ -244,6 +227,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<UserRegister />} />
       <Route path="/vendorregister" element={<VendorRegister />} />
+      <Route path="/vendordashboard" element={<VendorDashboard />} />
     </Routes>
   );
 }

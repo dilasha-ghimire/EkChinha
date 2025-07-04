@@ -17,67 +17,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Header */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-}
-
-.logo {
-  width: 68px;
-  height: 80px;
-  margin-left: 10px;
-}
-
-.brand-name {
-  font-size: 40px;
-  font-family: "Kreon", sans-serif;
-  color: #81698d;
-  margin-top: 30px;
-  flex-grow: 1;
-  font-weight: 600;
-}
-
-.search-box {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
-}
-
-.search-box input {
-  border: 1px solid #81698d;
-  border-radius: 5px;
-  padding: 5px 35px 5px 10px; /* space for icon */
-  font-size: 17px;
-}
-
-.search-icon {
-  position: absolute;
-  right: 10px;
-  width: 20px;
-  pointer-events: none;
-}
-
-.login {
-  background-color: rgba(129, 105, 141, 0.5);
-  border: none;
-  color: white;
-  padding: 5px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 22px;
-  font-family: "Kreon", sans-serif;
-  margin-right: 10px;
-}
-
-.login:hover {
-  background-color: #634571;
-  color: #dfd0e7;
-}
-
 /* Hero Section */
 .hero img {
   width: 100%;
