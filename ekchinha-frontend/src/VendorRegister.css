@@ -5,16 +5,18 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
-  min-width: 800px;
+  width: 90%;
   max-width: 1000px;
   padding: 10px 20px;
   border-radius: 8px;
-  font-size: 26px;
+  font-size: 1.5rem;
   text-align: start;
   animation: fadeSlideDown 0.4s ease-out;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
+/* Colors remain unchanged */
 .popup-success {
   background-color: #90b794;
   color: white;
@@ -33,5 +35,20 @@
   to {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+}
+
+/* Responsive typography and spacing */
+@media (max-width: 768px) {
+  .popup-message {
+    font-size: 1.3rem;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-message {
+    font-size: 0.9rem;
+    padding: 6px 12px;
   }
 }

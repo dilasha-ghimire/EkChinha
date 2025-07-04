@@ -4,14 +4,36 @@ import GiftBoxPage from "./GiftBoxPage";
 import axios from "axios";
 
 const GiftBoxPageWrapper = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // CartGiftBox ID
   const [giftBox, setGiftBox] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/cart-gift-box/${id}`)
-      .then((res) => setGiftBox(res.data))
-      .catch((err) => console.error("Fetch error", err));
+    const fetchGiftBox = async () => {
+      try {
+        // Try getting the finalized gift box first
+        const res = await axios.get(
+          `http://localhost:5000/api/gift-box/by-cart/${id}`
+        );
+        setGiftBox(res.data);
+      } catch (error) {
+        // If not found, create it first
+        try {
+          await axios.post(
+            `http://localhost:5000/api/gift-box/from-cart/${id}`
+          );
+
+          // Immediately fetch it again
+          const retry = await axios.get(
+            `http://localhost:5000/api/gift-box/by-cart/${id}`
+          );
+          setGiftBox(retry.data);
+        } catch (err) {
+          console.error("❌ GiftBox creation or retry failed:", err);
+        }
+      }
+    };
+
+    fetchGiftBox();
   }, [id]);
 
   if (!giftBox) return <div>Loading...</div>;

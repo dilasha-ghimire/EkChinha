@@ -12,9 +12,10 @@ const GiftBoxPage = ({ giftBox }) => {
         <button className="back-button" onClick={() => window.history.back()}>
           ◀ Back
         </button>
+
         <div className="giftbox-content">
           <div className="giftbox-images">
-            {giftBox.items.map((item) => (
+            {giftBox.items?.map((item) => (
               <img
                 key={item._id}
                 src={item.image_url}
@@ -27,10 +28,9 @@ const GiftBoxPage = ({ giftBox }) => {
           <div className="giftbox-info">
             <h3>Items</h3>
             <ul>
-              {giftBox.items.map((item, i) => (
+              {giftBox.items?.map((item, i) => (
                 <li key={item._id}>
                   {i + 1}. {item.name}
-                  {!isAdmin && <button className="delete-btn">Delete</button>}
                 </li>
               ))}
             </ul>
@@ -48,7 +48,7 @@ const GiftBoxPage = ({ giftBox }) => {
               <label>
                 <input
                   type="radio"
-                  checked={giftBox.card_option === "Standard"}
+                  checked={giftBox.card_option === "standard"}
                   readOnly
                 />{" "}
                 Standard
@@ -56,7 +56,7 @@ const GiftBoxPage = ({ giftBox }) => {
               <label>
                 <input
                   type="radio"
-                  checked={giftBox.card_option === "Premium"}
+                  checked={giftBox.card_option === "premium"}
                   readOnly
                 />{" "}
                 Premium
@@ -64,7 +64,7 @@ const GiftBoxPage = ({ giftBox }) => {
               <label>
                 <input
                   type="radio"
-                  checked={giftBox.card_option === "None"}
+                  checked={giftBox.card_option === "no_card"}
                   readOnly
                 />{" "}
                 No Card
