@@ -10,6 +10,7 @@ import ProductModal from "./ProductModal";
 import VendorDashboard from "./VendorDashboard";
 import Navbar from "./Navbar";
 import UserProfile from "./UserProfile";
+import GiftBoxPageWrapper from "./GiftBoxPageWrapper";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -175,7 +176,10 @@ function App() {
                             />
                           ))}
                         </div>
-                        <button className="view-btn giftbox-view-btn">
+                        <button
+                          className="view-btn giftbox-view-btn"
+                          onClick={() => navigate(`/giftbox/${box._id}`)}
+                        >
                           View More
                         </button>
                       </div>
@@ -231,6 +235,7 @@ function App() {
       <Route path="/vendorregister" element={<VendorRegister />} />
       <Route path="/vendor-dashboard" element={<VendorDashboard />} />
       <Route path="/userprofile" element={<UserProfile />} />
+      <Route path="/giftbox/:id" element={<GiftBoxPageWrapper />} />
     </Routes>
   );
 }

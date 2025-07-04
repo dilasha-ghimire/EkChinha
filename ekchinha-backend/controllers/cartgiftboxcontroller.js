@@ -55,13 +55,21 @@ const removeProductFromCart = async (req, res) => {
     const { id } = req.params;
     const { product_id } = req.body;
 
-    const updatedCart = await CartGiftBox.findByIdAndUpdate(
-      id,
-      { $pull: { items: product_id } },
-      { new: true }
-    );
+    const cart = await CartGiftBox.findById(id);
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
 
-    res.status(200).json({ message: "Product removed", cart: updatedCart });
+    if (cart.created_by === "admin_created") {
+      return res
+        .status(403)
+        .json({ message: "Cannot remove items from admin-created gift box." });
+    }
+
+    cart.items.pull(product_id);
+    await cart.save();
+
+    res.status(200).json({ message: "Product removed", cart });
   } catch (error) {
     console.error("Remove Product Error:", error);
     res.status(500).json({ message: "Server error" });
@@ -97,10 +105,25 @@ const getAdminCreatedCartGiftBoxes = async (req, res) => {
   }
 };
 
+// 6. Get Cart Gift Box by ID
+const getCartGiftBoxById = async (req, res) => {
+  try {
+    const cart = await CartGiftBox.findById(req.params.id).populate("items");
+    if (!cart) {
+      return res.status(404).json({ message: "Gift box not found" });
+    }
+    res.status(200).json(cart);
+  } catch (error) {
+    console.error("Get Cart Gift Box by ID Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   createCartGiftBox,
   addProductToCart,
   removeProductFromCart,
   getUserCartGiftBoxes,
   getAdminCreatedCartGiftBoxes,
+  getCartGiftBoxById,
 };

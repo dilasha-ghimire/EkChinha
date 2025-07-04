@@ -6,6 +6,7 @@ const {
   removeProductFromCart,
   getUserCartGiftBoxes,
   getAdminCreatedCartGiftBoxes,
+  getCartGiftBoxById,
 } = require("../controllers/cartgiftboxcontroller");
 const { protect } = require("../middleware/auth");
 
@@ -16,12 +17,15 @@ router.post("/", protect, createCartGiftBox);
 router.get("/", protect, getUserCartGiftBoxes);
 
 // PATCH /cart-gift-box/:id/add → Add product to cart
-router.patch("/:id/add", addProductToCart);
+router.patch("/:id/add", protect, addProductToCart);
 
 // PATCH /cart-gift-box/:id/remove → Remove product from cart
-router.patch("/:id/remove", removeProductFromCart);
+router.patch("/:id/remove", protect, removeProductFromCart);
 
 // GET /cart-gift-box/admin → Get all admin-created cart gift boxes
 router.get("/admin", getAdminCreatedCartGiftBoxes);
+
+// GET /cart-gift-box/:id → Get one cart gift box by ID
+router.get("/:id", getCartGiftBoxById);
 
 module.exports = router;
