@@ -14,6 +14,9 @@ const GiftBoxPage = ({ giftBox }) => {
   const [isSaved, setIsSaved] = useState(false);
   const [popupMessage, setPopupMessage] = useState({ type: "", text: "" });
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteProductId, setDeleteProductId] = useState(null);
+
   const navigate = useNavigate();
   const isAdmin = giftBox.created_by === "admin_created";
 
@@ -92,12 +95,8 @@ const GiftBoxPage = ({ giftBox }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Re-fetch updated gift box
-      const res = await axios.get(
-        `${BASE_URL}/gift-box/by-cart/${giftBox.cart_source_id}`
-      );
-      window.location.reload(); // or use state update to improve UX
-
+      // Reload page or update state
+      window.location.reload();
       showPopup("success", "Item removed from gift box");
     } catch (err) {
       const msg =
@@ -140,6 +139,40 @@ const GiftBoxPage = ({ giftBox }) => {
           }`}
         >
           {popupMessage.text}
+        </div>
+      )}
+
+      {/* DELETE CONFIRMATION MODAL */}
+      {showDeleteConfirm && (
+        <div className="logout-confirm-overlay">
+          <div className="logout-confirm-box">
+            <button
+              className="close-btn"
+              onClick={() => setShowDeleteConfirm(false)}
+            >
+              <img src="/close.png" alt="Close" className="close-icon" />
+            </button>
+            <img src="/alert.png" alt="Warning" className="logout-icon" />
+            <h2>Are you sure?</h2>
+            <p>Do you want to delete this item?</p>
+            <div className="logout-buttons">
+              <button
+                className="no-btn"
+                onClick={() => setShowDeleteConfirm(false)}
+              >
+                NO
+              </button>
+              <button
+                className="yes-btn"
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  handleDeleteItem(deleteProductId);
+                }}
+              >
+                YES
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -239,7 +272,10 @@ const GiftBoxPage = ({ giftBox }) => {
                     <img
                       src="/bin.png"
                       alt="Delete"
-                      onClick={() => handleDeleteItem(item._id)}
+                      onClick={() => {
+                        setDeleteProductId(item._id);
+                        setShowDeleteConfirm(true);
+                      }}
                       style={{
                         height: "1em",
                         verticalAlign: "middle",
