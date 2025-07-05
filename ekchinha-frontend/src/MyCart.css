@@ -1,66 +1,92 @@
-.mycart-container {
-  padding: 40px;
-  text-align: center;
-}
-
 .mycart-title {
-  font-size: 2.5rem;
-  color: #5d4b7a;
-  margin-bottom: 30px;
+  font-family: "Kreon", sans-serif;
+  font-size: 2.4rem;
+  color: #81698d;
+  font-weight: 500;
+  padding: 1.5rem;
+  margin-left: 2rem;
 }
 
+/* Layout for gift box cards */
 .cart-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 30px;
-  justify-items: center;
+  /* justify-content: center; */
+  padding: 1.5rem 60px;
 }
 
+/* Individual card styling */
 .cart-card {
-  border: 2px solid #b9a3ce;
-  padding: 20px;
-  border-radius: 10px;
-  width: 100%;
-  max-width: 300px;
-  background-color: #faf8fc;
-  color: #5d4b7a;
-  text-align: left;
-  transition: transform 0.2s;
+  width: 30rem;
+  border: 3px solid #81698d;
+  border-radius: 16px;
+  padding: 15px 15px 20px;
+  background: #fff;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: "Kreon", sans-serif;
 }
 
-.cart-card:hover {
-  transform: scale(1.02);
-}
-
+/* Gift box title */
 .cart-card h2 {
-  font-size: 1.3rem;
+  font-size: 2rem;
   margin-bottom: 5px;
-  color: #5d4b7a;
+  color: #81698d;
+  font-weight: 400;
 }
 
+/* Total item count */
 .cart-card p {
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-  color: #5d4b7a;
-}
-
-.cart-card ol {
-  padding-left: 20px;
   font-size: 1rem;
-  color: #91816b;
+  margin-bottom: 10px;
+  color: #8990ad;
 }
 
-.view-more-btn {
-  margin-top: 10px;
-  padding: 6px 12px;
-  background-color: #e6e1f1;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  color: #5d4b7a;
+/* List of items */
+.cart-card ol {
+  padding-left: 60px;
+  font-size: 2rem;
+  color: #a5957a;
+  font-weight: 400;
 }
 
-.view-more-btn:hover {
-  background-color: #d0c3ea;
+/* Responsive adjustments */
+@media (max-width: 622px) {
+  .cart-card {
+    width: 90%;
+    padding: 12px;
+  }
+
+  .cart-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .cart-card p {
+    font-size: 0.85rem;
+  }
+
+  .cart-card ol {
+    font-size: 1.2rem;
+    padding-left: 30px;
+  }
+
+  .view-more-btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+
+  .mycart-title {
+    font-size: 2rem;
+    padding: 1rem;
+    margin-left: 1rem;
+  }
+
+  .cart-grid {
+    padding: 1rem 20px;
+    gap: 20px;
+  }
 }

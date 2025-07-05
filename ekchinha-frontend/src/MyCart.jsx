@@ -44,6 +44,11 @@ function MyCart() {
     fetchCartGiftBoxes();
   }, [navigate]);
 
+  // 🔍 Filter boxes by search term
+  const filteredCartGiftBoxes = cartGiftBoxes.filter((box) =>
+    box.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
       <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -51,8 +56,8 @@ function MyCart() {
       <div className="mycart-container">
         <h1 className="mycart-title">My Cart</h1>
         <div className="cart-grid">
-          {Array.isArray(cartGiftBoxes) &&
-            cartGiftBoxes.map((box) => (
+          {filteredCartGiftBoxes.length > 0 ? (
+            filteredCartGiftBoxes.map((box) => (
               <div className="cart-card" key={box._id}>
                 <h2>{box.name}</h2>
                 <p>Total Items: {box.items?.length || 0}</p>
@@ -61,9 +66,12 @@ function MyCart() {
                     <li key={item._id}>{item.name}</li>
                   ))}
                 </ol>
-                <button className="view-more-btn">View More</button>
+                <button className="view-btn">View More</button>
               </div>
-            ))}
+            ))
+          ) : (
+            <p className="no-results">No gift boxes match your search.</p>
+          )}
         </div>
       </div>
     </>
