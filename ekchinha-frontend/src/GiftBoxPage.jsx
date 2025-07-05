@@ -5,19 +5,16 @@ import { useState } from "react";
 const GiftBoxPage = ({ giftBox }) => {
   const isAdmin = giftBox.created_by === "admin_created";
 
-  // Editable card option state (initial value from giftBox)
   const [selectedCardOption, setSelectedCardOption] = useState(
     giftBox.card_option
   );
 
   const formatFullDate = (dateStr) => {
     const date = new Date(dateStr);
-
     const day = String(date.getDate()).padStart(2, "0");
     const month = date.toLocaleString("en-GB", { month: "long" });
     const year = date.getFullYear();
     const weekday = date.toLocaleString("en-GB", { weekday: "long" });
-
     return `${day} ${month} ${year}, ${weekday}`;
   };
 
@@ -92,7 +89,7 @@ const GiftBoxPage = ({ giftBox }) => {
                   value="standard"
                   checked={selectedCardOption === "standard"}
                   onChange={() => setSelectedCardOption("standard")}
-                />{" "}
+                />
                 Standard
               </label>
               <label>
@@ -101,7 +98,7 @@ const GiftBoxPage = ({ giftBox }) => {
                   value="premium"
                   checked={selectedCardOption === "premium"}
                   onChange={() => setSelectedCardOption("premium")}
-                />{" "}
+                />
                 Premium
               </label>
               <label>
@@ -110,7 +107,7 @@ const GiftBoxPage = ({ giftBox }) => {
                   value="no_card"
                   checked={selectedCardOption === "no_card"}
                   onChange={() => setSelectedCardOption("no_card")}
-                />{" "}
+                />
                 No Card
               </label>
             </div>

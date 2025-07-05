@@ -20,6 +20,10 @@ const GiftBoxSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    checked_out: {
+      type: Boolean,
+      default: false,
+    },
   },
   { collection: "gift_boxes" }
 );

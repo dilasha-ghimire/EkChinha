@@ -2,6 +2,15 @@ const GiftBox = require("../models/giftbox");
 const CartGiftBox = require("../models/cartgiftbox");
 const Product = require("../models/product");
 
+// ✅ Format full date string
+function formatDate(date) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = date.toLocaleString("en-GB", { month: "long" });
+  const year = date.getFullYear();
+  const weekday = date.toLocaleString("en-GB", { weekday: "long" });
+  return `${day} ${month} ${year}, ${weekday}`;
+}
+
 // 1. Create GiftBox from CartGiftBox
 const createFromCart = async (req, res) => {
   try {
@@ -47,8 +56,8 @@ const createFromCart = async (req, res) => {
     giftBox = await GiftBox.create({
       name: cart.name,
       total_items: cart.items.length,
-      time_to_assemble: timeToAssemble,
-      estimated_date_of_delivery: estimatedDateOfDelivery,
+      time_to_assemble: timeToAssemble.toString(),
+      estimated_date_of_delivery: estimatedDateOfDelivery.toString(),
       card_option: cardOption,
       message: cart.message,
       total_price: finalTotalPrice,
@@ -88,29 +97,38 @@ const getByCartId = async (req, res) => {
       return res.status(404).json({ message: "GiftBox not found" });
     }
 
-    // 🔁 Dynamically update dates if they are outdated
-    const now = new Date();
-    const giftBoxDate = new Date(giftBox.time_to_assemble);
-
-    const shouldUpdate =
-      giftBoxDate < now ||
-      !giftBox.time_to_assemble ||
-      !giftBox.estimated_date_of_delivery;
-
-    if (shouldUpdate) {
+    // 🛠 Only update if NOT checked out
+    if (!giftBox.checked_out) {
+      const now = new Date();
       const newAssembleDate = new Date(now);
       newAssembleDate.setDate(now.getDate() + 4);
 
       const newDeliveryDate = new Date(newAssembleDate);
       newDeliveryDate.setDate(newAssembleDate.getDate() + 2);
 
-      giftBox.time_to_assemble = newAssembleDate;
-      giftBox.estimated_date_of_delivery = newDeliveryDate;
+      const newAssembleStr = newAssembleDate.toString();
+      const newDeliveryStr = newDeliveryDate.toString();
 
-      await giftBox.save();
+      const isDifferent =
+        giftBox.time_to_assemble !== newAssembleStr ||
+        giftBox.estimated_date_of_delivery !== newDeliveryStr;
+
+      if (isDifferent) {
+        giftBox.time_to_assemble = newAssembleStr;
+        giftBox.estimated_date_of_delivery = newDeliveryStr;
+
+        // Force update in Mongoose
+        giftBox.markModified("time_to_assemble");
+        giftBox.markModified("estimated_date_of_delivery");
+
+        await giftBox.save();
+        console.log("✅ Dates updated in gift box.");
+      } else {
+        console.log("ℹ️ Dates already up-to-date.");
+      }
     }
 
-    // Get original cart to access items[]
+    // 🎁 Get cart items to return with gift box
     const cart = await CartGiftBox.findById(giftBox.cart_source_id).populate(
       "items"
     );
@@ -129,7 +147,6 @@ const getByCartId = async (req, res) => {
         const day = String(startDate.getDate()).padStart(2, "0");
         const month = startDate.toLocaleString("en-GB", { month: "long" });
         const year = startDate.getFullYear();
-
         const endDay = String(endDate.getDate()).padStart(2, "0");
 
         return `${day} - ${endDay} ${month} ${year}`;
@@ -138,7 +155,7 @@ const getByCartId = async (req, res) => {
 
     res.status(200).json(giftBoxWithItems);
   } catch (error) {
-    console.error("Error fetching GiftBox:", error);
+    console.error("❌ Error fetching GiftBox:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
