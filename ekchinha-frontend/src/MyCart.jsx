@@ -66,7 +66,12 @@ function MyCart() {
                     <li key={item._id}>{item.name}</li>
                   ))}
                 </ol>
-                <button className="view-btn">View More</button>
+                <button
+                  className="view-btn"
+                  onClick={() => navigate(`/giftbox/${box._id}`)}
+                >
+                  View More
+                </button>
               </div>
             ))
           ) : (

@@ -64,12 +64,6 @@ const createFromCart = async (req, res) => {
       cart_source_id: cart._id,
     });
 
-    // Step 5: Mark cart as checked out
-    if (cart.created_by === "user_created") {
-      cart.checked_out = true;
-      await cart.save();
-    }
-
     res.status(201).json(giftBox);
   } catch (error) {
     // Handle duplicate cart_source_id error (race condition safety)

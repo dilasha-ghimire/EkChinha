@@ -47,8 +47,7 @@ const GiftBoxPage = ({ giftBox }) => {
   }, [giftBox._id, giftBox.cart_source_id, isAdmin]);
 
   const handleHeartClick = async () => {
-    if (giftBox.created_by !== "admin_created" || !giftBox.cart_source_id)
-      return;
+    if (!isAdmin || !giftBox.cart_source_id) return;
 
     const token = localStorage.getItem("token");
     if (!token) return navigate("/login");
@@ -78,6 +77,33 @@ const GiftBoxPage = ({ giftBox }) => {
   const handleProceed = () => {
     if (!isLoggedIn) return navigate("/login");
     navigate("/payment");
+  };
+
+  const handleDeleteItem = async (productId) => {
+    if (giftBox.created_by === "admin_created") return;
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return navigate("/login");
+
+      await axios.patch(
+        `${BASE_URL}/cart-gift-box/${giftBox.cart_source_id}/remove`,
+        { product_id: productId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Re-fetch updated gift box
+      const res = await axios.get(
+        `${BASE_URL}/gift-box/by-cart/${giftBox.cart_source_id}`
+      );
+      window.location.reload(); // or use state update to improve UX
+
+      showPopup("success", "Item removed from gift box");
+    } catch (err) {
+      const msg =
+        err.response?.data?.message || "Failed to remove item from gift box";
+      showPopup("error", msg);
+    }
   };
 
   const formatFullDate = (dateStr) => {
@@ -209,6 +235,19 @@ const GiftBoxPage = ({ giftBox }) => {
               {giftBox.items?.map((item, i) => (
                 <li key={item._id}>
                   {i + 1}. {item.name}
+                  {!isAdmin && (
+                    <img
+                      src="/bin.png"
+                      alt="Delete"
+                      onClick={() => handleDeleteItem(item._id)}
+                      style={{
+                        height: "1em",
+                        verticalAlign: "middle",
+                        marginLeft: "3rem",
+                        cursor: "pointer",
+                      }}
+                    />
+                  )}
                 </li>
               ))}
             </ul>
