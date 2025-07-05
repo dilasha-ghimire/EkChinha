@@ -7,6 +7,22 @@
   padding: 20px;
 }
 
+.giftbox-row {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.giftbox-row.center {
+  justify-content: center;
+}
+
+.single-item-row {
+  justify-content: center;
+  display: flex;
+}
+
 .gift-box-back-button {
   background: none;
   border: none;
@@ -36,12 +52,8 @@
 }
 
 .giftbox-images {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
-  max-width: 600px;
-  margin: 0 auto 2rem;
+  max-width: 800px;
+  margin: 2.2rem 3rem;
 }
 
 .giftbox-item-image {
@@ -54,30 +66,32 @@
 
 .giftbox-info {
   flex: 2;
-  font-size: 1.05rem;
+  font-size: 1.5rem;
   color: #5e4b56;
+  margin-top: 2rem;
 }
 
 .giftbox-info h3 {
   color: #7b5e8b;
-  font-size: 1.4rem;
+  font-size: 2rem;
+  padding-bottom: 0.5rem;
 }
 
 .giftbox-info ul {
   list-style: none;
-  padding-left: 0;
+  padding-left: 2.5rem;
   margin-bottom: 1rem;
 }
 
 .giftbox-info li {
   margin-bottom: 0.4rem;
-  color: #9b8a6d;
+  color: #ada389;
   font-weight: 500;
 }
 
 .giftbox-info p {
   margin: 0.4rem 0;
-  color: #9b8a6d;
+  color: #ada389;
 }
 
 .giftbox-info strong {

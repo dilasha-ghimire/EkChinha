@@ -48,18 +48,105 @@ const GiftBoxPage = ({ giftBox }) => {
 
         <div className="giftbox-content">
           <div className="giftbox-images">
-            {giftBox.items?.map((item) => (
-              <img
-                key={item._id}
-                src={
-                  item.image_url?.startsWith("http")
-                    ? item.image_url
-                    : `http://localhost:5000/assets/${item.image || ""}`
-                }
-                alt={item.name}
-                className="giftbox-item-image"
-              />
-            ))}
+            {(() => {
+              const items = giftBox.items || [];
+              const count = items.length;
+
+              if (count === 1) {
+                return (
+                  <div className="giftbox-row center">
+                    <img
+                      src={
+                        items[0].image_url?.startsWith("http")
+                          ? items[0].image_url
+                          : `http://localhost:5000/assets/${
+                              items[0].image || ""
+                            }`
+                      }
+                      alt={items[0].name}
+                      className="giftbox-item-image"
+                    />
+                  </div>
+                );
+              }
+
+              if (count === 2) {
+                return (
+                  <div className="giftbox-row center">
+                    {items.map((item) => (
+                      <img
+                        key={item._id}
+                        src={
+                          item.image_url?.startsWith("http")
+                            ? item.image_url
+                            : `http://localhost:5000/assets/${item.image || ""}`
+                        }
+                        alt={item.name}
+                        className="giftbox-item-image"
+                      />
+                    ))}
+                  </div>
+                );
+              }
+
+              if (count === 3) {
+                return (
+                  <>
+                    <div className="giftbox-row center">
+                      {items.slice(0, 2).map((item) => (
+                        <img
+                          key={item._id}
+                          src={
+                            item.image_url?.startsWith("http")
+                              ? item.image_url
+                              : `http://localhost:5000/assets/${
+                                  item.image || ""
+                                }`
+                          }
+                          alt={item.name}
+                          className="giftbox-item-image"
+                        />
+                      ))}
+                    </div>
+                    <div className="giftbox-row center single-item-row">
+                      <img
+                        src={
+                          items[2].image_url?.startsWith("http")
+                            ? items[2].image_url
+                            : `http://localhost:5000/assets/${
+                                items[2].image || ""
+                              }`
+                        }
+                        alt={items[2].name}
+                        className="giftbox-item-image"
+                      />
+                    </div>
+                  </>
+                );
+              }
+
+              const rows =
+                count === 4
+                  ? [items.slice(0, 2), items.slice(2)]
+                  : [items.slice(0, 3), items.slice(3)];
+
+              return rows.map((rowItems, i) => (
+                <div key={i} className="giftbox-row center">
+                  {rowItems.map((item) => (
+                    <img
+                      key={item._id}
+                      src={
+                        item.image_url?.startsWith("http")
+                          ? item.image_url
+                          : `http://localhost:5000/assets/${item.image || ""}`
+                      }
+                      alt={item.name}
+                      className="giftbox-item-image"
+                    />
+                  ))}
+                </div>
+              ));
+            })()}
           </div>
 
           <div className="giftbox-info">
