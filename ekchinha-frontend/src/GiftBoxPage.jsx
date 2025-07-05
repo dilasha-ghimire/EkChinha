@@ -127,33 +127,35 @@ const GiftBoxPage = ({ giftBox }) => {
 
             <div className="card-options">
               <strong>Card Option:</strong>
-              <label>
-                <input
-                  type="radio"
-                  value="standard"
-                  checked={selectedCardOption === "standard"}
-                  onChange={() => setSelectedCardOption("standard")}
-                />
-                Standard
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="premium"
-                  checked={selectedCardOption === "premium"}
-                  onChange={() => setSelectedCardOption("premium")}
-                />
-                Premium
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="no_card"
-                  checked={selectedCardOption === "no_card"}
-                  onChange={() => setSelectedCardOption("no_card")}
-                />
-                No Card
-              </label>
+              <div className="card-options-group">
+                <label>
+                  <input
+                    type="radio"
+                    value="standard"
+                    checked={selectedCardOption === "standard"}
+                    onChange={() => setSelectedCardOption("standard")}
+                  />
+                  Standard
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="premium"
+                    checked={selectedCardOption === "premium"}
+                    onChange={() => setSelectedCardOption("premium")}
+                  />
+                  Premium
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="no_card"
+                    checked={selectedCardOption === "no_card"}
+                    onChange={() => setSelectedCardOption("no_card")}
+                  />
+                  No Card
+                </label>
+              </div>
             </div>
 
             <div className="message">

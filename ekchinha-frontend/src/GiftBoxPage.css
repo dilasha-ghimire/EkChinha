@@ -7,12 +7,31 @@
   padding: 20px;
 }
 
+.gift-box-back-button {
+  background: none;
+  border: none;
+  color: #7b5e8b;
+  font-family: "Kreon", serif;
+  font-size: 2.5rem;
+  cursor: pointer;
+  font-weight: 300;
+}
+
+.gift-box-back-text {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.gift-box-back-arrow {
+  font-size: 1.6rem;
+}
+
 .giftbox-main-box {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
   padding: 2rem 1rem 0;
-  margin-bottom: 2rem;
 }
 
 .giftbox-left-column {
@@ -29,6 +48,34 @@
   flex-direction: column;
   gap: 1rem;
   min-width: 300px;
+  font-size: 1.6rem;
+  color: #5e4b56;
+}
+
+.giftbox-right-column h3 {
+  color: #81698d;
+  font-size: 2rem;
+}
+
+.giftbox-right-column ul {
+  color: #ada389;
+  list-style: none;
+  padding-left: 2.5rem;
+}
+
+.giftbox-right-column li {
+  padding-bottom: 5px;
+}
+
+.giftbox-right-column p {
+  font-size: 2rem;
+  color: #ada389;
+  font-weight: 400;
+}
+
+.giftbox-right-column p strong {
+  color: #81698d;
+  font-weight: 400;
 }
 
 .giftbox-row {
@@ -40,39 +87,6 @@
 
 .giftbox-row.center {
   justify-content: center;
-}
-
-.single-item-row {
-  justify-content: center;
-  display: flex;
-}
-
-.gift-box-back-button {
-  background: none;
-  border: none;
-  color: #7b5e8b;
-  font-family: "Kreon", serif;
-  font-size: 2.5rem;
-  cursor: pointer;
-  margin-bottom: 1rem;
-  font-weight: 300;
-}
-
-.gift-box-back-text {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-}
-
-.gift-box-back-arrow {
-  font-size: 1.6rem;
-}
-
-.giftbox-content {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
 }
 
 .giftbox-images {
@@ -87,127 +101,183 @@
   border: 1px solid #ddd;
 }
 
-.giftbox-info {
-  flex: 2;
-  font-size: 1.5rem;
-  color: #5e4b56;
-  margin-top: 2rem;
+.giftbox-title {
+  padding-top: 1rem;
+  margin-left: 2rem;
+  text-align: left;
 }
 
-.giftbox-info h3 {
-  color: #7b5e8b;
-  font-size: 2rem;
-  padding-bottom: 0.5rem;
-}
-
-.giftbox-info ul {
-  list-style: none;
-  padding-left: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.giftbox-info li {
-  margin-bottom: 0.4rem;
-  color: #ada389;
+.giftbox-title h2 {
+  font-size: 2.2rem;
   font-weight: 500;
+  color: #81698d;
+  margin-bottom: 0.5rem;
 }
 
-.giftbox-info p {
-  margin: 0.4rem 0;
+.giftbox-title p {
+  font-size: 2rem;
   color: #ada389;
 }
 
-.giftbox-info strong {
-  color: #7b5e8b;
-  font-size: 1.1rem;
+.card-options-group {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .card-options {
-  margin: 1rem 0;
   font-size: 1.1rem;
   color: #7b5e8b;
 }
 
+.card-options strong {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
 .card-options label {
+  font-size: 2rem;
   margin-right: 1.5rem;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-weight: 500;
+  font-weight: 400;
+  color: #ada389;
 }
 
 .card-options input[type="radio"] {
   accent-color: #7b5e8b;
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
+  border: 4px solid #7b5e8b;
+  border-radius: 50%;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  margin-right: 8px;
 }
 
-.message {
-  margin-top: 1rem;
+.card-options input[type="radio"]:checked::before {
+  content: "";
+  position: absolute;
+  top: 1.7px;
+  left: 1.8px;
+  width: 13px;
+  height: 14px;
+  background-color: #7b5e8b;
+  border-radius: 50%;
+}
+
+.message strong {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #7b5e8b;
 }
 
 .message input {
   display: block;
-  width: 100%;
-  padding: 0.75rem;
+  width: 85%;
+  padding: 0.5rem;
   margin-top: 0.5rem;
   border: 2px solid #7b5e8b;
   border-radius: 8px;
   font-size: 1rem;
 }
 
-.giftbox-title {
-  text-align: left;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.giftbox-title h2 {
-  font-size: 1.8rem;
-  color: #7b5e8b;
-  margin-bottom: 0.25rem;
-}
-
-.giftbox-title p {
-  font-size: 1.2rem;
-  color: #9b8a6d;
-}
-
 .payment-btn {
   background-color: #558b57;
+  font-family: "Kreon", serif;
   color: white;
-  padding: 0.75rem 1.75rem;
-  font-size: 1.1rem;
-  font-weight: bold;
+  padding: 0.45rem;
+  margin-top: 1.75rem;
+  font-size: 1.5rem;
+  width: 40%;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  align-self: end;
 }
 
 .payment-btn:hover {
   background-color: #446b46;
 }
 
-/* Responsive tweaks */
-@media (max-width: 768px) {
-  .giftbox-content {
-    flex-direction: column;
+@media (max-width: 1449px) {
+  .giftbox-left-column,
+  .giftbox-right-column {
+    width: 90%;
+    min-width: unset;
   }
 
-  .giftbox-images,
-  .giftbox-info {
-    width: 100%;
+  .giftbox-item-image {
+    width: 9rem;
+    height: 9rem;
+  }
+
+  .giftbox-title h2 {
+    font-size: 1.8rem;
+  }
+
+  .giftbox-title p,
+  .giftbox-right-column p,
+  .card-options label,
+  .message input {
+    font-size: 1.5rem;
+  }
+
+  .giftbox-right-column h3 {
+    font-size: 1.8rem;
+  }
+
+  .card-options strong,
+  .message strong {
+    font-size: 1.7rem;
+  }
+
+  .card-options input[type="radio"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  .card-options input[type="radio"]:checked::before {
+    width: 10px;
+    height: 10px;
+    left: 1px;
+    top: 1px;
+  }
+
+  .payment-btn {
+    font-size: 1.3rem;
+    width: 60%;
   }
 }
 
 @media (max-width: 768px) {
   .giftbox-main-box {
     flex-direction: column;
+    align-items: center;
   }
 
-  .giftbox-left-column,
-  .giftbox-right-column {
-    width: 100%;
+  .giftbox-item-image {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .giftbox-title h2 {
+    font-size: 1.9rem;
+  }
+
+  .giftbox-title p,
+  .giftbox-right-column p,
+  .card-options label {
+    font-size: 1.2rem;
+  }
+
+  .payment-btn {
+    font-size: 1.1rem;
+    width: 80%;
   }
 }
