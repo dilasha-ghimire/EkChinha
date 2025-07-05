@@ -8,12 +8,19 @@ import { useNavigate } from "react-router-dom";
 const BASE_URL = "http://localhost:5000";
 
 function Saved() {
-  const [searchTerm, setSearchTerm] = useState(""); // Local search state
+  const [searchTerm, setSearchTerm] = useState("");
   const [savedProducts, setSavedProducts] = useState([]);
   const [savedGiftBoxes, setSavedGiftBoxes] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
