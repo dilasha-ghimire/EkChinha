@@ -9,14 +9,14 @@ const SavedItemSchema = new mongoose.Schema(
     },
     item_type: {
       type: String,
-      enum: ["product", "gift_box"],
+      enum: ["product", "cart_gift_box"],
       required: true,
     },
     item_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       refPath: "item_type",
-      // dynamic ref to either 'Product' or 'GiftBox'
+      // dynamic ref to either 'Product' or 'CartGiftBox'
     },
   },
   { collection: "saved_items" }

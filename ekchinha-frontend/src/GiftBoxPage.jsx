@@ -7,7 +7,6 @@ import axios from "axios";
 const BASE_URL = "http://localhost:5000/api";
 
 const GiftBoxPage = ({ giftBox }) => {
-  const isAdmin = giftBox.created_by === "admin_created";
   const [selectedCardOption, setSelectedCardOption] = useState(
     giftBox.card_option
   );
@@ -15,11 +14,13 @@ const GiftBoxPage = ({ giftBox }) => {
   const [isSaved, setIsSaved] = useState(false);
   const navigate = useNavigate();
 
+  const isAdmin = giftBox.created_by === "admin_created";
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
 
-    if (token && isAdmin) {
+    if (token && isAdmin && giftBox.cart_source_id) {
       axios
         .get(`${BASE_URL}/saved-items`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -27,15 +28,20 @@ const GiftBoxPage = ({ giftBox }) => {
         .then((res) => {
           const saved = res.data.some(
             (item) =>
-              item.item_type === "gift_box" && item.item_id._id === giftBox._id
+              item.item_type === "cart_gift_box" &&
+              item.item_id?._id?.toString() ===
+                giftBox.cart_source_id?.toString()
           );
           setIsSaved(saved);
         })
         .catch((err) => console.error("Error checking saved status:", err));
     }
-  }, [giftBox._id, isAdmin]);
+  }, [giftBox._id, giftBox.cart_source_id, isAdmin]);
 
   const handleHeartClick = async () => {
+    if (giftBox.created_by !== "admin_created" || !giftBox.cart_source_id)
+      return;
+
     const token = localStorage.getItem("token");
     if (!token) return navigate("/login");
 
@@ -43,8 +49,8 @@ const GiftBoxPage = ({ giftBox }) => {
       const res = await axios.post(
         `${BASE_URL}/saved-items`,
         {
-          item_type: "gift_box",
-          item_id: giftBox._id,
+          item_type: "cart_gift_box",
+          item_id: giftBox.cart_source_id,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -54,7 +60,10 @@ const GiftBoxPage = ({ giftBox }) => {
       const wasUnsave = res.data.message === "Item unsaved";
       setIsSaved(!wasUnsave);
     } catch (err) {
-      console.error("Save/unsave error:", err);
+      console.error(
+        "Save/unsave error:",
+        err.response?.data?.message || err.message
+      );
     }
   };
 
@@ -154,7 +163,7 @@ const GiftBoxPage = ({ giftBox }) => {
             </div>
 
             <div className="giftbox-title">
-              <h2>Name of Gift Box </h2>
+              <h2>Name of Gift Box</h2>
               <p>
                 {giftBox.name}
                 {isAdmin && (

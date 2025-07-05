@@ -1,4 +1,4 @@
-const GiftBox = require("../models/giftbox");
+const GiftBox = require("../models/giftBox");
 const CartGiftBox = require("../models/cartgiftbox");
 const Product = require("../models/product");
 
