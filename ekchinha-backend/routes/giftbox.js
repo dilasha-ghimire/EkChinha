@@ -1,11 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const giftBoxController = require("../controllers/giftboxcontroller");
+const {
+  createFromCart,
+  getByCartId,
+  updateCardOption,
+  updateGiftBoxDetails,
+} = require("../controllers/giftboxcontroller");
+const { protect } = require("../middleware/auth");
 
 // Create GiftBox from CartGiftBox
-router.post("/from-cart/:cartId", giftBoxController.createFromCart);
+router.post("/from-cart/:cartId", createFromCart);
 
 // Get finalized GiftBox by CartGiftBox ID (with items[])
-router.get("/by-cart/:cartId", giftBoxController.getByCartId);
+router.get("/by-cart/:cartId", getByCartId);
+
+router.patch("/:id/card-option", protect, updateCardOption);
+
+router.patch("/:id/update-details", protect, updateGiftBoxDetails);
 
 module.exports = router;

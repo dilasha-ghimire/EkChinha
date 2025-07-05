@@ -29,28 +29,34 @@ const createFromCart = async (req, res) => {
     }
 
     // Step 2: Validate item count
-    if (!cart.items || cart.items.length < 3 || cart.items.length > 5) {
+    if (!cart.items || cart.items.length <= 3 || cart.items.length >= 5) {
       return res.status(400).json({
         message: "Gift box must contain between 3 and 5 items before checkout.",
       });
     }
 
     // Step 3: Compute price and dates
-    const itemsTotal = cart.items.reduce((sum, item) => sum + item.price, 0);
-    const finalTotalPrice = itemsTotal + 300;
-
     const currentDate = new Date();
     const timeToAssemble = new Date(currentDate);
     timeToAssemble.setDate(currentDate.getDate() + 4);
     const estimatedDateOfDelivery = new Date(timeToAssemble);
     estimatedDateOfDelivery.setDate(timeToAssemble.getDate() + 2);
 
+    const itemsTotal = cart.items.reduce((sum, item) => sum + item.price, 0);
+
+    // Normalize and calculate card cost
     const cardOption = (() => {
       const val = cart.card_option.toLowerCase().trim();
       if (val === "none" || val === "no card") return "no_card";
       if (["standard", "premium", "no_card"].includes(val)) return val;
       throw new Error(`Invalid card_option: ${cart.card_option}`);
     })();
+
+    let cardCost = 0;
+    if (cardOption === "standard") cardCost = 250;
+    else if (cardOption === "premium") cardCost = 500;
+
+    const finalTotalPrice = itemsTotal + 300 + cardCost;
 
     // Step 4: Create the gift box
     giftBox = await GiftBox.create({
@@ -155,7 +161,60 @@ const getByCartId = async (req, res) => {
   }
 };
 
+// PATCH /api/gift-box/:id/card-option
+const updateCardOption = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { card_option } = req.body;
+
+    const validOptions = ["no_card", "standard", "premium"];
+    if (!validOptions.includes(card_option)) {
+      return res.status(400).json({ message: "Invalid card option" });
+    }
+
+    const giftBox = await GiftBox.findById(id);
+    if (!giftBox)
+      return res.status(404).json({ message: "Gift box not found" });
+
+    giftBox.card_option = card_option;
+    await giftBox.save();
+
+    res.status(200).json({ message: "Card option updated", giftBox });
+  } catch (error) {
+    console.error("Card option update error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// PATCH /api/gift-box/:id/update-details
+const updateGiftBoxDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { card_option, message } = req.body;
+
+    const validOptions = ["standard", "premium", "no_card"];
+    if (!validOptions.includes(card_option)) {
+      return res.status(400).json({ message: "Invalid card option" });
+    }
+
+    const giftBox = await GiftBox.findById(id);
+    if (!giftBox)
+      return res.status(404).json({ message: "Gift box not found" });
+
+    giftBox.card_option = card_option;
+    giftBox.message = card_option === "no_card" ? "" : message || "";
+    await giftBox.save();
+
+    res.status(200).json({ message: "Gift box updated", giftBox });
+  } catch (error) {
+    console.error("Update gift box details error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   createFromCart,
   getByCartId,
+  updateCardOption,
+  updateGiftBoxDetails,
 };

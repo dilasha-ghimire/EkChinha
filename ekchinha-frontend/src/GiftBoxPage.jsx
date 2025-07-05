@@ -13,7 +13,7 @@ const GiftBoxPage = ({ giftBox }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [popupMessage, setPopupMessage] = useState({ type: "", text: "" });
-
+  const [message, setMessage] = useState(giftBox.message || "");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteProductId, setDeleteProductId] = useState(null);
 
@@ -49,6 +49,27 @@ const GiftBoxPage = ({ giftBox }) => {
     }
   }, [giftBox._id, giftBox.cart_source_id, isAdmin]);
 
+  // 🔁 Sync card option to backend when it changes
+  useEffect(() => {
+    if (!giftBox?._id || !selectedCardOption) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    axios
+      .patch(
+        `${BASE_URL}/gift-box/${giftBox._id}/card-option`,
+        { card_option: selectedCardOption },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then((res) => {
+        console.log("✅ Card option updated:", res.data.giftBox.card_option);
+      })
+      .catch((err) => {
+        console.error("❌ Failed to update card option:", err);
+      });
+  }, [selectedCardOption, giftBox._id]);
+
   const handleHeartClick = async () => {
     if (!isAdmin || !giftBox.cart_source_id) return;
 
@@ -77,9 +98,35 @@ const GiftBoxPage = ({ giftBox }) => {
     }
   };
 
-  const handleProceed = () => {
+  const handleProceed = async () => {
     if (!isLoggedIn) return navigate("/login");
-    navigate("/payment");
+
+    const itemCount = giftBox.items?.length || 0;
+    if (itemCount < 3 || itemCount > 5) {
+      showPopup("error", "Gift box must have 3 to 5 items to proceed.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return navigate("/login");
+
+      await axios.patch(
+        `${BASE_URL}/gift-box/${giftBox._id}/update-details`,
+        {
+          card_option: selectedCardOption,
+          message,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      navigate("/payment");
+    } catch (err) {
+      console.error("Failed to update gift box before payment:", err);
+      showPopup("error", "Could not save changes before payment.");
+    }
   };
 
   const handleDeleteItem = async (productId) => {
@@ -95,7 +142,6 @@ const GiftBoxPage = ({ giftBox }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Reload page or update state
       window.location.reload();
       showPopup("success", "Item removed from gift box");
     } catch (err) {
@@ -332,7 +378,23 @@ const GiftBoxPage = ({ giftBox }) => {
 
             <div className="message">
               <strong>Message:</strong>
-              <input type="text" value={giftBox.message || ""} readOnly />
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                readOnly={selectedCardOption === "no_card"}
+                placeholder={
+                  selectedCardOption === "no_card"
+                    ? "No message allowed without a card"
+                    : "Enter your message here"
+                }
+                style={{
+                  backgroundColor:
+                    selectedCardOption === "no_card" ? "#f0f0f0" : "white",
+                  cursor:
+                    selectedCardOption === "no_card" ? "not-allowed" : "text",
+                }}
+              />
             </div>
 
             <button className="payment-btn" onClick={handleProceed}>
