@@ -46,34 +46,17 @@ const GiftBoxPage = ({ giftBox }) => {
           </button>
         </div>
 
-        <div className="giftbox-content">
-          <div className="giftbox-images">
-            {(() => {
-              const items = giftBox.items || [];
-              const count = items.length;
+        <div className="giftbox-main-box">
+          {/* Left column */}
+          <div className="giftbox-left-column">
+            <div className="giftbox-images">
+              {(() => {
+                const items = giftBox.items || [];
+                const count = items.length;
 
-              if (count === 1) {
-                return (
+                const renderRow = (rowItems) => (
                   <div className="giftbox-row center">
-                    <img
-                      src={
-                        items[0].image_url?.startsWith("http")
-                          ? items[0].image_url
-                          : `http://localhost:5000/assets/${
-                              items[0].image || ""
-                            }`
-                      }
-                      alt={items[0].name}
-                      className="giftbox-item-image"
-                    />
-                  </div>
-                );
-              }
-
-              if (count === 2) {
-                return (
-                  <div className="giftbox-row center">
-                    {items.map((item) => (
+                    {rowItems.map((item) => (
                       <img
                         key={item._id}
                         src={
@@ -87,69 +70,43 @@ const GiftBoxPage = ({ giftBox }) => {
                     ))}
                   </div>
                 );
-              }
 
-              if (count === 3) {
-                return (
-                  <>
-                    <div className="giftbox-row center">
-                      {items.slice(0, 2).map((item) => (
-                        <img
-                          key={item._id}
-                          src={
-                            item.image_url?.startsWith("http")
-                              ? item.image_url
-                              : `http://localhost:5000/assets/${
-                                  item.image || ""
-                                }`
-                          }
-                          alt={item.name}
-                          className="giftbox-item-image"
-                        />
-                      ))}
-                    </div>
-                    <div className="giftbox-row center single-item-row">
-                      <img
-                        src={
-                          items[2].image_url?.startsWith("http")
-                            ? items[2].image_url
-                            : `http://localhost:5000/assets/${
-                                items[2].image || ""
-                              }`
-                        }
-                        alt={items[2].name}
-                        className="giftbox-item-image"
-                      />
-                    </div>
-                  </>
-                );
-              }
+                if (count === 1) return renderRow([items[0]]);
+                if (count === 2) return renderRow(items);
+                if (count === 3)
+                  return (
+                    <>
+                      {renderRow(items.slice(0, 2))}
+                      {renderRow([items[2]])}
+                    </>
+                  );
+                if (count === 4)
+                  return (
+                    <>
+                      {renderRow(items.slice(0, 2))}
+                      {renderRow(items.slice(2))}
+                    </>
+                  );
+                if (count === 5)
+                  return (
+                    <>
+                      {renderRow(items.slice(0, 3))}
+                      {renderRow(items.slice(3))}
+                    </>
+                  );
 
-              const rows =
-                count === 4
-                  ? [items.slice(0, 2), items.slice(2)]
-                  : [items.slice(0, 3), items.slice(3)];
+                return null;
+              })()}
+            </div>
 
-              return rows.map((rowItems, i) => (
-                <div key={i} className="giftbox-row center">
-                  {rowItems.map((item) => (
-                    <img
-                      key={item._id}
-                      src={
-                        item.image_url?.startsWith("http")
-                          ? item.image_url
-                          : `http://localhost:5000/assets/${item.image || ""}`
-                      }
-                      alt={item.name}
-                      className="giftbox-item-image"
-                    />
-                  ))}
-                </div>
-              ));
-            })()}
+            <div className="giftbox-title">
+              <h2>Name of Gift Box </h2>
+              <p>{giftBox.name}</p>
+            </div>
           </div>
 
-          <div className="giftbox-info">
+          {/* Right column */}
+          <div className="giftbox-right-column">
             <h3>Items</h3>
             <ul>
               {giftBox.items?.map((item, i) => (
@@ -203,18 +160,10 @@ const GiftBoxPage = ({ giftBox }) => {
               <strong>Message:</strong>
               <input type="text" value={giftBox.message || ""} readOnly />
             </div>
+
+            <button className="payment-btn">Proceed to Payment</button>
           </div>
         </div>
-
-        <div className="giftbox-title">
-          <h2>
-            Name of Gift Box{" "}
-            {isAdmin && <span style={{ color: "red" }}>❤️</span>}
-          </h2>
-          <p>{giftBox.name}</p>
-        </div>
-
-        <button className="payment-btn">Proceed to Payment</button>
       </div>
     </div>
   );

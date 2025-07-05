@@ -7,6 +7,30 @@
   padding: 20px;
 }
 
+.giftbox-main-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem 1rem 0;
+  margin-bottom: 2rem;
+}
+
+.giftbox-left-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 300px;
+}
+
+.giftbox-right-column {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 300px;
+}
+
 .giftbox-row {
   display: flex;
   justify-content: center;
@@ -53,12 +77,11 @@
 
 .giftbox-images {
   max-width: 800px;
-  margin: 2.2rem 3rem;
 }
 
 .giftbox-item-image {
-  width: 160px;
-  height: 160px;
+  width: 12rem;
+  height: 12rem;
   object-fit: cover;
   border-radius: 12px;
   border: 1px solid #ddd;
@@ -174,6 +197,17 @@
 
   .giftbox-images,
   .giftbox-info {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .giftbox-main-box {
+    flex-direction: column;
+  }
+
+  .giftbox-left-column,
+  .giftbox-right-column {
     width: 100%;
   }
 }
