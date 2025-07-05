@@ -1,12 +1,15 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import "./Navbar.css";
 
 function Navbar({ searchTerm, setSearchTerm }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const heartFilled = location.pathname === "/saved";
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -51,8 +54,19 @@ function Navbar({ searchTerm, setSearchTerm }) {
       <div className="icon-group">
         {user ? (
           <>
-            <img src="/heart.png" alt="Wishlist" className="nav-icon" />
-            <img src="/shopping-cart.png" alt="Cart" className="nav-icon" />
+            <img
+              src={heartFilled ? "/fill-heart.png" : "/heart.png"}
+              alt="Wishlist"
+              className="nav-icon"
+              onClick={() => navigate("/saved")}
+            />
+
+            <img
+              src="/shopping-cart.png"
+              alt="Cart"
+              className="nav-icon"
+              onClick={() => navigate("/cart")}
+            />
 
             <div className="profile-container" ref={dropdownRef}>
               <img

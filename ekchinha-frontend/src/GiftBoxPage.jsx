@@ -12,9 +12,15 @@ const GiftBoxPage = ({ giftBox }) => {
   );
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const navigate = useNavigate();
+  const [popupMessage, setPopupMessage] = useState({ type: "", text: "" });
 
+  const navigate = useNavigate();
   const isAdmin = giftBox.created_by === "admin_created";
+
+  const showPopup = (type, text) => {
+    setPopupMessage({ type, text });
+    setTimeout(() => setPopupMessage({ type: "", text: "" }), 1500);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -34,7 +40,9 @@ const GiftBoxPage = ({ giftBox }) => {
           );
           setIsSaved(saved);
         })
-        .catch((err) => console.error("Error checking saved status:", err));
+        .catch((err) => {
+          console.error("Error checking saved status:", err);
+        });
     }
   }, [giftBox._id, giftBox.cart_source_id, isAdmin]);
 
@@ -59,11 +67,11 @@ const GiftBoxPage = ({ giftBox }) => {
 
       const wasUnsave = res.data.message === "Item unsaved";
       setIsSaved(!wasUnsave);
+      showPopup("success", res.data.message);
     } catch (err) {
-      console.error(
-        "Save/unsave error:",
-        err.response?.data?.message || err.message
-      );
+      const message = err.response?.data?.message || "Error saving gift box.";
+      showPopup("error", message);
+      console.error("Save/unsave error:", message);
     }
   };
 
@@ -97,6 +105,17 @@ const GiftBoxPage = ({ giftBox }) => {
   return (
     <div className="giftbox-container">
       <Navbar searchTerm={""} setSearchTerm={() => {}} />
+
+      {/* POPUP MESSAGE */}
+      {popupMessage.text && (
+        <div
+          className={`popup-message ${
+            popupMessage.type === "success" ? "popup-success" : "popup-error"
+          }`}
+        >
+          {popupMessage.text}
+        </div>
+      )}
 
       <div className="cart-gift-box-container">
         <div className="gift-box-cart-container">

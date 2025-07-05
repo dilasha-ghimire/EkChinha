@@ -11,6 +11,7 @@ import VendorDashboard from "./VendorDashboard";
 import Navbar from "./Navbar";
 import UserProfile from "./UserProfile";
 import GiftBoxPageWrapper from "./GiftBoxPageWrapper";
+import Saved from "./Saved";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -236,6 +237,7 @@ function App() {
       <Route path="/vendor-dashboard" element={<VendorDashboard />} />
       <Route path="/userprofile" element={<UserProfile />} />
       <Route path="/giftbox/:id" element={<GiftBoxPageWrapper />} />
+      <Route path="/saved" element={<Saved />} />
     </Routes>
   );
 }
