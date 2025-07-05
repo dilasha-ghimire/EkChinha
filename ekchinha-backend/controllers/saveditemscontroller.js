@@ -1,5 +1,6 @@
 const SavedItem = require("../models/saveditems");
 const GiftBox = require("../models/giftBox");
+const Product = require("../models/product");
 
 // Toggle Save or Unsave a Product or Admin-Created Gift Box
 const saveItem = async (req, res) => {
@@ -50,11 +51,26 @@ const saveItem = async (req, res) => {
 const getSavedItems = async (req, res) => {
   try {
     const customer_id = req.user.id;
-    const savedItems = await SavedItem.find({ customer_id }).populate(
-      "item_id"
+
+    const savedItems = await SavedItem.find({ customer_id });
+
+    const populatedItems = await Promise.all(
+      savedItems.map(async (item) => {
+        let populatedItem = item.toObject();
+
+        if (item.item_type === "product") {
+          const product = await Product.findById(item.item_id);
+          populatedItem.item_id = product;
+        } else if (item.item_type === "gift_box") {
+          const giftBox = await GiftBox.findById(item.item_id);
+          populatedItem.item_id = giftBox;
+        }
+
+        return populatedItem;
+      })
     );
 
-    res.status(200).json(savedItems);
+    res.status(200).json(populatedItems);
   } catch (error) {
     console.error("Get Saved Items Error:", error);
     res.status(500).json({ message: "Server error" });

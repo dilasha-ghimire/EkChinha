@@ -10,6 +10,6 @@ const { protect } = require("../middleware/auth");
 router.post("/", protect, saveItem);
 
 // GET /saved-items → List all saved items for user
-router.get("/", getSavedItems);
+router.get("/", protect, getSavedItems);
 
 module.exports = router;

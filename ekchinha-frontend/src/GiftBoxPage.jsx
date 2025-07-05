@@ -1,13 +1,67 @@
 import "./GiftBoxPage.css";
 import Navbar from "./Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const BASE_URL = "http://localhost:5000/api";
 
 const GiftBoxPage = ({ giftBox }) => {
   const isAdmin = giftBox.created_by === "admin_created";
-
   const [selectedCardOption, setSelectedCardOption] = useState(
     giftBox.card_option
   );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+
+    if (token && isAdmin) {
+      axios
+        .get(`${BASE_URL}/saved-items`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          const saved = res.data.some(
+            (item) =>
+              item.item_type === "gift_box" && item.item_id._id === giftBox._id
+          );
+          setIsSaved(saved);
+        })
+        .catch((err) => console.error("Error checking saved status:", err));
+    }
+  }, [giftBox._id, isAdmin]);
+
+  const handleHeartClick = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return navigate("/login");
+
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/saved-items`,
+        {
+          item_type: "gift_box",
+          item_id: giftBox._id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const wasUnsave = res.data.message === "Item unsaved";
+      setIsSaved(!wasUnsave);
+    } catch (err) {
+      console.error("Save/unsave error:", err);
+    }
+  };
+
+  const handleProceed = () => {
+    if (!isLoggedIn) return navigate("/login");
+    navigate("/payment");
+  };
 
   const formatFullDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -105,12 +159,14 @@ const GiftBoxPage = ({ giftBox }) => {
                 {giftBox.name}
                 {isAdmin && (
                   <img
-                    src="/heart.png"
-                    alt="Admin Heart"
+                    src={isSaved ? "/fill-heart.png" : "/heart.png"}
+                    alt="Heart Icon"
+                    onClick={handleHeartClick}
                     style={{
                       height: "1em",
                       verticalAlign: "middle",
                       marginLeft: "4rem",
+                      cursor: "pointer",
                     }}
                   />
                 )}
@@ -176,7 +232,9 @@ const GiftBoxPage = ({ giftBox }) => {
               <input type="text" value={giftBox.message || ""} readOnly />
             </div>
 
-            <button className="payment-btn">Proceed to Payment</button>
+            <button className="payment-btn" onClick={handleProceed}>
+              Proceed to Payment
+            </button>
           </div>
         </div>
       </div>
