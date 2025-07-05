@@ -136,6 +136,7 @@ const getByCartId = async (req, res) => {
     const giftBoxWithItems = {
       ...giftBox.toObject(),
       items: cart?.items || [],
+      created_by: cart?.created_by,
       formatted_time_to_assemble: formatDate(
         new Date(giftBox.time_to_assemble)
       ),

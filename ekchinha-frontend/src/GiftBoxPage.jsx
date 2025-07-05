@@ -101,7 +101,20 @@ const GiftBoxPage = ({ giftBox }) => {
 
             <div className="giftbox-title">
               <h2>Name of Gift Box </h2>
-              <p>{giftBox.name}</p>
+              <p>
+                {giftBox.name}
+                {isAdmin && (
+                  <img
+                    src="/heart.png"
+                    alt="Admin Heart"
+                    style={{
+                      height: "1em",
+                      verticalAlign: "middle",
+                      marginLeft: "4rem",
+                    }}
+                  />
+                )}
+              </p>
             </div>
           </div>
 
