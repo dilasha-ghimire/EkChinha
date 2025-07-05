@@ -10,6 +10,7 @@ function Navbar({ searchTerm, setSearchTerm }) {
   const dropdownRef = useRef(null);
 
   const heartFilled = location.pathname === "/saved";
+  const cartFilled = location.pathname === "/cart";
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -62,7 +63,9 @@ function Navbar({ searchTerm, setSearchTerm }) {
             />
 
             <img
-              src="/shopping-cart.png"
+              src={
+                cartFilled ? "/fill-shopping-cart.png" : "/shopping-cart.png"
+              }
               alt="Cart"
               className="nav-icon"
               onClick={() => navigate("/cart")}

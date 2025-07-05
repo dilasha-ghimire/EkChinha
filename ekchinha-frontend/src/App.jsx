@@ -12,6 +12,7 @@ import Navbar from "./Navbar";
 import UserProfile from "./UserProfile";
 import GiftBoxPageWrapper from "./GiftBoxPageWrapper";
 import Saved from "./Saved";
+import MyCart from "./MyCart";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -238,6 +239,7 @@ function App() {
       <Route path="/userprofile" element={<UserProfile />} />
       <Route path="/giftbox/:id" element={<GiftBoxPageWrapper />} />
       <Route path="/saved" element={<Saved />} />
+      <Route path="/cart" element={<MyCart />} />
     </Routes>
   );
 }
