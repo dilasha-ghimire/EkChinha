@@ -111,6 +111,7 @@ const GiftBoxPage = ({ giftBox }) => {
       const token = localStorage.getItem("token");
       if (!token) return navigate("/login");
 
+      // Step 1: Update card option + message
       await axios.patch(
         `${BASE_URL}/gift-box/${giftBox._id}/update-details`,
         {
@@ -122,10 +123,16 @@ const GiftBoxPage = ({ giftBox }) => {
         }
       );
 
-      navigate("/payment");
+      // Step 2: Fetch the updated gift box via /by-cart
+      const updated = await axios.get(
+        `${BASE_URL}/gift-box/by-cart/${giftBox.cart_source_id}`
+      );
+
+      // Step 3: Navigate with the fresh giftBox
+      navigate("/payment", { state: { giftBox: updated.data } });
     } catch (err) {
-      console.error("Failed to update gift box before payment:", err);
-      showPopup("error", "Could not save changes before payment.");
+      console.error("❌ Failed to proceed to payment:", err);
+      showPopup("error", "Could not save and fetch gift box before payment.");
     }
   };
 

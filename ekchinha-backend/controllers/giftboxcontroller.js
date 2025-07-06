@@ -176,10 +176,32 @@ const updateCardOption = async (req, res) => {
     if (!giftBox)
       return res.status(404).json({ message: "Gift box not found" });
 
+    // 1. Update card_option
     giftBox.card_option = card_option;
+
+    // 2. Get base total without card cost (items + delivery)
+    const cart = await CartGiftBox.findById(giftBox.cart_source_id).populate(
+      "items"
+    );
+    if (!cart || !cart.items) {
+      return res.status(400).json({ message: "Cart or items not found" });
+    }
+
+    const itemsTotal = cart.items.reduce((sum, item) => sum + item.price, 0);
+    const deliveryFee = 300;
+
+    let cardCost = 0;
+    if (card_option === "standard") cardCost = 250;
+    else if (card_option === "premium") cardCost = 500;
+
+    giftBox.total_price = itemsTotal + deliveryFee + cardCost;
+
     await giftBox.save();
 
-    res.status(200).json({ message: "Card option updated", giftBox });
+    res.status(200).json({
+      message: "Card option updated and total price recalculated",
+      giftBox,
+    });
   } catch (error) {
     console.error("Card option update error:", error);
     res.status(500).json({ message: "Server error" });
@@ -201,8 +223,27 @@ const updateGiftBoxDetails = async (req, res) => {
     if (!giftBox)
       return res.status(404).json({ message: "Gift box not found" });
 
+    // Update card and message
     giftBox.card_option = card_option;
     giftBox.message = card_option === "no_card" ? "" : message || "";
+
+    // ⬇️ Recalculate price
+    const cart = await CartGiftBox.findById(giftBox.cart_source_id).populate(
+      "items"
+    );
+    if (!cart || !cart.items) {
+      return res.status(400).json({ message: "Cart or items not found" });
+    }
+
+    const itemsTotal = cart.items.reduce((sum, item) => sum + item.price, 0);
+    const deliveryFee = 300;
+
+    let cardCost = 0;
+    if (card_option === "standard") cardCost = 250;
+    else if (card_option === "premium") cardCost = 500;
+
+    giftBox.total_price = itemsTotal + deliveryFee + cardCost;
+
     await giftBox.save();
 
     res.status(200).json({ message: "Gift box updated", giftBox });
