@@ -80,10 +80,10 @@ function Payment() {
               </tbody>
             </table>
 
-            <div>
-              <strong className="payment-label">Payment Option:</strong>
+            <div className="payment-option-wrapper">
+              <span className="payment-label">Payment Option:</span>
               <div className="payment-options">
-                <label>
+                <label className="payment-option">
                   <input
                     type="radio"
                     name="payment"
@@ -93,7 +93,7 @@ function Payment() {
                   />
                   <img src="/esewa.png" alt="eSewa" />
                 </label>
-                <label>
+                <label className="payment-option">
                   <input
                     type="radio"
                     name="payment"
@@ -106,7 +106,9 @@ function Payment() {
               </div>
             </div>
 
-            <button className="pay-button">Pay</button>
+            <div className="pay-button-container">
+              <button className="pay-button">Pay</button>
+            </div>
           </div>
         </div>
       </div>

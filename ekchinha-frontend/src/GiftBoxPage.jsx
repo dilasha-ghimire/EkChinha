@@ -107,6 +107,15 @@ const GiftBoxPage = ({ giftBox }) => {
       return;
     }
 
+    // ✅ Validate message if card is standard or premium
+    if (
+      (selectedCardOption === "standard" || selectedCardOption === "premium") &&
+      message.trim() === ""
+    ) {
+      showPopup("error", "Please enter a message for your selected card.");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       if (!token) return navigate("/login");
