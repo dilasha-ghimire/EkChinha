@@ -129,7 +129,7 @@ function UserProfile() {
           <strong>Address:</strong> {customer.address}
         </p>
 
-        <div className="action-buttons">
+        <div className="user-action-buttons">
           <button onClick={() => setShowUpdateModal(true)}>
             Update Details
           </button>
@@ -145,17 +145,17 @@ function UserProfile() {
 
       {/* Update Modal */}
       {showUpdateModal && (
-        <div className="modal-overlay">
-          <div className="modal wide">
+        <div className="user-modal-overlay">
+          <div className="user-modal wide">
             <img
               src="/purple-close.png"
               alt="Close"
-              className="modal-close"
+              className="user-modal-close"
               onClick={() => setShowUpdateModal(false)}
             />
             <h2>Update Details</h2>
 
-            <div className="form-row">
+            <div className="user-form-row">
               <label>Name</label>
               <input
                 value={formData.name}
@@ -165,7 +165,7 @@ function UserProfile() {
               />
             </div>
 
-            <div className="form-row">
+            <div className="user-form-row">
               <label>Email</label>
               <input
                 value={formData.email}
@@ -175,11 +175,11 @@ function UserProfile() {
               />
             </div>
 
-            <div className="form-row">
+            <div className="user-form-row">
               <label>Phone Number</label>
-              <div className="phone-input-group">
-                <span className="country-code">+977</span>
-                <div className="divider" />
+              <div className="user-phone-input-group">
+                <span className="user-country-code">+977</span>
+                <div className="user-divider" />
                 <input
                   value={formData.phoneNumber}
                   onChange={(e) =>
@@ -189,7 +189,7 @@ function UserProfile() {
               </div>
             </div>
 
-            <div className="form-row">
+            <div className="user-form-row">
               <label>Address</label>
               <input
                 value={formData.address}
@@ -199,7 +199,7 @@ function UserProfile() {
               />
             </div>
 
-            <div className="modal-actions">
+            <div className="user-modal-actions">
               <button onClick={() => setShowUpdateModal(false)}>Cancel</button>
               <button onClick={handleUpdateSave}>Save</button>
             </div>
@@ -209,19 +209,19 @@ function UserProfile() {
 
       {/* Password Modal */}
       {showPasswordModal && (
-        <div className="modal-overlay">
-          <div className="modal wide">
+        <div className="user-modal-overlay">
+          <div className="user-modal wide">
             <img
               src="/purple-close.png"
               alt="Close"
-              className="modal-close"
+              className="user-modal-close"
               onClick={() => setShowPasswordModal(false)}
             />
             <h2>Change Password</h2>
 
-            <div className="form-row">
+            <div className="user-form-row">
               <label>Current Password</label>
-              <div className="password-field">
+              <div className="user-password-field">
                 <input
                   type={passwordData.showOld ? "text" : "password"}
                   value={passwordData.oldPassword}
@@ -233,7 +233,7 @@ function UserProfile() {
                   }
                 />
                 <span
-                  className="toggle-eye"
+                  className="user-toggle-eye"
                   onClick={() =>
                     setPasswordData((prev) => ({
                       ...prev,
@@ -246,9 +246,9 @@ function UserProfile() {
               </div>
             </div>
 
-            <div className="form-row">
+            <div className="user-form-row">
               <label>New Password</label>
-              <div className="password-field">
+              <div className="user-password-field">
                 <input
                   type={passwordData.showNew ? "text" : "password"}
                   value={passwordData.newPassword}
@@ -260,7 +260,7 @@ function UserProfile() {
                   }
                 />
                 <span
-                  className="toggle-eye"
+                  className="user-toggle-eye"
                   onClick={() =>
                     setPasswordData((prev) => ({
                       ...prev,
@@ -273,7 +273,7 @@ function UserProfile() {
               </div>
             </div>
 
-            <ul className="password-criteria">
+            <ul className="user-password-criteria">
               <li
                 className={
                   passwordData.newPassword.length >= 8 ? "pass" : "fail"
@@ -304,9 +304,9 @@ function UserProfile() {
               </li>
             </ul>
 
-            <div className="form-row">
+            <div className="user-form-row">
               <label>Confirm Password</label>
-              <div className="password-field">
+              <div className="user-password-field">
                 <input
                   type={passwordData.showConfirm ? "text" : "password"}
                   value={passwordData.confirmPassword}
@@ -318,7 +318,7 @@ function UserProfile() {
                   }
                 />
                 <span
-                  className="toggle-eye"
+                  className="user-toggle-eye"
                   onClick={() =>
                     setPasswordData((prev) => ({
                       ...prev,
@@ -338,7 +338,7 @@ function UserProfile() {
               {doPasswordsMatch() ? "Passwords match" : "Passwords don’t match"}
             </p>
 
-            <div className="modal-actions">
+            <div className="user-modal-actions">
               <button onClick={() => setShowPasswordModal(false)}>
                 Cancel
               </button>
