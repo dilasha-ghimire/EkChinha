@@ -16,6 +16,7 @@ import MyCart from "./MyCart";
 import Payment from "./Payment";
 import EsewaDemoRedirect from "./EsewaDemoRedirect";
 import KhaltiDemoRedirect from "./KhaltiDemoRedirect";
+import PaymentSuccess from "./PaymentSuccess";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -252,6 +253,7 @@ function App() {
         path="/khalti-demo-payment-redirection"
         element={<KhaltiDemoRedirect />}
       />
+      <Route path="/paymentsuccess" element={<PaymentSuccess />} />
     </Routes>
   );
 }

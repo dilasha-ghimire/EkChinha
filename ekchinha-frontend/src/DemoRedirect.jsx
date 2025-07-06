@@ -35,7 +35,7 @@ function DemoRedirect({ type }) {
       } catch (err) {
         console.error("Checkout failed:", err);
       } finally {
-        navigate("/");
+        navigate("/paymentsuccess");
       }
     }, 3500);
 
