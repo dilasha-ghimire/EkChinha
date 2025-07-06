@@ -19,10 +19,6 @@ const GiftBoxSchema = new mongoose.Schema(
       ref: "CartGiftBox",
       required: true,
     },
-    created_by_user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer",
-    },
     checked_out: {
       type: Boolean,
       default: false,
