@@ -1,6 +1,7 @@
 const GiftBox = require("../models/giftBox");
 const CartGiftBox = require("../models/cartgiftbox");
-const Product = require("../models/product");
+const Credential = require("../models/credential");
+const GiftBoxOrderHistory = require("../models/giftBoxOrderHistory");
 
 // ✅ Format full date string
 function formatDate(date) {
@@ -12,81 +13,98 @@ function formatDate(date) {
 }
 
 // 1. Create GiftBox from CartGiftBox
+
 const createFromCart = async (req, res) => {
   try {
     const cartId = req.params.cartId;
-
-    // Step 1: Check again immediately for existing gift box
-    let giftBox = await GiftBox.findOne({ cart_source_id: cartId });
-    if (giftBox) {
-      console.log("Returning existing gift box.");
-      return res.status(200).json(giftBox);
-    }
-
     const cart = await CartGiftBox.findById(cartId).populate("items");
-    if (!cart) {
+    if (!cart)
       return res.status(404).json({ message: "CartGiftBox not found" });
-    }
 
-    // Step 2: Validate item count
     if (!cart.items || cart.items.length < 3 || cart.items.length > 5) {
-      return res.status(400).json({
-        message: `Gift box must contain between 3 and 5 items. Found ${
-          cart.items?.length || 0
-        }.`,
-      });
+      return res.status(400).json({ message: "Gift box must have 3–5 items." });
     }
 
-    // Step 3: Compute price and dates
-    const currentDate = new Date();
-    const timeToAssemble = new Date(currentDate);
-    timeToAssemble.setDate(currentDate.getDate() + 4);
-    const estimatedDateOfDelivery = new Date(timeToAssemble);
-    estimatedDateOfDelivery.setDate(timeToAssemble.getDate() + 2);
+    const isAdminCreated = cart.created_by === "admin_created";
 
-    const itemsTotal = cart.items.reduce((sum, item) => sum + item.price, 0);
+    if (isAdminCreated && req.user) {
+      const credential = await Credential.findById(req.user.id);
+      const customerId = credential?.referenceId;
 
-    // Normalize and calculate card cost
-    const cardOption = (() => {
-      const val = cart.card_option.toLowerCase().trim();
-      if (val === "none" || val === "no card") return "no_card";
-      if (["standard", "premium", "no_card"].includes(val)) return val;
-      throw new Error(`Invalid card_option: ${cart.card_option}`);
-    })();
-
-    let cardCost = 0;
-    if (cardOption === "standard") cardCost = 250;
-    else if (cardOption === "premium") cardCost = 500;
-
-    const finalTotalPrice = itemsTotal + 300 + cardCost;
-
-    // Step 4: Create the gift box
-    giftBox = await GiftBox.create({
-      name: cart.name,
-      total_items: cart.items.length,
-      time_to_assemble: timeToAssemble.toString(),
-      estimated_date_of_delivery: estimatedDateOfDelivery.toString(),
-      card_option: cardOption,
-      message: cart.message,
-      total_price: finalTotalPrice,
-      cart_source_id: cart._id,
-    });
-
-    res.status(201).json(giftBox);
-  } catch (error) {
-    // Handle duplicate cart_source_id error (race condition safety)
-    if (error.code === 11000 && error.keyPattern?.cart_source_id) {
-      console.warn("Duplicate creation race — fetching existing one.");
-      const existing = await GiftBox.findOne({
-        cart_source_id: req.params.cartId,
+      const existingGiftBox = await GiftBox.findOne({
+        cart_source_id: cartId,
+        created_by_user_id: customerId,
       });
-      return res.status(200).json(existing);
+
+      if (existingGiftBox) {
+        const alreadyOrdered = await GiftBoxOrderHistory.findOne({
+          customer_id: customerId,
+          gift_box_id: existingGiftBox._id,
+        });
+
+        if (!alreadyOrdered) {
+          // 👇 not yet ordered, reuse existing
+          return res.status(200).json(existingGiftBox);
+        }
+
+        // ✅ already ordered — make a new one
+        const newCart = await CartGiftBox.create({
+          name: cart.name,
+          created_by: "admin_created",
+          card_option: cart.card_option,
+          message: cart.message,
+          items: cart.items,
+        });
+
+        return await createGiftBoxFromCart(newCart, res, customerId);
+      }
     }
 
-    console.error("Error creating GiftBox from cart:", error);
+    const existing = await GiftBox.findOne({ cart_source_id: cartId });
+    if (existing) return res.status(200).json(existing);
+
+    return await createGiftBoxFromCart(cart, res);
+  } catch (err) {
+    console.error("GiftBox creation error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
+async function createGiftBoxFromCart(cart, res, createdByUserId = null) {
+  const now = new Date();
+  const assemble = new Date(now);
+  assemble.setDate(assemble.getDate() + 4);
+
+  const delivery = new Date(assemble);
+  delivery.setDate(assemble.getDate() + 2);
+
+  const itemsTotal = cart.items.reduce((sum, i) => sum + i.price, 0);
+
+  const cardOption = (() => {
+    const val = cart.card_option?.toLowerCase()?.trim() || "no_card";
+    if (val === "none" || val === "no card") return "no_card";
+    if (["standard", "premium", "no_card"].includes(val)) return val;
+    throw new Error(`Invalid card option: ${cart.card_option}`);
+  })();
+
+  let cardCost = 0;
+  if (cardOption === "standard") cardCost = 250;
+  else if (cardOption === "premium") cardCost = 500;
+
+  const giftBox = await GiftBox.create({
+    name: cart.name,
+    total_items: cart.items.length,
+    time_to_assemble: assemble.toString(),
+    estimated_date_of_delivery: delivery.toString(),
+    card_option: cardOption,
+    message: cart.message,
+    total_price: itemsTotal + 300 + cardCost,
+    cart_source_id: cart._id,
+    created_by_user_id: createdByUserId || undefined,
+  });
+
+  return res.status(201).json(giftBox);
+}
 
 // 2. Get GiftBox by CartGiftBox ID (with items[])
 const getByCartId = async (req, res) => {

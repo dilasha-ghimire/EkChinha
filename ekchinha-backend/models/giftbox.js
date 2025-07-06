@@ -18,7 +18,10 @@ const GiftBoxSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "CartGiftBox",
       required: true,
-      unique: true,
+    },
+    created_by_user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
     },
     checked_out: {
       type: Boolean,
