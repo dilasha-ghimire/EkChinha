@@ -28,6 +28,15 @@ function Payment() {
 
   const cardCost = getCardCost(giftBox.card_option);
 
+  const handlePay = () => {
+    localStorage.setItem("checkoutBoxId", giftBox._id);
+    if (selectedPayment === "esewa") {
+      navigate("/esewa-demo-payment-redirection");
+    } else {
+      navigate("/khalti-demo-payment-redirection");
+    }
+  };
+
   return (
     <>
       <Navbar searchTerm={""} setSearchTerm={() => {}} />
@@ -107,7 +116,9 @@ function Payment() {
             </div>
 
             <div className="pay-button-container">
-              <button className="pay-button">Pay</button>
+              <button className="pay-button" onClick={handlePay}>
+                Pay
+              </button>
             </div>
           </div>
         </div>

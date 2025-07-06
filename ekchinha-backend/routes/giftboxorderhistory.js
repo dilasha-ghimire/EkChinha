@@ -3,12 +3,13 @@ const router = express.Router();
 const {
   getUserGiftBoxOrders,
   getAllGiftBoxOrders,
+  checkoutGiftBox, // ✅ Add this
 } = require("../controllers/giftboxorderhistorycontroller");
 
-// GET /gift-box-orders → Customer's own orders
-router.get("/", getUserGiftBoxOrders);
+const { protect } = require("../middleware/auth");
 
-// GET /gift-box-orders/all → Admin: all orders
-router.get("/all", getAllGiftBoxOrders);
+router.get("/", protect, getUserGiftBoxOrders);
+router.get("/all", protect, getAllGiftBoxOrders);
+router.post("/checkout/:giftBoxId", protect, checkoutGiftBox);
 
 module.exports = router;

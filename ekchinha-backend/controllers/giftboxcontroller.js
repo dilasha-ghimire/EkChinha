@@ -29,9 +29,11 @@ const createFromCart = async (req, res) => {
     }
 
     // Step 2: Validate item count
-    if (!cart.items || cart.items.length <= 3 || cart.items.length >= 5) {
+    if (!cart.items || cart.items.length < 3 || cart.items.length > 5) {
       return res.status(400).json({
-        message: "Gift box must contain between 3 and 5 items before checkout.",
+        message: `Gift box must contain between 3 and 5 items. Found ${
+          cart.items?.length || 0
+        }.`,
       });
     }
 

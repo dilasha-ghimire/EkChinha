@@ -1,0 +1,51 @@
+.demo-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.demo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Show large version by default */
+.large-img {
+  display: block;
+}
+
+.small-img {
+  display: none;
+}
+
+/* Show small image if screen ≤ 1020px */
+@media (max-width: 1020px) {
+  .large-img {
+    display: none;
+  }
+
+  .small-img {
+    display: block;
+  }
+}
+
+.demo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 128, 0, 0.6);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  z-index: 10;
+}

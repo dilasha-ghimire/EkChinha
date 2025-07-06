@@ -14,6 +14,8 @@ import GiftBoxPageWrapper from "./GiftBoxPageWrapper";
 import Saved from "./Saved";
 import MyCart from "./MyCart";
 import Payment from "./Payment";
+import EsewaDemoRedirect from "./EsewaDemoRedirect";
+import KhaltiDemoRedirect from "./KhaltiDemoRedirect";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -242,6 +244,14 @@ function App() {
       <Route path="/saved" element={<Saved />} />
       <Route path="/cart" element={<MyCart />} />
       <Route path="/payment" element={<Payment />} />
+      <Route
+        path="/esewa-demo-payment-redirection"
+        element={<EsewaDemoRedirect />}
+      />
+      <Route
+        path="/khalti-demo-payment-redirection"
+        element={<KhaltiDemoRedirect />}
+      />
     </Routes>
   );
 }
