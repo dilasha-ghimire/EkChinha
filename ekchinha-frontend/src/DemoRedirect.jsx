@@ -8,6 +8,13 @@ function DemoRedirect({ type }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     const id = localStorage.getItem("checkoutBoxId");
     const token = localStorage.getItem("token");
 
