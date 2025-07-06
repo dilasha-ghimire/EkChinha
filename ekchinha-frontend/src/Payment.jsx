@@ -54,23 +54,26 @@ function Payment() {
                         {i + 1}. {item.name}
                       </span>
                     </td>
-
                     <td>Rs. {item.price}</td>
                   </tr>
                 ))}
                 <tr>
                   <td className="card-option-label">
                     Card Option:{" "}
-                    {giftBox.card_option.charAt(0).toUpperCase() +
-                      giftBox.card_option.slice(1)}
+                    <span className="card-option-value">
+                      {giftBox.card_option === "no_card"
+                        ? "None"
+                        : giftBox.card_option.charAt(0).toUpperCase() +
+                          giftBox.card_option.slice(1)}
+                    </span>
                   </td>
-                  <td className="card-option-label">Rs. {cardCost}</td>
+                  <td className="card-option-value">Rs. {cardCost}</td>
                 </tr>
                 <tr>
                   <td className="total-price-label">
                     <strong>Total Price (with Delivery):</strong>
                   </td>
-                  <td className="total-price-label">
+                  <td className="total-price-value">
                     <strong>Rs. {giftBox.total_price}</strong>
                   </td>
                 </tr>

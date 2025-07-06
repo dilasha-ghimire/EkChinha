@@ -1,13 +1,13 @@
 .payment-container {
   font-family: "Kreon", serif;
-  color: #7b5e8b;
+  color: #81698d;
   padding: 20px;
 }
 
 .payment-back-button {
   background: none;
   border: none;
-  color: #7b5e8b;
+  color: #81698d;
   font-family: "Kreon", serif;
   font-size: 2.5rem;
   cursor: pointer;
@@ -39,7 +39,7 @@
 .payment-right-column {
   flex: 1.2;
   font-size: 1.9rem;
-  color: #5e4b56;
+  color: #81698d;
 }
 
 .payment-right-column h3 {
@@ -98,10 +98,10 @@
 }
 
 .payment-options input[type="radio"] {
-  accent-color: #7b5e8b;
+  accent-color: #81698d;
   width: 25px;
   height: 25px;
-  border: 4px solid #7b5e8b;
+  border: 4px solid #81698d;
   border-radius: 50%;
   appearance: none;
   outline: none;
@@ -116,7 +116,7 @@
   left: 1.8px;
   width: 13px;
   height: 14px;
-  background-color: #7b5e8b;
+  background-color: #81698d;
   border-radius: 50%;
 }
 
@@ -140,11 +140,26 @@
 }
 
 .card-option-label {
-  color: #7b5e8b;
-  border-top: 1.5rem solid transparent;
+  color: #81698d;
+  border-top: 3rem solid transparent;
 }
 
 .total-price-label {
-  color: #7b5e8b;
-  border-top: 1rem solid transparent;
+  color: #81698d;
+  font-weight: 300;
+}
+
+.card-option-value {
+  color: #ada389;
+  border-top: 3rem solid transparent;
+}
+
+.total-price-value {
+  color: #89ad98;
+  font-weight: 300;
+}
+
+.payment-label {
+  padding-left: 6rem;
+  font-weight: 500;
 }
