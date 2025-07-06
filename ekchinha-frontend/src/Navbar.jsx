@@ -75,11 +75,16 @@ function Navbar({ searchTerm, setSearchTerm }) {
 
               <div className="profile-container" ref={dropdownRef}>
                 <img
-                  src="/profile.png"
+                  src={
+                    location.pathname === "/userprofile"
+                      ? "/fill-profile.png"
+                      : "/profile.png"
+                  }
                   alt="Profile"
                   className="nav-icon profile-icon"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 />
+
                 {dropdownOpen && (
                   <div className="profile-dropdown">
                     <div

@@ -1,9 +1,368 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Navbar from "./Navbar";
+import "./UserProfile.css";
+
+const BASE_URL = "http://localhost:5000";
+
 function UserProfile() {
+  const navigate = useNavigate();
+  const [customer, setCustomer] = useState({});
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [passwordData, setPasswordData] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+    showOld: false,
+    showNew: false,
+    showConfirm: false,
+  });
+  const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const customerId = user?.referenceId;
+
+  useEffect(() => {
+    if (!token || !customerId) {
+      navigate("/login");
+    } else {
+      fetchCustomer();
+    }
+  }, [navigate]);
+
+  const fetchCustomer = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/customers/${customerId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCustomer(res.data);
+      setFormData(res.data);
+    } catch (err) {
+      console.error(err);
+      showPopup("Failed to load profile", true);
+    }
+  };
+
+  const showPopup = (msg, isErr = false) => {
+    setMessage(msg);
+    setIsError(isErr);
+    setTimeout(() => setMessage(""), 3000);
+  };
+
+  const handleUpdateSave = async () => {
+    try {
+      await axios.put(`${BASE_URL}/api/customers/${customerId}`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      showPopup("Details updated successfully");
+      setShowUpdateModal(false);
+      fetchCustomer();
+    } catch (err) {
+      showPopup("Failed to update details", true);
+    }
+  };
+
+  const handlePasswordSave = async () => {
+    try {
+      await axios.put(
+        `${BASE_URL}/api/customers/${customerId}/password`,
+        {
+          oldPassword: passwordData.oldPassword,
+          newPassword: passwordData.newPassword,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      showPopup("Password changed successfully");
+      setShowPasswordModal(false);
+      setPasswordData({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+        showOld: false,
+        showNew: false,
+        showConfirm: false,
+      });
+    } catch (err) {
+      showPopup(
+        err.response?.data?.message || "Failed to change password",
+        true
+      );
+    }
+  };
+
+  const isPasswordValid = () => {
+    const { newPassword } = passwordData;
+    return (
+      newPassword.length >= 8 &&
+      /[A-Z]/.test(newPassword) &&
+      /[a-z]/.test(newPassword) &&
+      /\d/.test(newPassword)
+    );
+  };
+
+  const doPasswordsMatch = () =>
+    passwordData.newPassword === passwordData.confirmPassword;
+
   return (
-    <div style={{ padding: "40px", textAlign: "center" }}>
-      <h1>User Profile</h1>
-      <p>Put your User Profile here.</p>
-    </div>
+    <>
+      <Navbar searchTerm={""} setSearchTerm={() => {}} />
+
+      <div className="user-profile-container">
+        <h2>Profile</h2>
+        <p>
+          <strong>Name:</strong> {customer.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {customer.email}
+        </p>
+        <p>
+          <strong>Phone Number:</strong> {customer.phoneNumber}
+        </p>
+        <p>
+          <strong>Address:</strong> {customer.address}
+        </p>
+
+        <div className="action-buttons">
+          <button onClick={() => setShowUpdateModal(true)}>
+            Update Details
+          </button>
+          <button onClick={() => setShowPasswordModal(true)}>
+            Change Password
+          </button>
+        </div>
+      </div>
+
+      <div className="user-order-history">
+        <h2>Order History</h2>
+      </div>
+
+      {/* Update Modal */}
+      {showUpdateModal && (
+        <div className="modal-overlay">
+          <div className="modal wide">
+            <img
+              src="/purple-close.png"
+              alt="Close"
+              className="modal-close"
+              onClick={() => setShowUpdateModal(false)}
+            />
+            <h2>Update Details</h2>
+
+            <div className="form-row">
+              <label>Name</label>
+              <input
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="form-row">
+              <label>Email</label>
+              <input
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="form-row">
+              <label>Phone Number</label>
+              <div className="phone-input-group">
+                <span className="country-code">+977</span>
+                <div className="divider" />
+                <input
+                  value={formData.phoneNumber}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phoneNumber: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <label>Address</label>
+              <input
+                value={formData.address}
+                onChange={(e) =>
+                  setFormData({ ...formData, address: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="modal-actions">
+              <button onClick={() => setShowUpdateModal(false)}>Cancel</button>
+              <button onClick={handleUpdateSave}>Save</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Password Modal */}
+      {showPasswordModal && (
+        <div className="modal-overlay">
+          <div className="modal wide">
+            <img
+              src="/purple-close.png"
+              alt="Close"
+              className="modal-close"
+              onClick={() => setShowPasswordModal(false)}
+            />
+            <h2>Change Password</h2>
+
+            <div className="form-row">
+              <label>Current Password</label>
+              <div className="password-field">
+                <input
+                  type={passwordData.showOld ? "text" : "password"}
+                  value={passwordData.oldPassword}
+                  onChange={(e) =>
+                    setPasswordData({
+                      ...passwordData,
+                      oldPassword: e.target.value,
+                    })
+                  }
+                />
+                <span
+                  className="toggle-eye"
+                  onClick={() =>
+                    setPasswordData((prev) => ({
+                      ...prev,
+                      showOld: !prev.showOld,
+                    }))
+                  }
+                >
+                  👁️
+                </span>
+              </div>
+            </div>
+
+            <div className="form-row">
+              <label>New Password</label>
+              <div className="password-field">
+                <input
+                  type={passwordData.showNew ? "text" : "password"}
+                  value={passwordData.newPassword}
+                  onChange={(e) =>
+                    setPasswordData({
+                      ...passwordData,
+                      newPassword: e.target.value,
+                    })
+                  }
+                />
+                <span
+                  className="toggle-eye"
+                  onClick={() =>
+                    setPasswordData((prev) => ({
+                      ...prev,
+                      showNew: !prev.showNew,
+                    }))
+                  }
+                >
+                  👁️
+                </span>
+              </div>
+            </div>
+
+            <ul className="password-criteria">
+              <li
+                className={
+                  passwordData.newPassword.length >= 8 ? "pass" : "fail"
+                }
+              >
+                at least 8 characters
+              </li>
+              <li
+                className={
+                  /[A-Z]/.test(passwordData.newPassword) ? "pass" : "fail"
+                }
+              >
+                at least 1 uppercase letter
+              </li>
+              <li
+                className={
+                  /[a-z]/.test(passwordData.newPassword) ? "pass" : "fail"
+                }
+              >
+                at least 1 lowercase letter
+              </li>
+              <li
+                className={
+                  /\d/.test(passwordData.newPassword) ? "pass" : "fail"
+                }
+              >
+                at least 1 digit
+              </li>
+            </ul>
+
+            <div className="form-row">
+              <label>Confirm Password</label>
+              <div className="password-field">
+                <input
+                  type={passwordData.showConfirm ? "text" : "password"}
+                  value={passwordData.confirmPassword}
+                  onChange={(e) =>
+                    setPasswordData({
+                      ...passwordData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                />
+                <span
+                  className="toggle-eye"
+                  onClick={() =>
+                    setPasswordData((prev) => ({
+                      ...prev,
+                      showConfirm: !prev.showConfirm,
+                    }))
+                  }
+                >
+                  👁️
+                </span>
+              </div>
+            </div>
+
+            <p
+              className={doPasswordsMatch() ? "pass" : "fail"}
+              style={{ marginLeft: "160px" }}
+            >
+              {doPasswordsMatch() ? "Passwords match" : "Passwords don’t match"}
+            </p>
+
+            <div className="modal-actions">
+              <button onClick={() => setShowPasswordModal(false)}>
+                Cancel
+              </button>
+              <button
+                onClick={handlePasswordSave}
+                disabled={!isPasswordValid() || !doPasswordsMatch()}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {message && (
+        <div
+          className={`popup-message ${
+            isError ? "popup-error" : "popup-success"
+          }`}
+        >
+          {message}
+        </div>
+      )}
+    </>
   );
 }
 
