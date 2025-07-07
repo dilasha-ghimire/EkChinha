@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Login.css";
 
@@ -39,12 +38,17 @@ function Login() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      // Redirect based on role
-      if (user.role === "vendor") {
-        navigate("/vendor-dashboard");
-      } else {
-        navigate("/");
-      }
+      // Show success message and delay redirect
+      setMessage("Logged in successfully!");
+      setIsError(false);
+
+      setTimeout(() => {
+        if (user.role === "vendor") {
+          navigate("/vendor-dashboard");
+        } else {
+          navigate("/");
+        }
+      }, 1500);
     } catch (error) {
       const msg =
         error.response?.data?.message || "Login failed. Please try again.";
@@ -61,13 +65,16 @@ function Login() {
           <span className="brand-name">EkChinha</span>
         </div>
       </header>
+
       <img src="/namaste.png" alt="Welcome" className="welcome-image" />
+
       <div className="auth-tabs">
         <span className="auth-link active">Login</span>
         <span className="auth-link" onClick={() => navigate("/register")}>
           Register
         </span>
       </div>
+
       <div className="login-box">
         {message && (
           <div
@@ -93,6 +100,7 @@ function Login() {
             <label htmlFor="email">Email</label>
           </div>
         </div>
+
         <div className="input-group">
           <img
             src="/lock.png"
@@ -111,10 +119,12 @@ function Login() {
             <label htmlFor="password">Password</label>
           </div>
         </div>
+
         <button className="login-btn" onClick={handleLogin}>
           LOGIN
         </button>
       </div>
+
       <footer className="footer">
         <div className="footer-copy-wrapper">
           <p className="footer-copy">Copyright © 2025, EkChinha</p>

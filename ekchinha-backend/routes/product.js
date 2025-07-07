@@ -17,6 +17,6 @@ router.get("/vendor/:vendorId", protect, getProductsByVendorId);
 router.get("/:id", getProductById);
 router.get("/", getAllProducts);
 router.put("/:id", upload.single("image"), updateProduct);
-router.put("/:id/archive", toggleArchiveProduct);
+router.put("/:id/archive", protect, toggleArchiveProduct);
 
 module.exports = router;
