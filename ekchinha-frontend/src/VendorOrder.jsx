@@ -12,6 +12,8 @@ function VendorOrder() {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -46,7 +48,7 @@ function VendorOrder() {
       case "packed":
         return "Packed";
       case "shipped":
-        return "Shipped to EkChinha Office";
+        return "Shipped to Office";
       case "delivered":
         return "Delivered to Customer";
       default:
@@ -153,10 +155,16 @@ function VendorOrder() {
                 <button
                   className="vendor-order-details-btn"
                   onClick={() => {
-                    alert("Order details coming soon.");
+                    setSelectedOrder(order);
+                    setShowOrderModal(true);
                   }}
                 >
-                  Details →
+                  Details{" "}
+                  <img
+                    src="/arrow.png"
+                    alt="arrow"
+                    className="vendor-order-arrow-icon"
+                  />
                 </button>
               </div>
             </div>
@@ -167,6 +175,53 @@ function VendorOrder() {
           <p className="vendor-order-empty-message">No orders to show.</p>
         )}
       </div>
+
+      {/* === Custom Modal === */}
+      {showOrderModal && selectedOrder && (
+        <div className="vendor-order-modal-overlay">
+          <div className="vendor-order-modal">
+            <img
+              src="/close.png"
+              alt="Close"
+              className="vendor-order-modal-close"
+              onClick={() => setShowOrderModal(false)}
+            />
+
+            <div className="vendor-order-modal-header">
+              <img
+                src={`${BASE_URL}/assets/${selectedOrder.product_id?.image}`}
+                alt={selectedOrder.product_id?.name}
+                className="vendor-order-modal-image"
+              />
+              <div className="vendor-order-modal-text">
+                <p className="vendor-order-modal-label">
+                  <strong>Product Name:</strong>
+                </p>
+                <h2 className="vendor-order-modal-name">
+                  {selectedOrder.product_id?.name}
+                </h2>
+                <p className="vendor-order-modal-stock">
+                  Remaining Stock: {selectedOrder.product_id?.stock}
+                </p>
+              </div>
+            </div>
+
+            <div className="vendor-order-modal-body">
+              <p className="vendor-order-modal-subtitle">
+                <u>
+                  <i>Order Details</i>
+                </u>
+              </p>
+              <p>Name: {selectedOrder.customer_id?.name}</p>
+              <p>Address: {selectedOrder.customer_id?.address}</p>
+            </div>
+
+            <p className="vendor-order-modal-status">
+              Status: {getStatusLabel(selectedOrder.status)}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 const VendorOrder = require("../models/vendorOrder");
 const Credential = require("../models/credential");
+const Product = require("../models/product");
 
 // 1. Get Vendor Orders (filtered by vendor's products)
 const getVendorOrders = async (req, res) => {
