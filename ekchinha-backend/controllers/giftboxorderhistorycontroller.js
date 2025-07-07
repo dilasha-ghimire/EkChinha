@@ -2,6 +2,8 @@ const GiftBoxOrderHistory = require("../models/giftBoxOrderHistory");
 const GiftBox = require("../models/giftBox");
 const CartGiftBox = require("../models/cartgiftbox");
 const Credential = require("../models/credential");
+const Product = require("../models/product");
+const VendorOrder = require("../models/vendorOrder");
 const mongoose = require("mongoose");
 
 // Get All Gift Box Orders for a Customer
@@ -86,6 +88,17 @@ const checkoutGiftBox = async (req, res) => {
       customer_id: credential.referenceId,
       gift_box_id: giftBox._id,
     });
+
+    for (const productId of cart.items) {
+      const product = await Product.findById(productId);
+      if (!product || !product.vendor_id) continue;
+
+      await VendorOrder.create({
+        product_id: product._id,
+        customer_id: credential.referenceId,
+        status: "pending",
+      });
+    }
 
     res.status(200).json({
       message: "Checkout successful",
