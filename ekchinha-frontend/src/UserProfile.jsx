@@ -137,7 +137,7 @@ function UserProfile() {
           <strong>Email:</strong> {customer.email}
         </p>
         <p>
-          <strong>Phone Number:</strong> {customer.phoneNumber}
+          <strong>Phone Number:</strong> +977 {customer.phoneNumber}
         </p>
         <p>
           <strong>Address:</strong> {customer.address}

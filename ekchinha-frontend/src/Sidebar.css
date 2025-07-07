@@ -24,12 +24,12 @@
   width: 100px;
 }
 
-.vendor-brand-name {
-  font-family: "Kreon", sans-serif;
-  color: #81698d;
-  font-size: 40px;
-  font-weight: 400;
-  margin-top: 40px;
+.vendor-sidebar-brand-name {
+  font-family: "Kreon", sans-serif !important;
+  color: #81698d !important;
+  font-size: 40px !important;
+  font-weight: 400 !important;
+  margin-top: 60px !important;
 }
 
 .vendor-nav-links {
@@ -98,9 +98,9 @@
     width: 60px;
   }
 
-  .vendor-brand-name {
-    font-size: 26px;
-    margin-top: 20px;
+  .vendor-sidebar-brand-name {
+    font-size: 30px !important;
+    margin-top: 40px !important;
   }
 
   .vendor-nav-link {
@@ -135,8 +135,8 @@
     width: 50px;
   }
 
-  .vendor-brand-name {
-    font-size: 20px;
+  .vendor-sidebar-brand-name {
+    font-size: 20px !important;
   }
 
   .vendor-nav-link {
