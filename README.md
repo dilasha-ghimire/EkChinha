@@ -93,7 +93,7 @@ The frontend will run on:
 ## **🔐 Authentication & Authorization**
 
 - **JWT-based auth** with access/refresh tokens.
-- **Role-based access control**: `customer`, `vendor`, and `admin`.
+- **Role-based access control**: `customer` and `vendor`.
 - Secure vendor onboarding and dashboard access.
 
 ---
