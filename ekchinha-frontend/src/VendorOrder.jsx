@@ -109,12 +109,17 @@ function VendorOrder() {
           </div>
 
           <div className="vendor-order-header-right">
-            <button
-              className="vendor-order-add-btn"
-              onClick={() => setShowPendingModal(true)}
-            >
-              New Order List
-            </button>
+            <div className="vendor-order-notification-wrapper">
+              <button
+                className="vendor-order-add-btn"
+                onClick={() => setShowPendingModal(true)}
+              >
+                New Order List
+              </button>
+              {pendingOrders.length > 0 && (
+                <span className="vendor-order-notification-dot" />
+              )}
+            </div>
             <div className="vendor-order-dropdown">
               <button
                 className="vendor-order-dropdown-toggle"
