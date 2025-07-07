@@ -113,19 +113,25 @@ function EditProduct({ product, onCancel, onSave }) {
               Change image
             </p>
 
-            <p style={{ marginTop: "16px" }}>
-              <strong>Stock:</strong>
-            </p>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <button onClick={() => handleStockChange(-1)}>-</button>
-              <input
-                type="number"
-                name="stock"
-                value={formData.stock}
-                onChange={handleInputChange}
-                style={{ width: "60px", textAlign: "center" }}
-              />
-              <button onClick={() => handleStockChange(1)}>+</button>
+            {/* Gap between image and stock */}
+            <div style={{ height: "18px" }}></div>
+
+            <div className="stock-wrapper">
+              <div className="stock-row">
+                <label>
+                  <strong>Stock</strong>
+                </label>
+                <input
+                  type="number"
+                  name="stock"
+                  value={formData.stock}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="stock-controls">
+                <button onClick={() => handleStockChange(1)}>+</button>
+                <button onClick={() => handleStockChange(-1)}>-</button>
+              </div>
             </div>
           </div>
 

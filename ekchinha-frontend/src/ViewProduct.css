@@ -126,39 +126,106 @@
 
 .viewproduct-actions {
   display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-  gap: 20px;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .viewproduct-archive-btn,
 .viewproduct-edit-btn {
-  flex: 1;
-  padding: 14px 20px;
-  font-size: 1.1rem;
-  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 1rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 .viewproduct-archive-btn {
-  background-color: #c6bdbb;
+  background-color: #aab0b7;
   color: white;
 }
 
 .viewproduct-edit-btn {
-  background-color: #b9d4ba;
+  background-color: #b0bdad;
   color: white;
 }
 
-.viewproduct-archive-btn:hover {
-  background-color: #a59795;
+.stock-horizontal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 6px;
 }
 
-.viewproduct-edit-btn:hover {
-  background-color: #9fcaa2;
+.stock-horizontal input {
+  width: 60px;
+  text-align: center;
+  font-size: 1rem;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1.5px solid #444;
+}
+
+.stock-button-row {
+  display: flex;
+  gap: 10px;
+}
+
+.stock-button-row button {
+  padding: 6px 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  border: none;
+  background-color: #111;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.stock-button-row button:hover {
+  background-color: #333;
+}
+
+.stock-wrapper {
+  margin-top: 6px;
+}
+
+.stock-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.stock-row input {
+  width: 60px;
+  text-align: center;
+  font-size: 1rem;
+  padding: 6px;
+  border-radius: 8px;
+  border: 2px solid #333;
+}
+
+.stock-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.stock-controls button {
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  background-color: #111;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.stock-controls button:hover {
+  background-color: #333;
 }
 
 @media screen and (max-width: 768px) {
