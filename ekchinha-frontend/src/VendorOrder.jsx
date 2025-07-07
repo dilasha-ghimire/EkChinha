@@ -9,10 +9,12 @@ const BASE_URL = "http://localhost:5000";
 function VendorOrder() {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
+  const [pendingOrders, setPendingOrders] = useState([]);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
+  const [showPendingModal, setShowPendingModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
@@ -34,10 +36,29 @@ function VendorOrder() {
         },
       });
 
-      const nonPending = res.data.filter((order) => order.status !== "pending");
-      setOrders(nonPending);
+      const confirmedAndAbove = res.data.filter((o) => o.status !== "pending");
+      const onlyPending = res.data.filter((o) => o.status === "pending");
+
+      setOrders(confirmedAndAbove);
+      setPendingOrders(onlyPending);
     } catch (error) {
       console.error("Failed to fetch vendor orders:", error);
+    }
+  };
+
+  const handleAcceptOrder = async (orderId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.patch(
+        `${BASE_URL}/api/vendor-orders/${orderId}/confirm`,
+        null,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      fetchVendorOrders(token);
+    } catch (error) {
+      console.error("Error confirming order:", error);
     }
   };
 
@@ -46,7 +67,7 @@ function VendorOrder() {
       case "confirmed":
         return "Confirmed";
       case "packed":
-        return "Packed";
+        return "Packed and Ready for Delivery";
       case "shipped":
         return "Shipped to Office";
       case "delivered":
@@ -90,11 +111,10 @@ function VendorOrder() {
           <div className="vendor-order-header-right">
             <button
               className="vendor-order-add-btn"
-              onClick={() => console.log("Navigate to new order list")}
+              onClick={() => setShowPendingModal(true)}
             >
               New Order List
             </button>
-
             <div className="vendor-order-dropdown">
               <button
                 className="vendor-order-dropdown-toggle"
@@ -109,7 +129,7 @@ function VendorOrder() {
               </button>
               {showDropdown && (
                 <ul className="vendor-order-dropdown-menu">
-                  {["", "confirmed", "packed", "shipped", "delivered"].map(
+                  {["", "confirmed", "shipped", "packed", "delivered"].map(
                     (status) => (
                       <li
                         key={status || "all"}
@@ -176,17 +196,60 @@ function VendorOrder() {
         )}
       </div>
 
-      {/* === Custom Modal === */}
-      {showOrderModal && selectedOrder && (
-        <div className="vendor-order-modal-overlay">
-          <div className="vendor-order-modal">
+      {/* New Order List Modal */}
+      {showPendingModal && (
+        <div className="vendor-order-profile-modal-overlay">
+          <div className="vendor-order-profile-modal">
             <img
               src="/close.png"
               alt="Close"
-              className="vendor-order-modal-close"
+              className="vendor-order-profile-modal-close"
+              onClick={() => setShowPendingModal(false)}
+            />
+            <h2 class="new-order-title">New Order List</h2>
+            <div className="vendor-order-pending-list">
+              {pendingOrders.length === 0 ? (
+                <p>No new orders.</p>
+              ) : (
+                pendingOrders.map((order) => (
+                  <div key={order._id} className="vendor-order-item">
+                    <img
+                      src={`${BASE_URL}/assets/${order.product_id?.image}`}
+                      alt={order.product_id?.name}
+                      className="vendor-order-image"
+                    />
+                    <div className="vendor-order-details">
+                      <p className="vendor-order-name">
+                        <strong>Name:</strong> {order.product_id?.name}
+                      </p>
+                      <p className="vendor-order-stock">
+                        Stock: {order.product_id?.stock}
+                      </p>
+                    </div>
+                    <button
+                      className="vendor-order-details-btn"
+                      onClick={() => handleAcceptOrder(order._id)}
+                    >
+                      Accept
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Order Details Modal */}
+      {showOrderModal && selectedOrder && (
+        <div className="vendor-order-profile-modal-overlay">
+          <div className="vendor-order-profile-modal">
+            <img
+              src="/close.png"
+              alt="Close"
+              className="vendor-order-profile-modal-close"
               onClick={() => setShowOrderModal(false)}
             />
-
             <div className="vendor-order-modal-header">
               <img
                 src={`${BASE_URL}/assets/${selectedOrder.product_id?.image}`}
@@ -205,7 +268,6 @@ function VendorOrder() {
                 </p>
               </div>
             </div>
-
             <div className="vendor-order-modal-body">
               <p className="vendor-order-modal-subtitle">
                 <u>
@@ -215,7 +277,6 @@ function VendorOrder() {
               <p>Name: {selectedOrder.customer_id?.name}</p>
               <p>Address: {selectedOrder.customer_id?.address}</p>
             </div>
-
             <p className="vendor-order-modal-status">
               Status: {getStatusLabel(selectedOrder.status)}
             </p>
