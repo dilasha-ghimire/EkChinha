@@ -261,6 +261,23 @@
   }
 }
 
+.vendor-product-item {
+  margin-bottom: 14px;
+}
+
+.logout-confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(27, 27, 27, 0.6);
+  z-index: 3000; /* Make sure it's higher than profile modal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media screen and (max-width: 768px) {
   .vendor-dashboard-content {
     margin-left: 220px;
