@@ -14,8 +14,7 @@
   max-width: 100%;
 }
 
-.vendor-profile-container h2,
-.vendor-profile-order-history h2 {
+.vendor-profile-title {
   color: #050505;
   font-size: 3rem;
   font-weight: 700;
@@ -23,7 +22,7 @@
   font-family: "Arimo", sans-serif;
 }
 
-.vendor-profile-container p {
+.vendor-profile-subtitle {
   margin: 1.5rem 0 0 5rem;
   font-size: 1.5rem;
   font-family: "Arimo", sans-serif;
@@ -345,7 +344,7 @@ input[type="password"] {
     padding: 20px;
   }
 
-  .vendor-profile-container p {
+  .vendor-profile-subtitle {
     margin-left: 2rem;
     font-size: 1.2rem;
   }
@@ -381,7 +380,7 @@ input[type="password"] {
     padding: 15px;
   }
 
-  .vendor-profile-container p {
+  .vendor-profile-subtitle {
     margin-left: 1.5rem;
     font-size: 1.1rem;
   }

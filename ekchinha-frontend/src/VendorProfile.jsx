@@ -113,20 +113,20 @@ function VendorProfile() {
     <div className="vendor-profile-container">
       <Sidebar />
       <div className="vendor-profile-content">
-        <h2>Profile</h2>
-        <p>
+        <h2 className="vendor-profile-title">Profile</h2>
+        <p className="vendor-profile-subtitle">
           <strong>Name:</strong> {vendor.name}
         </p>
-        <p>
+        <p className="vendor-profile-subtitle">
           <strong>Email:</strong> {vendor.email}
         </p>
-        <p>
+        <p className="vendor-profile-subtitle">
           <strong>Phone Number:</strong> +977 {vendor.phoneNumber}
         </p>
-        <p>
+        <p className="vendor-profile-subtitle">
           <strong>Company Name:</strong> {vendor.companyName}
         </p>
-        <p>
+        <p className="vendor-profile-subtitle">
           <strong>Address:</strong> {vendor.address}
         </p>
 
