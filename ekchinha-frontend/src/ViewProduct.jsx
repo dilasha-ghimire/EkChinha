@@ -140,7 +140,7 @@ function ViewProduct({ product, onClose, onArchive }) {
                   onChange={handleInputChange}
                 />
               ) : (
-                product.stock
+                <strong>{product.stock}</strong>
               )}
             </p>
           </div>
