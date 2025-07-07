@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import "./VendorDashboard.css";
 import ViewProduct from "./ViewProduct";
+import EditProduct from "./EditProduct";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:5000";
@@ -20,6 +21,7 @@ function VendorDashboard() {
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [selectedViewProduct, setSelectedViewProduct] = useState(null);
+  const [showEditProduct, setShowEditProduct] = useState(false);
 
   const fetchProducts = async () => {
     const token = localStorage.getItem("token");
@@ -366,11 +368,27 @@ function VendorDashboard() {
       )}
 
       {/* View product modal */}
-      {selectedViewProduct && (
+      {selectedViewProduct && !showEditProduct && (
         <ViewProduct
           product={selectedViewProduct}
           onClose={() => setSelectedViewProduct(null)}
           onArchive={handleArchiveFromView}
+          onEdit={() => setShowEditProduct(true)} // ✅ open EditProduct
+        />
+      )}
+
+      {selectedViewProduct && showEditProduct && (
+        <EditProduct
+          product={selectedViewProduct}
+          onCancel={() => setShowEditProduct(false)} // ✅ return to view
+          onSave={async () => {
+            setShowEditProduct(false); // close edit
+            setSelectedViewProduct(null); // close all modals
+            await fetchProducts(); // refresh list
+            setMessage("Product updated successfully.");
+            setIsError(false);
+            setTimeout(() => setMessage(""), 3000);
+          }}
         />
       )}
 
