@@ -49,7 +49,7 @@ function VendorDashboard() {
       <div className="vendor-dashboard-content">
         <div className="vendor-header-bar">
           <div className="vendor-header-left">
-            <h2 className="vendor-profile-title">Products</h2>
+            <h2 className="vendor-product-title">Products</h2>
             <div className="vendor-search-box">
               <input
                 type="text"

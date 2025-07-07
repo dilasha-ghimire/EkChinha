@@ -14,6 +14,13 @@
   margin: 40px;
 }
 
+.vendor-product-title {
+  color: #050505;
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: "Arimo", sans-serif;
+}
+
 .vendor-header-left {
   display: flex;
   flex-direction: column;
@@ -92,7 +99,6 @@
   flex-direction: column;
   gap: 14px;
   border-top: 2px solid #b9b9bc;
-  margin-top: 20px;
 }
 
 .vendor-product-item {
@@ -173,77 +179,52 @@
   margin-top: 20px;
 }
 
+/* --------------------- MEDIA QUERIES --------------------- */
+
 @media screen and (max-width: 1200px) {
   .vendor-dashboard-content {
-    margin-left: 250px;
-    padding: 30px;
+    margin-left: 300px;
+  }
+
+  .vendor-header-bar {
+    flex-wrap: wrap;
+    gap: 20px;
   }
 
   .vendor-search-input {
-    width: 300px;
+    width: 100%;
     font-size: 18px;
   }
 
   .add-btn,
   .view-archived-btn {
-    width: 160px;
+    width: 100%;
     font-size: 15px;
-    padding: 8px;
   }
 
   .viewproduct-btn,
   .archive-btn {
-    font-size: 15px;
-    width: 100px;
-    padding: 8px;
-  }
-
-  .vendor-product-name {
-    font-size: 1.3rem;
-  }
-
-  .vendor-product-stock {
-    font-size: 1.1rem;
-  }
-}
-
-@media screen and (max-width: 992px) {
-  .vendor-dashboard-content {
-    margin-left: 200px;
-    padding: 20px;
-  }
-
-  .vendor-header-bar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .vendor-header-right {
-    flex-direction: row;
-    margin-top: 20px;
-    gap: 10px;
+    font-size: 13px;
+    width: 90px;
+    padding: 6px;
   }
 
   .vendor-product-item {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: flex-start;
-    gap: 10px;
   }
 
   .vendor-product-image {
-    width: 100%;
-    height: auto;
-  }
-
-  .vendor-product-actions {
-    margin-top: 10px;
-    align-self: stretch;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1020px) {
   .vendor-dashboard-content {
-    margin-left: 220px;
+    margin-left: 300px;
   }
 
   .vendor-search-input {
@@ -280,7 +261,17 @@
   }
 }
 
+@media screen and (max-width: 768px) {
+  .vendor-dashboard-content {
+    margin-left: 220px;
+  }
+}
+
 @media screen and (max-width: 600px) {
+  .vendor-product-title {
+    font-size: 1.8rem;
+  }
+
   .vendor-dashboard-content {
     margin-left: 180px;
   }
