@@ -2,9 +2,9 @@ import React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import "./VendorDashboard.css";
+import "./VendorProfile.css";
 
-function VendorDashboard() {
+function VendorProfile() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,14 +17,14 @@ function VendorDashboard() {
   }, [navigate]);
 
   return (
-    <div className="vendor-dashboard-container">
+    <div className="vendor-profile-container">
       <Sidebar />
-      <div className="vendor-dashboard-content">
-        <h1>Vendor Dashboard</h1>
-        <p>Put your Vendor Dashboard here.</p>
+      <div className="vendor-profile-content">
+        <h1>Vendor Profile</h1>
+        <p>Put your Vendor Profile here.</p>
       </div>
     </div>
   );
 }
 
-export default VendorDashboard;
+export default VendorProfile;

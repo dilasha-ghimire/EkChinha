@@ -7,7 +7,6 @@ import Login from "./Login";
 import UserRegister from "./UserRegister";
 import VendorRegister from "./VendorRegister";
 import ProductModal from "./ProductModal";
-import VendorDashboard from "./VendorDashboard";
 import Navbar from "./Navbar";
 import UserProfile from "./UserProfile";
 import GiftBoxPageWrapper from "./GiftBoxPageWrapper";
@@ -17,6 +16,9 @@ import Payment from "./Payment";
 import EsewaDemoRedirect from "./EsewaDemoRedirect";
 import KhaltiDemoRedirect from "./KhaltiDemoRedirect";
 import PaymentSuccess from "./PaymentSuccess";
+import VendorDashboard from "./VendorDashboard";
+import VendorOrder from "./VendorOrder";
+import VendorProfile from "./VendorProfile";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -239,7 +241,6 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<UserRegister />} />
       <Route path="/vendorregister" element={<VendorRegister />} />
-      <Route path="/vendor-dashboard" element={<VendorDashboard />} />
       <Route path="/userprofile" element={<UserProfile />} />
       <Route path="/giftbox/:id" element={<GiftBoxPageWrapper />} />
       <Route path="/saved" element={<Saved />} />
@@ -254,6 +255,10 @@ function App() {
         element={<KhaltiDemoRedirect />}
       />
       <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+
+      <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+      <Route path="/vendor-orders" element={<VendorOrder />} />
+      <Route path="/vendor-profile" element={<VendorProfile />} />
     </Routes>
   );
 }

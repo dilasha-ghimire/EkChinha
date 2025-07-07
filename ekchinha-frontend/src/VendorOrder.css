@@ -1,0 +1,21 @@
+.vendor-order-container {
+  display: flex;
+}
+
+.vendor-order-content {
+  margin-left: 300px;
+  padding: 40px;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .vendor-order-content {
+    margin-left: 220px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .vendor-order-content {
+    margin-left: 180px;
+  }
+}

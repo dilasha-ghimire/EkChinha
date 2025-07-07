@@ -1,0 +1,21 @@
+.vendor-profile-container {
+  display: flex;
+}
+
+.vendor-profile-content {
+  margin-left: 300px;
+  padding: 40px;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .vendor-profile-content {
+    margin-left: 220px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .vendor-profile-content {
+    margin-left: 180px;
+  }
+}

@@ -1,0 +1,160 @@
+.vendor-sidebar {
+  width: 300px;
+  height: 100vh;
+  background-color: #d8cad3;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.vendor-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-left: 15px;
+}
+
+.vendor-logo {
+  width: 100px;
+}
+
+.vendor-brand-name {
+  font-family: "Kreon", sans-serif;
+  color: #81698d;
+  font-size: 40px;
+  font-weight: 400;
+  margin-top: 40px;
+}
+
+.vendor-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.vendor-nav-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: #702e2e;
+  text-decoration: none;
+  font-size: 35px;
+  font-weight: 300;
+  padding: 10px 12px;
+  justify-content: space-evenly;
+}
+
+.vendor-nav-link.active {
+  background-color: #e9d9e5;
+}
+
+.vendor-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 14px;
+}
+
+.vendor-logout-container {
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+  margin-bottom: 10px;
+}
+
+.vendor-logout-btn {
+  background-color: transparent;
+  margin-left: 10px;
+  padding: 10px;
+  border: none;
+  color: #e04f5f;
+  font-size: 35px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.vendor-logout-icon {
+  width: 70px;
+  height: 70px;
+  margin-right: 10px;
+  background-color: #db5560;
+  border-radius: 50%;
+  padding: 6px;
+}
+
+@media screen and (max-width: 768px) {
+  .vendor-sidebar {
+    width: 220px;
+  }
+
+  .vendor-logo {
+    width: 60px;
+  }
+
+  .vendor-brand-name {
+    font-size: 26px;
+    margin-top: 20px;
+  }
+
+  .vendor-nav-link {
+    font-size: 22px;
+    padding: 8px;
+  }
+
+  .vendor-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
+  }
+
+  .vendor-logout-btn {
+    font-size: 22px;
+    margin: 0;
+  }
+
+  .vendor-logout-icon {
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .vendor-sidebar {
+    width: 180px;
+  }
+
+  .vendor-logo {
+    width: 50px;
+  }
+
+  .vendor-brand-name {
+    font-size: 20px;
+  }
+
+  .vendor-nav-link {
+    font-size: 18px;
+  }
+
+  .vendor-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .vendor-logout-btn {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  .vendor-logout-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
