@@ -346,3 +346,63 @@ input[type="password"] {
   height: 24px;
   cursor: pointer;
 }
+
+.order-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 1.5rem;
+}
+
+.order-card {
+  width: 16rem;
+  border: 3px solid #81698d;
+  border-radius: 16px;
+  padding: 15px 15px 20px;
+  background: #fff;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: "Kreon", sans-serif;
+}
+
+.order-card h3 {
+  font-size: 2rem;
+  color: #81698d;
+}
+
+.order-card p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: #8990ad;
+}
+
+.order-status {
+  bottom: 12px;
+  right: 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: #81698d;
+}
+
+.order-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 140px;
+}
+
+.order-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.order-card-footer p {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #81698d;
+  margin-right: 10px;
+}

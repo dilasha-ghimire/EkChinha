@@ -2,17 +2,38 @@ const GiftBoxOrderHistory = require("../models/giftBoxOrderHistory");
 const GiftBox = require("../models/giftBox");
 const CartGiftBox = require("../models/cartgiftbox");
 const Credential = require("../models/credential");
+const mongoose = require("mongoose");
 
 // Get All Gift Box Orders for a Customer
 const getUserGiftBoxOrders = async (req, res) => {
   try {
-    const orders = await GiftBoxOrderHistory.find({
-      customer_id: req.user.id,
-    }).populate("gift_box_id");
+    const customerId = req.user.referenceId;
 
-    res.status(200).json(orders);
+    const rawOrders = await GiftBoxOrderHistory.find({
+      customer_id: new mongoose.Types.ObjectId(customerId),
+    });
+
+    const enrichedOrders = await Promise.all(
+      rawOrders.map(async (order) => {
+        const giftBox = await GiftBox.findById(order.gift_box_id);
+
+        console.log("Gift box data:", giftBox); // ✅ Add this debug line
+
+        return {
+          _id: order._id,
+          status: order.status,
+          gift_box_id: {
+            _id: giftBox?._id,
+            name: giftBox?.name || "Unnamed Box",
+            total_items: giftBox?.total_items || 0, // ✅ Make sure this is correct
+          },
+        };
+      })
+    );
+
+    res.status(200).json(enrichedOrders);
   } catch (error) {
-    console.error("Get Gift Box Orders Error:", error);
+    console.error("Error in getUserGiftBoxOrders:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

@@ -22,6 +22,7 @@ function UserProfile() {
   });
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [orders, setOrders] = useState([]);
 
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
@@ -32,6 +33,7 @@ function UserProfile() {
       navigate("/login");
     } else {
       fetchCustomer();
+      fetchOrders();
     }
   }, [navigate]);
 
@@ -45,6 +47,18 @@ function UserProfile() {
     } catch (err) {
       console.error(err);
       showPopup("Failed to load profile", true);
+    }
+  };
+
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/gift-box-orders`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log("Fetched orders:", res.data); // ✅ Add this
+      setOrders(res.data);
+    } catch (err) {
+      console.error("Failed to fetch orders", err);
     }
   };
 
@@ -141,6 +155,28 @@ function UserProfile() {
 
       <div className="user-order-history">
         <h2>Order History</h2>
+        <div className="order-card-container">
+          {orders.length === 0 ? (
+            <p
+              style={{ marginTop: "1rem", color: "#777", fontStyle: "italic" }}
+            >
+              You haven’t placed any gift box orders yet.
+            </p>
+          ) : (
+            orders.map((order) => (
+              <div className="order-card" key={order._id}>
+                <div className="order-card-body">
+                  <h3>{order.gift_box_id?.name || "Unnamed Box"}</h3>
+                  <p>Total Items: {order.gift_box_id?.total_items}</p>
+                </div>
+                <div className="order-card-footer">
+                  <p>Status: </p>
+                  <span className="order-status">{order.status}</span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       {/* Update Modal */}
