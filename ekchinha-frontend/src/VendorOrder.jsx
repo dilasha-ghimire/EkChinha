@@ -11,6 +11,7 @@ function VendorOrder() {
   const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false); // NEW
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -92,17 +93,43 @@ function VendorOrder() {
             >
               New Order List
             </button>
-            <select
-              className="vendor-order-filter-dropdown"
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-            >
-              <option value="">All Status</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="packed">Packed</option>
-              <option value="shipped">Shipped</option>
-              <option value="delivered">Delivered</option>
-            </select>
+
+            {/* Custom Dropdown */}
+            <div className="vendor-order-dropdown">
+              <button
+                className="vendor-order-dropdown-toggle"
+                onClick={() => setShowDropdown((prev) => !prev)}
+              >
+                Filter
+                <img
+                  src="/down-arrow.png"
+                  alt="dropdown"
+                  className="vendor-order-dropdown-icon"
+                />
+              </button>
+              {showDropdown && (
+                <ul className="vendor-order-dropdown-menu">
+                  {["confirmed", "packed", "shipped", "delivered"].map(
+                    (status) => (
+                      <li
+                        key={status}
+                        onClick={() => {
+                          setFilterStatus(status);
+                          setShowDropdown(false);
+                        }}
+                        className={
+                          filterStatus === status
+                            ? "vendor-order-dropdown-item active"
+                            : "vendor-order-dropdown-item"
+                        }
+                      >
+                        {status.charAt(0).toUpperCase() + status.slice(1)}
+                      </li>
+                    )
+                  )}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
 
