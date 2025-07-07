@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import "./VendorDashboard.css";
+import ViewProduct from "./ViewProduct";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:5000";
@@ -18,6 +19,7 @@ function VendorDashboard() {
   const [showArchivedModal, setShowArchivedModal] = useState(false);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [selectedViewProduct, setSelectedViewProduct] = useState(null);
 
   const fetchProducts = async () => {
     const token = localStorage.getItem("token");
@@ -198,7 +200,28 @@ function VendorDashboard() {
                     >
                       Archive ➔
                     </button>
-                    <button className="viewproduct-btn">View ➔</button>
+                    <button
+                      className="viewproduct-btn"
+                      onClick={async () => {
+                        const token = localStorage.getItem("token");
+                        try {
+                          const res = await axios.get(
+                            `${BASE_URL}/api/products/${product._id}`,
+                            {
+                              headers: { Authorization: `Bearer ${token}` },
+                            }
+                          );
+                          setSelectedViewProduct(res.data);
+                        } catch (err) {
+                          console.error(
+                            "Failed to fetch product:",
+                            err.message
+                          );
+                        }
+                      }}
+                    >
+                      View ➔
+                    </button>
                   </div>
                 </div>
               ))
@@ -272,6 +295,7 @@ function VendorDashboard() {
                       backgroundColor: "#b0bdad",
                       marginLeft: "auto",
                       marginRight: "10px",
+                      marginTop: "40px",
                     }}
                     onClick={() => {
                       setSelectedUnarchiveId(product._id);
@@ -313,6 +337,13 @@ function VendorDashboard() {
             </div>
           </div>
         </div>
+      )}
+
+      {selectedViewProduct && (
+        <ViewProduct
+          product={selectedViewProduct}
+          onClose={() => setSelectedViewProduct(null)}
+        />
       )}
 
       {/* Popup feedback */}

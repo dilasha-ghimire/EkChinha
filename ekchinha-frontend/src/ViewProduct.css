@@ -1,0 +1,103 @@
+.viewproduct-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(27, 27, 27, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.viewproduct-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  border: 2px solid black;
+  width: 80%;
+  max-width: 900px;
+  position: relative;
+  font-family: "Arimo", sans-serif;
+}
+
+.viewproduct-close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.viewproduct-close-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+.viewproduct-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.viewproduct-content {
+  display: flex;
+  gap: 40px;
+}
+
+.viewproduct-left img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.viewproduct-left p {
+  font-size: 1.2rem;
+  margin: 8px 0;
+}
+
+.viewproduct-right {
+  flex: 1;
+}
+
+.viewproduct-right h3 {
+  font-size: 1.3rem;
+  margin: 10px 0 5px;
+}
+
+.viewproduct-right p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.viewproduct-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.viewproduct-archive-btn,
+.viewproduct-edit-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.viewproduct-archive-btn {
+  background-color: #aab0b7;
+  color: white;
+}
+
+.viewproduct-edit-btn {
+  background-color: #7ca1d2;
+  color: white;
+}
