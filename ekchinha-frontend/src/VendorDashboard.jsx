@@ -80,6 +80,31 @@ function VendorDashboard() {
     setTimeout(() => setMessage(""), 3000);
   };
 
+  const handleArchiveFromView = async (productId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `${BASE_URL}/api/products/${productId}/archive`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      await fetchProducts();
+      setSelectedViewProduct(null);
+      setMessage("Product archived successfully.");
+      setIsError(false);
+    } catch (error) {
+      console.error("Archive from view failed:", error.message);
+      setMessage("Failed to archive product.");
+      setIsError(true);
+    }
+
+    setTimeout(() => setMessage(""), 3000);
+  };
+
   const fetchArchivedProducts = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -112,7 +137,6 @@ function VendorDashboard() {
         }
       );
 
-      // Refresh entire product list to ensure consistency
       await fetchProducts();
 
       setArchivedProducts((prev) =>
@@ -217,6 +241,9 @@ function VendorDashboard() {
                             "Failed to fetch product:",
                             err.message
                           );
+                          setMessage("Failed to load product.");
+                          setIsError(true);
+                          setTimeout(() => setMessage(""), 3000);
                         }
                       }}
                     >
@@ -240,7 +267,6 @@ function VendorDashboard() {
             >
               <img src="/close.png" alt="Close" className="close-icon" />
             </button>
-
             <img src="/alert.png" alt="Warning" className="logout-icon" />
             <h2>Are you sure?</h2>
             <p>Do you want to archive this product?</p>
@@ -339,10 +365,12 @@ function VendorDashboard() {
         </div>
       )}
 
+      {/* View product modal */}
       {selectedViewProduct && (
         <ViewProduct
           product={selectedViewProduct}
           onClose={() => setSelectedViewProduct(null)}
+          onArchive={handleArchiveFromView}
         />
       )}
 

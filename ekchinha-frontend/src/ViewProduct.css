@@ -9,6 +9,8 @@
   align-items: center;
   justify-content: center;
   z-index: 3000;
+  overflow-y: auto; /* ✅ Add this */
+  padding: 20px; /* ✅ Helps with spacing on small screens */
 }
 
 .viewproduct-modal {
@@ -20,6 +22,9 @@
   max-width: 900px;
   position: relative;
   font-family: "Arimo", sans-serif;
+  max-height: 100%; /* ✅ Limit height */
+  overflow-y: auto; /* ✅ Allow inner scrolling */
+  box-sizing: border-box; /* ✅ Ensure padding doesn't exceed bounds */
 }
 
 .viewproduct-close-btn {
@@ -100,4 +105,74 @@
 .viewproduct-edit-btn {
   background-color: #7ca1d2;
   color: white;
+}
+
+@media screen and (max-width: 1024px) {
+  .viewproduct-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .viewproduct-left img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .viewproduct-title {
+    font-size: 1.8rem;
+  }
+
+  .viewproduct-left p,
+  .viewproduct-right p {
+    font-size: 1rem;
+  }
+
+  .viewproduct-right h3 {
+    font-size: 1.1rem;
+  }
+
+  .viewproduct-actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .viewproduct-archive-btn,
+  .viewproduct-edit-btn {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .viewproduct-modal {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .viewproduct-title {
+    font-size: 1.5rem;
+  }
+
+  .viewproduct-left img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .viewproduct-left p,
+  .viewproduct-right p {
+    font-size: 0.95rem;
+  }
+
+  .viewproduct-right h3 {
+    font-size: 1rem;
+  }
+
+  .viewproduct-actions {
+    gap: 6px;
+  }
+
+  .viewproduct-close-btn img {
+    width: 20px;
+    height: 20px;
+  }
 }
