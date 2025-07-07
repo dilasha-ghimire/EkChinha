@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import "./ViewProduct.css"; // Reuse same styles
+import "./ViewProduct.css"; // Reuse shared styles
 
 const BASE_URL = "http://localhost:5000";
 
-function EditProduct({ product, onCancel, onSave }) {
+function EditProduct({ product, onCancel, onSave, isNew = false }) {
   const [formData, setFormData] = useState({ ...product });
   const [newImage, setNewImage] = useState(null);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
@@ -37,30 +37,41 @@ function EditProduct({ product, onCancel, onSave }) {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
+      const user = JSON.parse(localStorage.getItem("user"));
       const form = new FormData();
 
       for (const key in formData) {
         if (key !== "image") form.append(key, formData[key]);
       }
       if (newImage) form.append("image", newImage);
+      if (isNew) form.append("vendor_id", user.referenceId);
 
-      await axios.put(`${BASE_URL}/api/products/${product._id}`, form, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      if (isNew) {
+        await axios.post(`${BASE_URL}/api/products`, form, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        setMessage("Product created successfully.");
+      } else {
+        await axios.put(`${BASE_URL}/api/products/${product._id}`, form, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        setMessage("Product updated successfully.");
+      }
 
-      setMessage("Product updated successfully.");
       setIsError(false);
-
       setTimeout(() => {
         setMessage("");
-        onSave(); // ✅ notify parent
+        onSave();
       }, 1000);
     } catch (err) {
-      console.error("Edit failed:", err.message);
-      setMessage("Failed to update product.");
+      console.error("Save failed:", err.message);
+      setMessage("Failed to save product.");
       setIsError(true);
       setTimeout(() => setMessage(""), 3000);
     }
@@ -69,7 +80,7 @@ function EditProduct({ product, onCancel, onSave }) {
   const handleClose = () => setShowCancelConfirm(true);
   const confirmCancel = () => {
     setShowCancelConfirm(false);
-    onCancel(); // ✅ reopen ViewProduct
+    onCancel();
   };
 
   return (
@@ -79,7 +90,9 @@ function EditProduct({ product, onCancel, onSave }) {
           <img src="/close.png" alt="Close" />
         </button>
 
-        <h2 className="viewproduct-title">Edit Product</h2>
+        <h2 className="viewproduct-title">
+          {isNew ? "Add New Product" : "Edit Product"}
+        </h2>
 
         <div className="viewproduct-content">
           {/* LEFT COLUMN */}
@@ -88,7 +101,9 @@ function EditProduct({ product, onCancel, onSave }) {
               src={
                 newImage
                   ? URL.createObjectURL(newImage)
-                  : `${BASE_URL}/assets/${product.image}`
+                  : formData.image
+                  ? `${BASE_URL}/assets/${formData.image}`
+                  : "/placeholder.png"
               }
               alt="Product"
               className="viewproduct-image"
@@ -113,7 +128,6 @@ function EditProduct({ product, onCancel, onSave }) {
               Change image
             </p>
 
-            {/* Gap between image and stock */}
             <div style={{ height: "18px" }}></div>
 
             <div className="stock-wrapper">

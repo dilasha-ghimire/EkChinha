@@ -22,6 +22,7 @@ function VendorDashboard() {
   const [isError, setIsError] = useState(false);
   const [selectedViewProduct, setSelectedViewProduct] = useState(null);
   const [showEditProduct, setShowEditProduct] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const fetchProducts = async () => {
     const token = localStorage.getItem("token");
@@ -186,7 +187,12 @@ function VendorDashboard() {
             </div>
 
             <div className="vendor-header-right">
-              <button className="add-btn">+ Add new Product</button>
+              <button
+                className="add-btn"
+                onClick={() => setShowCreateModal(true)}
+              >
+                + Add new Product
+              </button>
               <button
                 className="view-archived-btn"
                 onClick={fetchArchivedProducts}
@@ -389,6 +395,30 @@ function VendorDashboard() {
             setIsError(false);
             setTimeout(() => setMessage(""), 3000);
           }}
+        />
+      )}
+
+      {showCreateModal && (
+        <EditProduct
+          product={{
+            name: "",
+            image: "",
+            details: "",
+            price: 0,
+            stock: 0,
+            product_significance: "",
+            artisan_background: "",
+            cultural_significance: "",
+          }}
+          onCancel={() => setShowCreateModal(false)}
+          onSave={async () => {
+            setShowCreateModal(false);
+            await fetchProducts();
+            setMessage("Product added successfully.");
+            setIsError(false);
+            setTimeout(() => setMessage(""), 3000);
+          }}
+          isNew={true}
         />
       )}
 

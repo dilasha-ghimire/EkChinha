@@ -42,16 +42,17 @@
 }
 
 .viewproduct-title {
-  font-size: 2.3rem;
-  font-weight: bold;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 30px;
   color: black;
 }
 
 .viewproduct-content {
   display: flex;
-  gap: 50px;
+  gap: 60px;
   flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
 .viewproduct-left {
@@ -61,20 +62,34 @@
 
 .viewproduct-left img {
   width: 100%;
-  max-width: 240px;
+  max-width: 170px;
   height: auto;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .viewproduct-left p {
-  font-size: 1rem;
-  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 12px 0;
 }
 
 .viewproduct-right {
   flex: 2;
   min-width: 300px;
+}
+
+.viewproduct-right h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 18px 0 8px;
+  color: #333;
+}
+
+.viewproduct-right p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #333;
 }
 
 .viewproduct-right label {
@@ -97,99 +112,9 @@
   font-family: inherit;
 }
 
-.stock-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.stock-controls button {
-  padding: 6px 12px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border-radius: 4px;
-  border: none;
-  background-color: #000;
-  color: #fff;
-  cursor: pointer;
-}
-
-.stock-controls input {
-  width: 60px;
-  text-align: center;
-  font-size: 1rem;
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.viewproduct-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.viewproduct-archive-btn,
-.viewproduct-edit-btn {
-  padding: 10px 20px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.viewproduct-archive-btn {
-  background-color: #aab0b7;
-  color: white;
-}
-
-.viewproduct-edit-btn {
-  background-color: #b0bdad;
-  color: white;
-}
-
-.stock-horizontal {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  margin-top: 6px;
-}
-
-.stock-horizontal input {
-  width: 60px;
-  text-align: center;
-  font-size: 1rem;
-  padding: 6px;
-  border-radius: 6px;
-  border: 1.5px solid #444;
-}
-
-.stock-button-row {
-  display: flex;
-  gap: 10px;
-}
-
-.stock-button-row button {
-  padding: 6px 12px;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 6px;
-  border: none;
-  background-color: #111;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.stock-button-row button:hover {
-  background-color: #333;
-}
-
+/* Stock layout */
 .stock-wrapper {
-  margin-top: 6px;
+  margin-top: 20px;
 }
 
 .stock-row {
@@ -214,7 +139,8 @@
 }
 
 .stock-controls button {
-  font-size: 1.5rem;
+  padding: 8px 14px;
+  font-size: 1.2rem;
   font-weight: bold;
   border-radius: 8px;
   border: none;
@@ -228,6 +154,37 @@
   background-color: #333;
 }
 
+/* Button area */
+.viewproduct-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.viewproduct-archive-btn,
+.viewproduct-edit-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.viewproduct-archive-btn {
+  background-color: #aab0b7;
+  color: white;
+}
+
+.viewproduct-edit-btn {
+  background-color: #b0bdad;
+  color: white;
+}
+
+.viewproduct-edit-btn:hover {
+  background-color: #9eaa9b;
+}
+
 @media screen and (max-width: 768px) {
   .viewproduct-content {
     flex-direction: column;
@@ -236,5 +193,26 @@
 
   .viewproduct-actions {
     flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .viewproduct-title {
+    font-size: 2rem;
+  }
+
+  .viewproduct-left img {
+    max-width: 200px;
+  }
+
+  .viewproduct-left p {
+    font-size: 1rem;
+  }
+
+  .viewproduct-right h3 {
+    font-size: 1.2rem;
+  }
+
+  .viewproduct-right p {
+    font-size: 1rem;
   }
 }
