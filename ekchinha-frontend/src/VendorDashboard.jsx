@@ -47,44 +47,60 @@ function VendorDashboard() {
     <div className="vendor-dashboard-container">
       <Sidebar />
       <div className="vendor-dashboard-content">
-        <h2 className="vendor-profile-title">Products</h2>
-
         <div className="vendor-header-bar">
-          <input
-            type="text"
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="vendor-search-input"
-          />
-          <div>
+          <div className="vendor-header-left">
+            <h2 className="vendor-profile-title">Products</h2>
+            <div className="vendor-search-box">
+              <input
+                type="text"
+                placeholder="Search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="vendor-search-input"
+              />
+              <img
+                src="/black-search.png"
+                alt="search"
+                className="search-icon"
+              />
+            </div>
+          </div>
+
+          <div className="vendor-header-right">
             <button className="add-btn">+ Add new Product</button>
-            <button className="view-archived-btn">View Archived ➔</button>
+            <button className="view-archived-btn">
+              View Archived
+              <img src="/arrow.png" alt="arrow" className="arrow-icon" />
+            </button>
           </div>
         </div>
 
         <div className="vendor-product-list">
-          {filteredProducts.map((product) => (
-            <div key={product._id} className="vendor-product-item">
-              <img
-                src={`${BASE_URL}/assets/${product.image}`}
-                alt={product.name}
-                className="vendor-product-image"
-              />
-              <div className="vendor-product-details">
-                <p className="vendor-product-name">
-                  <strong>Name:</strong> {product.name}
-                </p>
-                <p className="vendor-product-stock">
-                  <strong>Stock:</strong> {product.stock}
-                </p>
+          {filteredProducts.length === 0 ? (
+            <p className="no-products-message">No products to show.</p>
+          ) : (
+            filteredProducts.map((product) => (
+              <div key={product._id} className="vendor-product-item">
+                <img
+                  src={`${BASE_URL}/assets/${product.image}`}
+                  alt={product.name}
+                  className="vendor-product-image"
+                />
+                <div className="vendor-product-details">
+                  <p className="vendor-product-name">
+                    <strong>Name:</strong> {product.name}
+                  </p>
+                  <p className="vendor-product-stock">
+                    <strong>Stock:</strong> {product.stock}
+                  </p>
+                </div>
+                <div className="vendor-product-actions">
+                  <button className="archive-btn">Archive ➔</button>
+                  <button className="viewproduct-btn">View ➔</button>
+                </div>
               </div>
-              <div className="vendor-product-actions">
-                <button className="archive-btn">Archive ➔</button>
-                <button className="view-btn">View ➔</button>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
