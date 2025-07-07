@@ -351,3 +351,70 @@
     margin-left: 180px;
   }
 }
+
+/* Add this to enhance mobile responsiveness */
+@media screen and (max-width: 1024px) {
+  .vendor-order-header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    margin: 20px;
+  }
+
+  .vendor-order-header-left {
+    width: 100%;
+  }
+
+  .vendor-order-search-box {
+    width: 100%;
+  }
+
+  .vendor-order-search-input {
+    width: 100%;
+  }
+
+  .vendor-order-header-right {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .vendor-order-add-btn {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .vendor-order-dropdown {
+    flex: 1;
+    min-width: 140px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .vendor-order-header-bar {
+    margin: 10px;
+  }
+
+  .vendor-order-title {
+    font-size: 1.6rem;
+  }
+
+  .vendor-order-add-btn,
+  .vendor-order-dropdown-toggle {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .vendor-order-dropdown-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .vendor-order-dropdown-menu {
+    width: 100%;
+    max-width: 200px;
+  }
+}
