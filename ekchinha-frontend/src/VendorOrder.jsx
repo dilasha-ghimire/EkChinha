@@ -11,7 +11,7 @@ function VendorOrder() {
   const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false); // NEW
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,7 +32,6 @@ function VendorOrder() {
         },
       });
 
-      // Exclude pending orders
       const nonPending = res.data.filter((order) => order.status !== "pending");
       setOrders(nonPending);
     } catch (error) {
@@ -94,7 +93,6 @@ function VendorOrder() {
               New Order List
             </button>
 
-            {/* Custom Dropdown */}
             <div className="vendor-order-dropdown">
               <button
                 className="vendor-order-dropdown-toggle"
@@ -109,10 +107,10 @@ function VendorOrder() {
               </button>
               {showDropdown && (
                 <ul className="vendor-order-dropdown-menu">
-                  {["confirmed", "packed", "shipped", "delivered"].map(
+                  {["", "confirmed", "packed", "shipped", "delivered"].map(
                     (status) => (
                       <li
-                        key={status}
+                        key={status || "all"}
                         onClick={() => {
                           setFilterStatus(status);
                           setShowDropdown(false);
@@ -123,7 +121,9 @@ function VendorOrder() {
                             : "vendor-order-dropdown-item"
                         }
                       >
-                        {status.charAt(0).toUpperCase() + status.slice(1)}
+                        {status === ""
+                          ? "All"
+                          : status.charAt(0).toUpperCase() + status.slice(1)}
                       </li>
                     )
                   )}
