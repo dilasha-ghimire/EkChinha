@@ -118,6 +118,10 @@ function ProductModal({ product, onClose }) {
 
       showPopup("success", "Product added to gift box successfully!");
       setError("");
+
+      setTimeout(() => {
+        onClose();
+      }, 1000);
     } catch (err) {
       const backendMessage =
         err?.response?.data?.message || "Failed to add to gift box. Try again.";
