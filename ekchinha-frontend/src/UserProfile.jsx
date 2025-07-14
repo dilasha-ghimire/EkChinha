@@ -55,7 +55,7 @@ function UserProfile() {
       const res = await axios.get(`${BASE_URL}/api/gift-box-orders`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("Fetched orders:", res.data); // ✅ Add this
+      console.log("Fetched orders:", res.data);
       setOrders(res.data);
     } catch (err) {
       console.error("Failed to fetch orders", err);
@@ -69,6 +69,25 @@ function UserProfile() {
   };
 
   const handleUpdateSave = async () => {
+    const { name, email, phoneNumber, address } = formData;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    if (!name || !email || !phoneNumber || !address) {
+      showPopup("All fields are required", true);
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      showPopup("Invalid email format", true);
+      return;
+    }
+
+    if (!phoneRegex.test(phoneNumber)) {
+      showPopup("Phone number must be exactly 10 digits", true);
+      return;
+    }
+
     try {
       await axios.put(`${BASE_URL}/api/customers/${customerId}`, formData, {
         headers: { Authorization: `Bearer ${token}` },

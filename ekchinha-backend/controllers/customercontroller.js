@@ -39,6 +39,23 @@ const updateCustomer = async (req, res) => {
     const { id } = req.params;
     const { name, phoneNumber, address, email } = req.body;
 
+    if (!name || !phoneNumber || !address || !email) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (!phoneRegex.test(phoneNumber)) {
+      return res
+        .status(400)
+        .json({ message: "Phone number must be exactly 10 digits" });
+    }
+
     const customer = await Customer.findByIdAndUpdate(
       id,
       { name, phoneNumber, address },
