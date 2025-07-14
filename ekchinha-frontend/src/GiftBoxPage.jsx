@@ -102,8 +102,8 @@ const GiftBoxPage = ({ giftBox }) => {
     if (!isLoggedIn) return navigate("/login");
 
     const itemCount = giftBox.items?.length || 0;
-    if (itemCount < 3 || itemCount > 5) {
-      showPopup("error", "Gift box must have 3 to 5 items to proceed.");
+    if (itemCount < 1 || itemCount > 5) {
+      showPopup("error", "Gift box must have 1 to 5 items to proceed.");
       return;
     }
 
