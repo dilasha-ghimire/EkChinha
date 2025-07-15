@@ -1,4 +1,4 @@
-const GiftBox = require("../models/giftBox");
+const GiftBox = require("../models/giftbox");
 const CartGiftBox = require("../models/cartgiftbox");
 const Product = require("../models/product");
 
@@ -255,9 +255,49 @@ const updateGiftBoxDetails = async (req, res) => {
   }
 };
 
+// PATCH /api/gift-box/:id/delivery-date
+const updateDeliveryDate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { delivery_date } = req.body; // Expecting ISO date string from frontend
+
+    if (!delivery_date) {
+      return res.status(400).json({ message: "Delivery date is required." });
+    }
+
+    const giftBox = await GiftBox.findById(id);
+    if (!giftBox)
+      return res.status(404).json({ message: "Gift box not found." });
+
+    const assembleDate = new Date(giftBox.time_to_assemble);
+    const selectedDate = new Date(delivery_date);
+
+    const minAllowedDate = new Date(assembleDate);
+    minAllowedDate.setDate(assembleDate.getDate() + 2);
+
+    if (selectedDate < minAllowedDate) {
+      return res.status(400).json({
+        message: `Delivery date must be on or after ${minAllowedDate.toDateString()}`,
+      });
+    }
+
+    giftBox.estimated_date_of_delivery = selectedDate.toString();
+
+    await giftBox.save();
+
+    res
+      .status(200)
+      .json({ message: "Delivery date updated successfully.", giftBox });
+  } catch (error) {
+    console.error("Update delivery date error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   createFromCart,
   getByCartId,
   updateCardOption,
   updateGiftBoxDetails,
+  updateDeliveryDate,
 };

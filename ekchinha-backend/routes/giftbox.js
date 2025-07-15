@@ -5,6 +5,7 @@ const {
   getByCartId,
   updateCardOption,
   updateGiftBoxDetails,
+  updateDeliveryDate,
 } = require("../controllers/giftboxcontroller");
 const { protect } = require("../middleware/auth");
 
@@ -17,5 +18,7 @@ router.get("/by-cart/:cartId", getByCartId);
 router.patch("/:id/card-option", protect, updateCardOption);
 
 router.patch("/:id/update-details", protect, updateGiftBoxDetails);
+
+router.patch("/:id/delivery-date", protect, updateDeliveryDate);
 
 module.exports = router;

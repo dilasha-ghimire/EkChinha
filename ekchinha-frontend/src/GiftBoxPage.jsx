@@ -16,6 +16,13 @@ const GiftBoxPage = ({ giftBox }) => {
   const [message, setMessage] = useState(giftBox.message || "");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteProductId, setDeleteProductId] = useState(null);
+  const [deliveryDate, setDeliveryDate] = useState("");
+
+  const getMinDeliveryDate = () => {
+    const assembleDate = new Date(giftBox.time_to_assemble);
+    assembleDate.setDate(assembleDate.getDate() + 2);
+    return assembleDate.toISOString().split("T")[0]; // YYYY-MM-DD format
+  };
 
   const navigate = useNavigate();
   const isAdmin = giftBox.created_by === "admin_created";
@@ -135,6 +142,33 @@ const GiftBoxPage = ({ giftBox }) => {
       // Step 2: Fetch the updated gift box via /by-cart
       const updated = await axios.get(
         `${BASE_URL}/gift-box/by-cart/${giftBox.cart_source_id}`
+      );
+
+      if (!deliveryDate) {
+        showPopup("error", "Please select a delivery date.");
+        return;
+      }
+
+      // ✅ Validate selected delivery date is after allowed date
+      const selected = new Date(deliveryDate);
+      const minDate = new Date(giftBox.time_to_assemble);
+      minDate.setDate(minDate.getDate() + 2);
+
+      if (selected < minDate) {
+        showPopup(
+          "error",
+          `Delivery date must be on or after ${minDate.toDateString()}`
+        );
+        return;
+      }
+
+      // ✅ Save delivery date to backend
+      await axios.patch(
+        `${BASE_URL}/gift-box/${giftBox._id}/delivery-date`,
+        { delivery_date: selected.toISOString() },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
 
       // Step 3: Navigate with the fresh giftBox
@@ -355,8 +389,35 @@ const GiftBoxPage = ({ giftBox }) => {
               {formatFullDate(giftBox.time_to_assemble)}
             </p>
             <p>
-              <strong>Estimated Date of Delivery:</strong>{" "}
-              {formatDeliveryRange(giftBox.estimated_date_of_delivery)}
+              <strong>Delivery Date:</strong>{" "}
+              {deliveryDate ? formatFullDate(deliveryDate) : "No date selected"}{" "}
+              <div style={{ position: "relative", display: "inline-block" }}>
+                <img
+                  src="/calendar.png"
+                  alt="Select Date"
+                  style={{
+                    width: "2rem",
+                    height: "2rem",
+                    verticalAlign: "baseline",
+                    marginLeft: "30px",
+                  }}
+                />
+                <input
+                  type="date"
+                  min={getMinDeliveryDate()}
+                  value={deliveryDate}
+                  onChange={(e) => setDeliveryDate(e.target.value)}
+                  style={{
+                    position: "absolute",
+                    opacity: 0,
+                    width: "100%",
+                    height: "100%",
+                    left: 0,
+                    top: 0,
+                    cursor: "pointer",
+                  }}
+                />
+              </div>
             </p>
 
             <div className="card-options">
